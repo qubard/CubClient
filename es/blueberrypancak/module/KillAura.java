@@ -18,7 +18,9 @@ import net.minecraft.util.EnumHand;
 public class KillAura extends Module {
 
 	private static double distanceThreshold = 36.0D;
+	
 	private long last;
+	
 	private int delay = 90;
 
 	@Subscribe
@@ -36,7 +38,9 @@ public class KillAura extends Module {
 
 	@Subscribe
 	public void onCooldown(EventCooldown e) {
-		e.setValue(0F);
+		if(isEnabled()) {
+			e.setValue(0F);
+		}
 	}
 
 	private Entity getClosestEntity() {
@@ -60,9 +64,8 @@ public class KillAura extends Module {
 
 	private void hit(EntityPlayer p, Entity e) {
 		PlayerControllerMP controller = Client.getMinecraft().playerController;
-		p.swingArm(EnumHand.MAIN_HAND);
 		controller.attackEntity(p, e);
-		this.last = System.currentTimeMillis() + (long) this.delay;
+		this.last = System.currentTimeMillis() + this.delay;
 	}
 
 	@Override

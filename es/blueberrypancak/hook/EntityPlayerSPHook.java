@@ -43,12 +43,6 @@ public class EntityPlayerSPHook extends EntityPlayerSP {
 		return e.getValue();
 	}
 	
-	public float getCooldownPeriod() {
-		EventCooldown e = new EventCooldown(super.getCooldownPeriod());
-		EventManager.fire(e);
-        return e.getValue();
-    }
-	
 	public float getCooledAttackStrength(float adjustTicks) {
 		return super.getCooledAttackStrength(adjustTicks);
 	}

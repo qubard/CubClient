@@ -19,7 +19,7 @@ public abstract class Module {
 	private int color, secondary_color;
 	
 	public Module setBind(int key, boolean pressed) {
-		this.bind = new KeyWrapper(key, pressed, this);
+		this.bind = new KeyWrapper(key, pressed);
 		return this;
 	}
 	
@@ -67,12 +67,14 @@ public abstract class Module {
 	private void add(Module m) {
 		if(!active_modules.contains(m)) {
 			active_modules.add(m);
+			this.onEnabled();
 		}
 	}
 	
 	public void remove(Module m) {
 		if(active_modules.contains(m)) {
 			active_modules.remove(m);
+			this.onDisabled();
 		}
 	}
 	

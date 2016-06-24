@@ -15,11 +15,6 @@ public class KeyWrapper {
 		this.pressed = pressed;
 		this.bind = new KeyBinding("key."+keyCode, keyCode, "key.categories.misc");
 	}
-	
-	public KeyWrapper(int keyCode, boolean pressed, Module module) {
-		this(keyCode, pressed);
-		this.module = module;
-	}
 
 	public boolean isToggled() {
 		if(bind.getKeyCode() == -1) return true;
@@ -30,10 +25,6 @@ public class KeyWrapper {
 		
 		if(this.bind.isPressed()) {
 			active = !active;
-			if(module != null) { 
-				if(active) module.onEnabled();
-				else module.onDisabled();
-			}
 		}
 		return active;
 	}

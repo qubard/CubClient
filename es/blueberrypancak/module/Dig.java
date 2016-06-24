@@ -25,7 +25,9 @@ public class Dig extends Module {
 
 	@Subscribe
 	public void onBlockBreak(EventBlockBreak e) {
-		digCount++;
+		if(isEnabled()) { 
+			digCount++;
+		}
 	}
 
 	@Subscribe
@@ -44,8 +46,7 @@ public class Dig extends Module {
 			if (mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK && System.currentTimeMillis() >= delay) {
 				BlockPos blockpos = mc.objectMouseOver.getBlockPos();
 
-				if (mc.theWorld.getBlockState(blockpos).getMaterial() != Material.AIR
-						&& mc.playerController.onPlayerDamageBlock(blockpos, mc.objectMouseOver.sideHit)) {
+				if (mc.theWorld.getBlockState(blockpos).getMaterial() != Material.AIR && mc.playerController.onPlayerDamageBlock(blockpos, mc.objectMouseOver.sideHit)) {
 					delay = System.currentTimeMillis() + 50;
 					mc.effectRenderer.addBlockHitEffects(blockpos, mc.objectMouseOver.sideHit);
 					mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
