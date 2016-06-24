@@ -20,5 +20,4 @@ public class EventBlockSwing implements Event  {
 	public EnumFacing getFace() {
 		return this.face;
 	}
-	
 }

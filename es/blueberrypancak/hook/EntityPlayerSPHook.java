@@ -1,5 +1,6 @@
 package es.blueberrypancak.hook;
 
+import es.blueberrypancak.event.EventCooldown;
 import es.blueberrypancak.event.EventInWater;
 import es.blueberrypancak.event.EventIsSneaking;
 import es.blueberrypancak.event.EventManager;
@@ -7,6 +8,7 @@ import es.blueberrypancak.event.EventSetSprint;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.stats.StatisticsManager;
 import net.minecraft.world.World;
 
@@ -39,5 +41,15 @@ public class EntityPlayerSPHook extends EntityPlayerSP {
 		EventIsSneaking e = new EventIsSneaking(super.isSneaking());
 		EventManager.fire(e);
 		return e.getValue();
+	}
+	
+	public float getCooldownPeriod() {
+		EventCooldown e = new EventCooldown(super.getCooldownPeriod());
+		EventManager.fire(e);
+        return e.getValue();
+    }
+	
+	public float getCooledAttackStrength(float adjustTicks) {
+		return super.getCooledAttackStrength(adjustTicks);
 	}
 }

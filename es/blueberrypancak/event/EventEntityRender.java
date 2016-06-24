@@ -1,14 +1,8 @@
 package es.blueberrypancak.event;
 
-public class EventEntityRender implements Event {
+public class EventEntityRender extends EventValue<Float> {
 
-	private float partialTicks;
-	
-	public EventEntityRender(float partialTicks) {
-		this.partialTicks = partialTicks;
-	}
-	
-	public float getTicks() {
-		return partialTicks;
+	public EventEntityRender(Float value) {
+		super(value);
 	}
 }

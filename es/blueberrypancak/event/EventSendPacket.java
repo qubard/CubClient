@@ -2,20 +2,14 @@ package es.blueberrypancak.event;
 
 import net.minecraft.network.Packet;
 
-public class EventSendPacket implements Event{
-	
-	private Packet packet;
+public class EventSendPacket extends EventValue<Packet> {
 	
 	private boolean cancelled;
 	
-	public EventSendPacket(Packet packet) {
-		this.packet = packet;
+	public EventSendPacket(Packet value) {
+		super(value);
 	}
-	
-	public void setValue(Packet packet) {
-		this.packet = packet;
-	}
-	
+
 	public boolean isCancelled() {
 		return cancelled;
 	}
@@ -23,9 +17,4 @@ public class EventSendPacket implements Event{
 	public void setCancelled(boolean cancelled) {
 		this.cancelled = cancelled;
 	}
-	
-	public Packet getValue() {
-		return this.packet;
-	}
-	
 }

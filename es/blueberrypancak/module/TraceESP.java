@@ -26,9 +26,9 @@ public class TraceESP extends Module {
 		Minecraft mc = Client.getMinecraft();
 		for (Object o : mc.theWorld.loadedEntityList) {
 			if (o instanceof EntityItem) {
-				trace(mc, (EntityItem) o, e.getTicks(), "#FFD105");
+				trace(mc, (EntityItem) o, e.getValue(), "#FFD105");
 			} else if (o instanceof EntityEnderPearl) {
-				trace(mc, (EntityEnderPearl) o, e.getTicks(), "#00FF90");
+				trace(mc, (EntityEnderPearl) o, e.getValue(), "#00FF90");
 			}
 		}
 	}
