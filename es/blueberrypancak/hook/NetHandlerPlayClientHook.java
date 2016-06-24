@@ -22,6 +22,6 @@ public class NetHandlerPlayClientHook extends NetHandlerPlayClient {
 		if(!e.isCancelled()) {
 			super.sendPacket(e.getValue());
 		}
-    }
+	}    
 
 }

@@ -13,7 +13,7 @@ public class KeyWrapper {
 	
 	public KeyWrapper(int keyCode, boolean pressed) {
 		this.pressed = pressed;
-		this.bind = new KeyBinding("key.xd"+keyCode, keyCode, "key.categories.misc");
+		this.bind = new KeyBinding("key."+keyCode, keyCode, "key.categories.misc");
 	}
 	
 	public KeyWrapper(int keyCode, boolean pressed, Module module) {

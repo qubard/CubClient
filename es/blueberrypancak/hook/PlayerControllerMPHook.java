@@ -28,7 +28,7 @@ public class PlayerControllerMPHook extends PlayerControllerMP {
 	public boolean onPlayerDestroyBlock(BlockPos pos) {
 		EventManager.fire(new EventBlockBreak(pos));
 		return super.onPlayerDestroyBlock(pos);
-    }
+	}
 	
 	public boolean clickBlock(BlockPos loc, EnumFacing face) {
 		EventManager.fire(new EventBlockSwing(loc,face));
@@ -36,8 +36,8 @@ public class PlayerControllerMPHook extends PlayerControllerMP {
 	}
 	
 	public EntityPlayerSP createClientPlayer(World worldIn, StatisticsManager statWriter) {
-        return new EntityPlayerSPHook(Client.getMinecraft(), worldIn, this.connection, statWriter);
-    }
+		return new EntityPlayerSPHook(Client.getMinecraft(), worldIn, this.connection, statWriter);
+	}
 	
 	public boolean onPlayerDamageBlock(BlockPos posBlock, EnumFacing directionFacing) {
 		EventManager.fire(new EventPlayerDamageBlock(posBlock, directionFacing));

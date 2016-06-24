@@ -21,7 +21,7 @@ public class GuiIngameHook extends GuiIngame {
 	
 	protected void renderVignette(float lightLevel, ScaledResolution scaledRes) {
 		GlStateManager.depthMask(true);
-        GlStateManager.enableDepth();
+		GlStateManager.enableDepth();
 		return;
 	}
 	

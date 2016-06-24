@@ -15,45 +15,43 @@ import net.minecraft.util.math.RayTraceResult;
 public class Dig extends Module {
 
 	private int digCount, n;
-	
+
 	private long delay = 0;
-	
+
 	public Dig() {
 		digCount = 0;
 		n = 0;
 	}
-	
+
 	@Subscribe
 	public void onBlockBreak(EventBlockBreak e) {
 		digCount++;
 	}
-	
+
 	@Subscribe
 	public void onRender(EventRender e) {
 		Minecraft mc = Client.getMinecraft();
-		if(isEnabled() && mc.thePlayer != null)
-        {
-			if(digCount != 0) {
+		if (isEnabled() && mc.thePlayer != null) {
+			if (digCount != 0) {
 				double frequency = .2;
-		        int red   = (int) (Math.sin(frequency*n/5) * 127 + 128);
-		        int green = (int) (Math.sin(frequency*n/5 + 2*Math.PI/3) * 127 + 128);
-		        int blue  = (int) (Math.sin(frequency*n/5 + 4*Math.PI/3) * 127 + 128);
-		        int col = (red<<16) | (green<<8) | blue;
-		        n = (n+1)%160;
-		        mc.fontRendererObj.drawStringWithShadow("+"+digCount, 30, Client.res().getScaledHeight()-10, col);
+				int red = (int) (Math.sin(frequency * n / 5) * 127 + 128);
+				int green = (int) (Math.sin(frequency * n / 5 + 2 * Math.PI / 3) * 127 + 128);
+				int blue = (int) (Math.sin(frequency * n / 5 + 4 * Math.PI / 3) * 127 + 128);
+				int col = (red << 16) | (green << 8) | blue;
+				n = (n + 1) % 160;
+				mc.fontRendererObj.drawStringWithShadow("+" + digCount, 30, Client.res().getScaledHeight() - 10, col);
 			}
-	        if (mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK && System.currentTimeMillis() >= delay)
-            {
-                BlockPos blockpos = mc.objectMouseOver.getBlockPos();
+			if (mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK && System.currentTimeMillis() >= delay) {
+				BlockPos blockpos = mc.objectMouseOver.getBlockPos();
 
-                if (mc.theWorld.getBlockState(blockpos).getMaterial() != Material.AIR && mc.playerController.onPlayerDamageBlock(blockpos, mc.objectMouseOver.sideHit))
-                {
-                	delay = System.currentTimeMillis() + 50;
-                    mc.effectRenderer.addBlockHitEffects(blockpos, mc.objectMouseOver.sideHit);
-                    mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
-                }
-            }
-        }
+				if (mc.theWorld.getBlockState(blockpos).getMaterial() != Material.AIR
+						&& mc.playerController.onPlayerDamageBlock(blockpos, mc.objectMouseOver.sideHit)) {
+					delay = System.currentTimeMillis() + 50;
+					mc.effectRenderer.addBlockHitEffects(blockpos, mc.objectMouseOver.sideHit);
+					mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
+				}
+			}
+		}
 	}
 
 	@Override

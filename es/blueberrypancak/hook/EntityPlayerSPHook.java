@@ -33,11 +33,11 @@ public class EntityPlayerSPHook extends EntityPlayerSP {
 		EventSetSprint e = new EventSetSprint(sprinting);
 		EventManager.fire(e);
 		super.setSprinting(e.getValue());
-    }
+	}
 	
 	public boolean isSneaking() {
-        EventIsSneaking e = new EventIsSneaking(super.isSneaking());
-        EventManager.fire(e);
-        return e.getValue();
-    }
+		EventIsSneaking e = new EventIsSneaking(super.isSneaking());
+		EventManager.fire(e);
+		return e.getValue();
+	}
 }

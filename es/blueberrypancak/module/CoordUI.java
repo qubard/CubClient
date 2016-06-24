@@ -34,6 +34,6 @@ public class CoordUI extends Module {
 
 	@Override
 	public String getName() {
-		return "Coords";
+		return null;
 	}
 }

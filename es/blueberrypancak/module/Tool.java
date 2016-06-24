@@ -23,7 +23,7 @@ public class Tool extends Module {
 		IBlockState block = Client.getMinecraft().theWorld.getBlockState(e.getBlockPos());
 		swap(getSlot(block));
 	}
-	
+
 	@Subscribe
 	public void onResetBlockRemoving(EventResetBlockRemoving e) {
 		swap(Client.getMinecraft().thePlayer.inventory.currentItem);
@@ -33,45 +33,45 @@ public class Tool extends Module {
 	public void onStrVsBlock(EventOnStr e) {
 		float var2 = 1.0F;
 		ItemStack tool = getTool(e.getBlock());
-		if(tool != null) {
+		if (tool != null) {
 			var2 *= tool.getStrVsBlock(e.getBlock());
 			e.setValue(var2);
 		}
 	}
-	
+
 	private void swap(int slot) {
-		if(slot == -1) return;
+		if (slot == -1) return;
 		EntityPlayerSPHook player = (EntityPlayerSPHook) Client.getMinecraft().thePlayer;
 		player.getConnection().sendPacket(new CPacketHeldItemChange(slot));
 	}
-	
-    private ItemStack getTool(IBlockState block) {
-    	ItemStack i = Client.getMinecraft().thePlayer.inventory.getStackInSlot(this.getSlot(block));
-        return i.getItem() instanceof ItemTool ? i : null;
-    }
-    
+
+	private ItemStack getTool(IBlockState block) {
+		ItemStack i = Client.getMinecraft().thePlayer.inventory.getStackInSlot(this.getSlot(block));
+		return i.getItem() instanceof ItemTool ? i : null;
+	}
+
 	private int getSlot(IBlockState block) {
-        int slot = 0;
-        float f = 0.1F;
-        EntityPlayer p = Client.getMinecraft().thePlayer;
-        for (int i = 0; i < 9; i++) {
-        	ItemStack o = p.inventory.mainInventory[i];
-        	if(o != null && o.getStrVsBlock(block) > f) {
-        		slot = i;
-        		f = o.getStrVsBlock(block);
-        	}
-        }
-        return p.inventory.getStackInSlot(slot).getItem() instanceof ItemTool ? slot : -1;
-    }
-	
+		int slot = 0;
+		float f = 0.1F;
+		EntityPlayer p = Client.getMinecraft().thePlayer;
+		for (int i = 0; i < 9; i++) {
+			ItemStack o = p.inventory.mainInventory[i];
+			if (o != null && o.getStrVsBlock(block) > f) {
+				slot = i;
+				f = o.getStrVsBlock(block);
+			}
+		}
+		return p.inventory.getStackInSlot(slot).getItem() instanceof ItemTool ? slot : -1;
+	}
+
 	@Override
 	public void onEnabled() {
-		
+
 	}
 
 	@Override
 	public void onDisabled() {
-		
+
 	}
 
 	@Override
