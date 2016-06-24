@@ -2,7 +2,7 @@
 
 A private repo for the codebase of my updated 1.10+ Minecraft client using **event handlers**.
 
-![image](http://upload.blueberrypancak.es/screenshot__.png)
+![image](http://upload.blueberrypancak.es/tUhzitQ.png)
 
 # Why?
 
