@@ -22,15 +22,14 @@ index ad84c84..14e49ea 100644
  
          if (this.gameSettings.showDebugInfo && this.gameSettings.showDebugProfilerChart && !this.gameSettings.hideGUI)
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/gui/GuiChat.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/gui/GuiChat.java
-index 394b393..47c3a90 100644
+index 394b393..0c6215a 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/gui/GuiChat.java
 +++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/gui/GuiChat.java
-@@ -233,7 +233,8 @@ public class GuiChat extends GuiScreen implements ITabCompleter
+@@ -233,7 +233,7 @@ public class GuiChat extends GuiScreen implements ITabCompleter
       */
      public void drawScreen(int mouseX, int mouseY, float partialTicks)
      {
 -        drawRect(2, this.height - 14, this.width - 2, this.height - 2, Integer.MIN_VALUE);
-+    	// es.blueberrypancak.es
 +        //drawRect(2, this.height - 14, this.width - 2, this.height - 2, Integer.MIN_VALUE);
          this.inputField.drawTextBox();
          ITextComponent itextcomponent = this.mc.ingameGUI.getChatGUI().getChatComponent(Mouse.getX(), Mouse.getY());
@@ -87,7 +86,7 @@ index e6d5650..9842e7e 100644
  
      /**
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/network/NetHandlerPlayClient.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/network/NetHandlerPlayClient.java
-index c484866..247ed12 100644
+index c484866..943f3ab 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/network/NetHandlerPlayClient.java
 +++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/network/NetHandlerPlayClient.java
 @@ -252,7 +252,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
@@ -95,7 +94,7 @@ index c484866..247ed12 100644
       * or GuiScreenReamlsTOS (when connecting to MCO server)
       */
 -    private final GuiScreen guiScreenServer;
-+    public final GuiScreen guiScreenServer; // es.blueberrypancak.es
++    public final GuiScreen guiScreenServer;
  
      /**
       * Reference to the Minecraft instance, which many handler methods operate on
@@ -173,14 +172,11 @@ index 2619f50..4c2fb89 100644
  
              if (this.mc.thePlayer.isBurning())
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/RenderItem.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/RenderItem.java
-index 0ed8384..57a69f9 100644
+index 0ed8384..391b2e6 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/RenderItem.java
 +++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/RenderItem.java
-@@ -437,25 +437,26 @@ public class RenderItem implements IResourceManagerReloadListener
-                 GlStateManager.enableDepth();
-             }
+@@ -439,23 +439,20 @@ public class RenderItem implements IResourceManagerReloadListener
  
-+            // es.blueberrypancak
              if (stack.isItemDamaged())
              {
 -                int j = (int)Math.round(13.0D - (double)stack.getItemDamage() * 13.0D / (double)stack.getMaxDamage());
@@ -191,23 +187,22 @@ index 0ed8384..57a69f9 100644
 -                GlStateManager.disableTexture2D();
                  GlStateManager.disableAlpha();
                  GlStateManager.disableBlend();
-                 Tessellator tessellator = Tessellator.getInstance();
-                 VertexBuffer vertexbuffer = tessellator.getBuffer();
+-                Tessellator tessellator = Tessellator.getInstance();
+-                VertexBuffer vertexbuffer = tessellator.getBuffer();
 -                this.draw(vertexbuffer, xPosition + 2, yPosition + 13, 13, 2, 0, 0, 0, 255);
 -                this.draw(vertexbuffer, xPosition + 2, yPosition + 13, 12, 1, (255 - i) / 4, 64, 0, 255);
 -                this.draw(vertexbuffer, xPosition + 2, yPosition + 13, j, 1, 255 - i, i, 0, 255);
 -                GlStateManager.enableBlend();
 -                GlStateManager.enableAlpha();
 -                GlStateManager.enableTexture2D();
-+                //es.blueberrypancak
 +                String s = ""+100*(stack.getMaxDamage()-stack.getItemDamage())/stack.getMaxDamage();
 +                if(stack.getItemDamage() != stack.getMaxDamage()) {
 +                	 fr.drawStringWithShadow(""+100*(stack.getMaxDamage()-stack.getItemDamage())/stack.getMaxDamage(), (float)(xPosition + 19 - 2 - fr.getStringWidth(s)), (float)(yPosition + 6 + 3), ((255-i)<<16)|(i<<8));
 +                }
                  GlStateManager.enableLighting();
                  GlStateManager.enableDepth();
-+                GlStateManager.enableBlend();
 +                GlStateManager.enableAlpha();
++                GlStateManager.enableBlend();
              }
  
              EntityPlayerSP entityplayersp = Minecraft.getMinecraft().thePlayer;
@@ -261,16 +256,35 @@ index d150b26..28d2fd9 100644
  
      public void doRenderEntity(Entity entityIn, double x, double y, double z, float yaw, float partialTicks, boolean p_188391_10_)
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/entity/player/EntityPlayer.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/entity/player/EntityPlayer.java
-index 6063f7b..8a1b4dd 100644
+index 6063f7b..59c6f46 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/entity/player/EntityPlayer.java
 +++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/entity/player/EntityPlayer.java
-@@ -103,7 +103,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -3,6 +3,7 @@ package net.minecraft.entity.player;
+ import com.google.common.base.Charsets;
+ import com.google.common.collect.Lists;
+ import com.mojang.authlib.GameProfile;
++
+ import java.util.Arrays;
+ import java.util.Collection;
+ import java.util.List;
+@@ -103,7 +104,7 @@ public abstract class EntityPlayer extends EntityLivingBase
      protected static final DataParameter<Byte> MAIN_HAND = EntityDataManager.<Byte>createKey(EntityPlayer.class, DataSerializers.BYTE);
  
      /** Inventory of the player */
 -    public InventoryPlayer inventory = new InventoryPlayer(this);
 +    public InventoryPlayer inventory = new es.blueberrypancak.hook.InventoryPlayerHook(this);
      private InventoryEnderChest theInventoryEnderChest = new InventoryEnderChest();
+ 
+     /**
+@@ -2582,7 +2583,9 @@ public abstract class EntityPlayer extends EntityLivingBase
+ 
+     public float getCooldownPeriod()
+     {
+-        return (float)(1.0D / this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).getAttributeValue() * 20.0D);
++    	es.blueberrypancak.event.EventCooldown e = new es.blueberrypancak.event.EventCooldown((float)(1.0D / this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).getAttributeValue() * 20.0D));
++    	es.blueberrypancak.event.EventManager.fire(e); // only way it seems to hook this it seems? (probably not)
++        return e.getValue();
+     }
  
      /**
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/network/play/client/CPacketEntityAction.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/network/play/client/CPacketEntityAction.java
