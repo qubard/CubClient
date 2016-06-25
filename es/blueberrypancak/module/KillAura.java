@@ -59,8 +59,7 @@ public class KillAura extends Module {
 				if (data.size() >= 5) {
 					double damage = Double.parseDouble(data.get(4).split(" ")[1]);
 					if (damage > d) {
-						d = damage; // originally this was weighted with speed
-									// but kill aura has a delay
+						d = damage;
 						slot = i;
 					}
 				}
@@ -79,15 +78,13 @@ public class KillAura extends Module {
 			EntityLivingBase var10 = (EntityLivingBase) par1Entity;
 			var6 = var10.posY + (double) var10.getEyeHeight() - (player.posY + (double) player.getEyeHeight());
 		} else {
-			var6 = (par1Entity.getEntityBoundingBox().minY + par1Entity.getEntityBoundingBox().maxY) / 2.0D
-					- (player.posY + (double) player.getEyeHeight());
+			var6 = (par1Entity.getEntityBoundingBox().minY + par1Entity.getEntityBoundingBox().maxY) / 2.0D - (player.posY + (double) player.getEyeHeight());
 		}
 
 		double var14 = (double) MathHelper.sqrt_double(var4 * var4 + var8 * var8);
 		float var12 = (float) (Math.atan2(var8, var4) * 180.0D / Math.PI) - 90.0F;
 		float var13 = (float) (-(Math.atan2(var6, var14) * 180.0D / Math.PI));
-		player.getConnection().sendPacket(new CPacketPlayer.PositionRotation(player.posX, player.posY, player.posZ,
-				var12, var13, player.onGround));
+		player.getConnection().sendPacket(new CPacketPlayer.PositionRotation(player.posX, player.posY, player.posZ, var12, var13, player.onGround));
 	}
 
 	private Entity getClosestEntity() {

@@ -10,7 +10,6 @@ import es.blueberrypancak.hook.EntityPlayerSPHook;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTool;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 
 @RegisterModule
@@ -51,13 +50,12 @@ public class Tool extends Module {
 	}
 
 	private ItemStack getTool(IBlockState block) {
-		ItemStack i = Client.getMinecraft().thePlayer.inventory.getStackInSlot(this.getSlot(block));
-		return i.getItem() instanceof ItemTool ? i : null;
+		return Client.getMinecraft().thePlayer.inventory.getStackInSlot(getSlot(block));
 	}
 
 	private int getSlot(IBlockState block) {
-		int slot = 0;
-		float f = 0.1F;
+		int slot = -1;
+		float f = 1.0F;
 		EntityPlayer p = Client.getMinecraft().thePlayer;
 		for (int i = 0; i < 9; i++) {
 			ItemStack o = p.inventory.mainInventory[i];
@@ -66,7 +64,7 @@ public class Tool extends Module {
 				f = o.getStrVsBlock(block);
 			}
 		}
-		return p.inventory.getStackInSlot(slot).getItem() instanceof ItemTool ? slot : -1;
+		return slot;
 	}
 
 	@Override
