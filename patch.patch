@@ -125,7 +125,7 @@ index c484866..943f3ab 100644
          this.gameController.gameSettings.difficulty = packetIn.getDifficulty();
          this.gameController.loadWorld(this.clientWorldController);
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/EntityRenderer.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/EntityRenderer.java
-index 25e1fb8..ce16799 100644
+index 25e1fb8..39d05bf 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/EntityRenderer.java
 +++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/EntityRenderer.java
 @@ -525,7 +525,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
@@ -137,7 +137,18 @@ index 25e1fb8..ce16799 100644
      {
          if (this.debugView)
          {
-@@ -2049,15 +2049,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1459,7 +1459,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
+         GlStateManager.enableCull();
+         GlStateManager.disableBlend();
+         GlStateManager.disableFog();
+-
++        
++        es.blueberrypancak.event.EventManager.fire(new es.blueberrypancak.event.EventEntityRender(partialTicks));
++        
+         if (entity.posY + (double)entity.getEyeHeight() >= 128.0D)
+         {
+             this.mc.mcProfiler.endStartSection("aboveClouds");
+@@ -2049,15 +2051,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
          GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
          GlStateManager.rotate(-p_189692_6_, 0.0F, 1.0F, 0.0F);
          GlStateManager.rotate((float)(p_189692_8_ ? -1 : 1) * p_189692_7_, 1.0F, 0.0F, 0.0F);
@@ -155,7 +166,7 @@ index 25e1fb8..ce16799 100644
          GlStateManager.enableBlend();
          GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
          int i = p_189692_0_.getStringWidth(p_189692_1_) / 2;
-@@ -2071,17 +2065,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -2071,17 +2067,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
          vertexbuffer.pos((double)(i + 1), (double)(-1 + p_189692_5_), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
          tessellator.draw();
          GlStateManager.enableTexture2D();
@@ -272,6 +283,19 @@ index d150b26..28d2fd9 100644
      }
  
      public void doRenderEntity(Entity entityIn, double x, double y, double z, float yaw, float partialTicks, boolean p_188391_10_)
+diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/entity/RenderPlayer.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/entity/RenderPlayer.java
+index f19179d..562aaa2 100644
+--- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/entity/RenderPlayer.java
++++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/entity/RenderPlayer.java
+@@ -180,8 +180,6 @@ public class RenderPlayer extends RenderLivingBase<AbstractClientPlayer>
+                 y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.025F);
+             }
+         }
+-
+-        super.renderEntityName(entityIn, x, y, z, name, p_188296_9_);
+     }
+ 
+     public void renderRightArm(AbstractClientPlayer clientPlayer)
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/entity/player/EntityPlayer.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/entity/player/EntityPlayer.java
 index 6063f7b..59c6f46 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/entity/player/EntityPlayer.java
