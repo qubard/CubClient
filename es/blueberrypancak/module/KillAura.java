@@ -33,9 +33,9 @@ public class KillAura extends Module {
 		Minecraft mc = Client.getMinecraft();
 		List<Entity> l = mc.theWorld.getLoadedEntityList();
 		EntityPlayer p = mc.thePlayer;
-		if (isEnabled() && System.currentTimeMillis() > this.last && !p.isHandActive()) {
+		if(isEnabled() && System.currentTimeMillis() > this.last && !p.isHandActive()) {
 			Entity o = getClosestEntity();
-			if (o != null && !p.isSwingInProgress) {
+			if(o != null && !p.isSwingInProgress) {
 				hit(p, o);
 			}
 		}
@@ -43,7 +43,7 @@ public class KillAura extends Module {
 
 	@Subscribe
 	public void onCooldown(EventCooldown e) {
-		if (isEnabled()) {
+		if(isEnabled()) {
 			e.setValue(0F);
 		}
 	}
@@ -52,9 +52,9 @@ public class KillAura extends Module {
 		int slot = -1;
 		double d = -1;
 		EntityPlayer p = Client.getMinecraft().thePlayer;
-		for (int i = 0; i < 9; i++) {
+		for(int i = 0; i < 9; i++) {
 			ItemStack o = p.inventory.mainInventory[i];
-			if (o != null) {
+			if(o != null) {
 				List<String> data = o.getTooltip(p, false);
 				if (data.size() >= 5) {
 					double damage = Double.parseDouble(data.get(4).split(" ")[1]);
@@ -74,7 +74,7 @@ public class KillAura extends Module {
 		double var8 = par1Entity.posZ - player.posZ;
 		double var6;
 
-		if (par1Entity instanceof EntityLivingBase) {
+		if(par1Entity instanceof EntityLivingBase) {
 			EntityLivingBase var10 = (EntityLivingBase) par1Entity;
 			var6 = var10.posY + (double) var10.getEyeHeight() - (player.posY + (double) player.getEyeHeight());
 		} else {
@@ -92,11 +92,11 @@ public class KillAura extends Module {
 		List<Entity> l = mc.theWorld.getLoadedEntityList();
 		EntityPlayer p = mc.thePlayer;
 		Entity e = null;
-		for (Entity o : l) {
-			if (o != p && (o instanceof EntityOtherPlayerMP || o instanceof EntityLiving)) {
-				if (o.isEntityAlive()) {
-					if (e == null || o.getDistanceSqToEntity(p) <= e.getDistanceSqToEntity(p)) {
-						if (o.getDistanceSqToEntity(p) <= distanceThreshold) {
+		for(Entity o : l) {
+			if(o != p && (o instanceof EntityOtherPlayerMP || o instanceof EntityLiving)) {
+				if(o.isEntityAlive()) {
+					if(e == null || o.getDistanceSqToEntity(p) <= e.getDistanceSqToEntity(p)) {
+						if(o.getDistanceSqToEntity(p) <= distanceThreshold) {
 							e = o;
 						}
 					}

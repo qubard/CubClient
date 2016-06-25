@@ -20,17 +20,17 @@ public class TraceESP extends Module {
 	@Subscribe
 	public void onEntityRender(EventEntityRender e) {
 		Minecraft mc = Client.getMinecraft();
-		for (Object o : mc.theWorld.loadedEntityList) {
-			if (o instanceof EntityItem) {
+		for(Object o : mc.theWorld.loadedEntityList) {
+			if(o instanceof EntityItem) {
 				trace(mc, (EntityItem) o, e.getValue(), "#FFD105");
-			} else if (o instanceof EntityEnderPearl) {
+			} else if(o instanceof EntityEnderPearl) {
 				trace(mc, (EntityEnderPearl) o, e.getValue(), "#00FF90");
 			}
 		}
 	}
 
 	private void trace(Minecraft mc, Entity e, float par1, String color) {
-		if (mc.getRenderManager().renderViewEntity != null) {
+		if(mc.getRenderManager().renderViewEntity != null) {
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
 			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glLineWidth(1F);

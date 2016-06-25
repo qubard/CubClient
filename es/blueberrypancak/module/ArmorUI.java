@@ -24,10 +24,10 @@ public class ArmorUI extends Module {
 		ScaledResolution res = Client.res();
 		int barWidth = 60;
 		int k = 0;
-		if (player.isCreative()) return;
-		for (int i = 0; i < equipped.length; i++) {
+		if(player.isCreative()) return;
+		for(int i = 0; i < equipped.length; i++) {
 			ItemStack o = equipped[i];
-			if (o != null) {
+			if(o != null) {
 				float dura = (float) (o.getMaxDamage() - o.getItemDamage()) / o.getMaxDamage();
 				int j = (int) Math.round(dura * barWidth);
 				int z = (int) Math.round(255.0D - (double) o.getItemDamage() * 255.0D / (double) o.getMaxDamage());

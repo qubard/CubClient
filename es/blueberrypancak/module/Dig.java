@@ -32,8 +32,8 @@ public class Dig extends Module {
 	@Subscribe
 	public void onRender(EventRender e) {
 		Minecraft mc = Client.getMinecraft();
-		if (isEnabled() && mc.thePlayer != null) {
-			if (digCount != 0) {
+		if(isEnabled() && mc.thePlayer != null) {
+			if(digCount != 0) {
 				double frequency = .2;
 				int red = (int) (Math.sin(frequency * n / 5) * 127 + 128);
 				int green = (int) (Math.sin(frequency * n / 5 + 2 * Math.PI / 3) * 127 + 128);
@@ -42,10 +42,10 @@ public class Dig extends Module {
 				n = (n + 1) % 160;
 				mc.fontRendererObj.drawStringWithShadow("+" + digCount, 30, Client.res().getScaledHeight() - 10, col);
 			}
-			if (mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK && System.currentTimeMillis() >= delay) {
+			if(mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK && System.currentTimeMillis() >= delay) {
 				BlockPos blockpos = mc.objectMouseOver.getBlockPos();
 
-				if (mc.theWorld.getBlockState(blockpos).getMaterial() != Material.AIR && mc.playerController.onPlayerDamageBlock(blockpos, mc.objectMouseOver.sideHit)) {
+				if(mc.theWorld.getBlockState(blockpos).getMaterial() != Material.AIR && mc.playerController.onPlayerDamageBlock(blockpos, mc.objectMouseOver.sideHit)) {
 					delay = System.currentTimeMillis() + 50;
 					mc.effectRenderer.addBlockHitEffects(blockpos, mc.objectMouseOver.sideHit);
 					mc.thePlayer.swingArm(EnumHand.MAIN_HAND);

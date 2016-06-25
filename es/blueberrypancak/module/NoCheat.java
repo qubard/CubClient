@@ -23,7 +23,7 @@ public class NoCheat extends Module {
 	@Subscribe
 	public void onReceivePacket(EventRecPacket e) {
 		Packet packet = e.getValue();
-		if(isEnabled() & packet instanceof SPacketEntityVelocity) {
+		if(isEnabled() && packet instanceof SPacketEntityVelocity) {
 			e.setCancelled(true);
 		}
 	}

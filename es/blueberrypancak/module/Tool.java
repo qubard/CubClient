@@ -37,14 +37,14 @@ public class Tool extends Module {
 	public void onStrVsBlock(EventOnStr e) {
 		float var2 = 1.0F;
 		ItemStack tool = getTool(e.getBlock());
-		if (tool != null) {
+		if(tool != null) {
 			var2 *= tool.getStrVsBlock(e.getBlock());
 			e.setValue(var2);
 		}
 	}
 
 	private void swap(int slot) {
-		if (slot == -1) return;
+		if(slot == -1) return;
 		EntityPlayerSPHook player = (EntityPlayerSPHook) Client.getMinecraft().thePlayer;
 		player.getConnection().sendPacket(new CPacketHeldItemChange(slot));
 	}
@@ -57,9 +57,9 @@ public class Tool extends Module {
 		int slot = -1;
 		float f = 1.0F;
 		EntityPlayer p = Client.getMinecraft().thePlayer;
-		for (int i = 0; i < 9; i++) {
+		for(int i = 0; i < 9; i++) {
 			ItemStack o = p.inventory.mainInventory[i];
-			if (o != null && o.getStrVsBlock(block) > f) {
+			if(o != null && o.getStrVsBlock(block) > f) {
 				slot = i;
 				f = o.getStrVsBlock(block);
 			}

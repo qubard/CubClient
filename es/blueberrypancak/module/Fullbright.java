@@ -11,11 +11,7 @@ public class Fullbright extends Module {
 	
 	@Subscribe
 	public void onRender(EventRender e) {
-		if(isEnabled()) {
-			setBrightness(141);
-		} else {
-			setBrightness(lastBrightness);
-		}
+		setBrightness(isEnabled() ? 141 : lastBrightness);
 	}
 	
 	private void setBrightness(float f) {
