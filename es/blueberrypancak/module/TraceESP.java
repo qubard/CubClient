@@ -9,11 +9,17 @@ import es.blueberrypancak.event.EventEntityRender;
 import es.blueberrypancak.event.Subscribe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityEnderPearl;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.Vec3d;
 
 @RegisterModule
@@ -28,8 +34,12 @@ public class TraceESP extends Module {
 			} else if (o instanceof EntityEnderPearl) {
 				trace(mc, (EntityEnderPearl) o, e.getValue(), "#00FF90");
 			} else if (o instanceof EntityOtherPlayerMP) {
-				box(mc, (EntityOtherPlayerMP) o, e.getValue(), 1.0);
-				trace(mc, (EntityOtherPlayerMP)o, e.getValue(), 1.0);
+				EntityOtherPlayerMP g = (EntityOtherPlayerMP)o;
+				EntityPlayer p = mc.thePlayer;
+				box(mc, g, e.getValue(), 1.0);
+				trace(mc, g, e.getValue(), 1.0);
+				RenderManager r = mc.getRenderManager();
+				renderLivingLabel(Client.getMinecraft().fontRendererObj, "text", -((float)r.renderPosX-(float)g.posX), -((float)r.renderPosY-(float)g.posY), -((float)r.renderPosZ-(float)g.posZ), 0, r.playerViewX, r.playerViewX, r.options.thirdPersonView == 2, false);
 			}
 		}
 	}
@@ -121,6 +131,38 @@ public class TraceESP extends Module {
 			GL11.glPopMatrix();
 		}
 	}
+	
+	private void renderLivingLabel(FontRenderer p_189692_0_, String p_189692_1_, float p_189692_2_, float p_189692_3_, float p_189692_4_, int p_189692_5_, float p_189692_6_, float p_189692_7_, boolean p_189692_8_, boolean p_189692_9_)
+    {
+		GlStateManager.pushMatrix();
+        GlStateManager.translate(p_189692_2_, p_189692_3_, p_189692_4_);
+        GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(-p_189692_6_, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate((float)(p_189692_8_ ? -1 : 1) * p_189692_7_, 1.0F, 0.0F, 0.0F);
+        GlStateManager.scale(-0.025F*2, -0.025F*2, 0.025F*2);
+        GlStateManager.disableLighting();
+        GlStateManager.disableDepth();
+        GlStateManager.enableBlend();
+        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        int i = p_189692_0_.getStringWidth(p_189692_1_) / 2;
+        GlStateManager.disableTexture2D();
+        Tessellator tessellator = Tessellator.getInstance();
+        VertexBuffer vertexbuffer = tessellator.getBuffer();
+        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+        vertexbuffer.pos((double)(-i - 1), (double)(-1 + p_189692_5_), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        vertexbuffer.pos((double)(-i - 1), (double)(8 + p_189692_5_), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        vertexbuffer.pos((double)(i + 1), (double)(8 + p_189692_5_), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        vertexbuffer.pos((double)(i + 1), (double)(-1 + p_189692_5_), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        tessellator.draw();
+        GlStateManager.enableTexture2D();
+        p_189692_0_.drawString(p_189692_1_, -p_189692_0_.getStringWidth(p_189692_1_) / 2, p_189692_5_, p_189692_9_ ? 553648127 : -1);
+        GlStateManager.enableLighting();
+        GlStateManager.depthMask(true);
+        GlStateManager.disableBlend();
+        GlStateManager.enableDepth();
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.popMatrix();
+    }
 
 	private void trace(Minecraft mc, EntityOtherPlayerMP e, float par1, double opacity) {
 		/*if (CubAimbot.get().isFriend(par1Entity.getName())) {

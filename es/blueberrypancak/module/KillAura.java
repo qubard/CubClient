@@ -106,7 +106,7 @@ public class KillAura extends Module {
 	}
 
 	private void hit(EntityPlayer p, Entity e) {
-		p.inventory.currentItem = getWeaponSlot();
+		if(p.inventory.currentItem != getWeaponSlot()) p.inventory.currentItem = getWeaponSlot();
 		PlayerControllerMP controller = Client.getMinecraft().playerController;
 		faceEntity(e);
 		controller.attackEntity(p, e);

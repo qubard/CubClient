@@ -13,4 +13,8 @@ public class EntityRendererHook extends EntityRenderer {
 	public float getFOVModifier(float partialTicks, boolean useFOVSetting) {
 		return 90.0F;
 	}
+	
+	protected void hurtCameraEffect(float partialTicks) {
+		
+	}
 }
