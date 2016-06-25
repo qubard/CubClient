@@ -23,9 +23,9 @@ import net.minecraft.util.math.MathHelper;
 public class KillAura extends Module {
 
 	private static double distanceThreshold = 36.0D;
-	
+
 	private long last;
-	
+
 	private int delay = 700;
 
 	@Subscribe
@@ -43,23 +43,24 @@ public class KillAura extends Module {
 
 	@Subscribe
 	public void onCooldown(EventCooldown e) {
-		if(isEnabled()) {
+		if (isEnabled()) {
 			e.setValue(0F);
-		}	
+		}
 	}
-	
+
 	private int getWeaponSlot() {
 		int slot = -1;
 		double d = -1;
 		EntityPlayer p = Client.getMinecraft().thePlayer;
 		for (int i = 0; i < 9; i++) {
 			ItemStack o = p.inventory.mainInventory[i];
-			if(o != null) { 
+			if (o != null) {
 				List<String> data = o.getTooltip(p, false);
-				if(data.size() >= 5) {
+				if (data.size() >= 5) {
 					double damage = Double.parseDouble(data.get(4).split(" ")[1]);
-					if(damage > d) { 
-						d = damage; // originally this was weighted with speed but kill aura has a delay
+					if (damage > d) {
+						d = damage; // originally this was weighted with speed
+									// but kill aura has a delay
 						slot = i;
 					}
 				}
@@ -67,27 +68,26 @@ public class KillAura extends Module {
 		}
 		return slot == -1 ? p.inventory.currentItem : slot;
 	}
-	
+
 	private void faceEntity(Entity par1Entity) {
 		EntityPlayerSPHook player = (EntityPlayerSPHook) Client.getMinecraft().thePlayer;
 		double var4 = par1Entity.posX - player.posX;
-        double var8 = par1Entity.posZ - player.posZ;
-        double var6;
+		double var8 = par1Entity.posZ - player.posZ;
+		double var6;
 
-        if (par1Entity instanceof EntityLivingBase)
-        {
-            EntityLivingBase var10 = (EntityLivingBase)par1Entity;
-            var6 = var10.posY + (double)var10.getEyeHeight() - (player.posY + (double)player.getEyeHeight());
-        }
-        else
-        {
-            var6 = (par1Entity.getEntityBoundingBox().minY + par1Entity.getEntityBoundingBox().maxY) / 2.0D - (player.posY + (double)player.getEyeHeight());
-        }
+		if (par1Entity instanceof EntityLivingBase) {
+			EntityLivingBase var10 = (EntityLivingBase) par1Entity;
+			var6 = var10.posY + (double) var10.getEyeHeight() - (player.posY + (double) player.getEyeHeight());
+		} else {
+			var6 = (par1Entity.getEntityBoundingBox().minY + par1Entity.getEntityBoundingBox().maxY) / 2.0D
+					- (player.posY + (double) player.getEyeHeight());
+		}
 
-        double var14 = (double)MathHelper.sqrt_double(var4 * var4 + var8 * var8);
-        float var12 = (float)(Math.atan2(var8, var4) * 180.0D / Math.PI) - 90.0F;
-        float var13 = (float)(-(Math.atan2(var6, var14) * 180.0D / Math.PI));
-        player.getConnection().sendPacket(new CPacketPlayer.PositionRotation(player.posX, player.posY, player.posZ, var12, var13, player.onGround));
+		double var14 = (double) MathHelper.sqrt_double(var4 * var4 + var8 * var8);
+		float var12 = (float) (Math.atan2(var8, var4) * 180.0D / Math.PI) - 90.0F;
+		float var13 = (float) (-(Math.atan2(var6, var14) * 180.0D / Math.PI));
+		player.getConnection().sendPacket(new CPacketPlayer.PositionRotation(player.posX, player.posY, player.posZ,
+				var12, var13, player.onGround));
 	}
 
 	private Entity getClosestEntity() {
