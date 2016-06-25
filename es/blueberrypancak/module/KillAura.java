@@ -3,7 +3,6 @@ package es.blueberrypancak.module;
 import java.util.List;
 
 import es.blueberrypancak.Client;
-import es.blueberrypancak.event.EventCooldown;
 import es.blueberrypancak.event.EventRender;
 import es.blueberrypancak.event.Subscribe;
 import es.blueberrypancak.hook.EntityPlayerSPHook;
@@ -24,42 +23,42 @@ public class KillAura extends Module {
 
 	private static double distanceThreshold = 36.0D;
 
-	private long last;
-
-	private int delay = 700;
-
 	@Subscribe
 	public void onRender(EventRender e) {
 		Minecraft mc = Client.getMinecraft();
 		List<Entity> l = mc.theWorld.getLoadedEntityList();
 		EntityPlayer p = mc.thePlayer;
-		if(isEnabled() && System.currentTimeMillis() > this.last && !p.isHandActive()) {
-			Entity o = getClosestEntity();
-			if(o != null && !p.isSwingInProgress) {
-				hit(p, o);
-			}
-		}
-	}
-
-	@Subscribe
-	public void onCooldown(EventCooldown e) {
 		if(isEnabled()) {
-			e.setValue(0F);
+			if(p.getCooledAttackStrength(1.0F) == 1.0 && !p.isHandActive()) {
+				Entity o = getClosestEntity();
+				if(o != null && !p.isSwingInProgress) {
+					hit(p, o);
+				}
+			}
 		}
 	}
 
 	private int getWeaponSlot() {
 		int slot = -1;
-		double d = -1;
+		double w = -1;
 		EntityPlayer p = Client.getMinecraft().thePlayer;
 		for(int i = 0; i < 9; i++) {
 			ItemStack o = p.inventory.mainInventory[i];
 			if(o != null) {
 				List<String> data = o.getTooltip(p, false);
-				if (data.size() >= 5) {
-					double damage = Double.parseDouble(data.get(4).split(" ")[1]);
-					if (damage > d) {
-						d = damage;
+				double damage = -1;
+				double speed = -1;
+				for(String s : data) {
+					if(s.contains("Damage")) {
+						damage = Double.parseDouble(s.split(" ")[1]);
+					} else if(s.contains("Speed")) {
+						speed = Double.parseDouble(s.split(" ")[1]);
+					}
+				}
+				if (damage != -1 && speed != -1) {
+					double weight = damage*speed;
+					if (weight > w) {
+						w = weight;
 						slot = i;
 					}
 				}
@@ -107,12 +106,11 @@ public class KillAura extends Module {
 	}
 
 	private void hit(EntityPlayer p, Entity e) {
+		p.inventory.currentItem = getWeaponSlot();
 		PlayerControllerMP controller = Client.getMinecraft().playerController;
 		faceEntity(e);
-		Client.getMinecraft().thePlayer.inventory.currentItem = getWeaponSlot();
 		controller.attackEntity(p, e);
 		p.swingArm(EnumHand.MAIN_HAND);
-		this.last = System.currentTimeMillis() + this.delay;
 	}
 
 	@Override
@@ -122,11 +120,11 @@ public class KillAura extends Module {
 
 	@Override
 	public void onDisabled() {
-
+		
 	}
 
 	@Override
 	public String getName() {
-		return String.format("%.1f", new Object[] { Double.valueOf(distanceThreshold) }) + "m \u00a76" + delay + "ms";
+		return String.format("%.1f", new Object[] { Double.valueOf(distanceThreshold) }) + "m";
 	}
 }

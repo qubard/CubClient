@@ -13,6 +13,5 @@ public class RenderGlobalHook extends RenderGlobal {
 	
 	public void renderEntities(Entity renderViewEntity, ICamera camera, float partialTicks) {
 		super.renderEntities(renderViewEntity, camera, partialTicks);
-		es.blueberrypancak.event.EventManager.fire(new es.blueberrypancak.event.EventEntityRender(partialTicks));
 	}
 }

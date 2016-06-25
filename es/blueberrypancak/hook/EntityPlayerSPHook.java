@@ -45,10 +45,6 @@ public class EntityPlayerSPHook extends EntityPlayerSP {
 		return e.getValue();
 	}
 	
-	public float getCooledAttackStrength(float adjustTicks) {
-		return super.getCooledAttackStrength(adjustTicks);
-	}
-	
 	public boolean canHarvestBlock(IBlockState state) {
 		EventCanHarvestBlock e = new EventCanHarvestBlock(super.canHarvestBlock(state));
 		EventManager.fire(e);
