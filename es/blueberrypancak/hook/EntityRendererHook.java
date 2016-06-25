@@ -1,7 +1,6 @@
 package es.blueberrypancak.hook;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.resources.IResourceManager;
 

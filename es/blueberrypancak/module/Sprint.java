@@ -5,7 +5,6 @@ import es.blueberrypancak.event.EventRender;
 import es.blueberrypancak.event.EventSetSprint;
 import es.blueberrypancak.event.Subscribe;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.math.Vec3d;
 
 @RegisterModule(key=33,color=0x00FF21,secondary_color=0x969696,listed=true)
 public class Sprint extends Module {

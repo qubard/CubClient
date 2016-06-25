@@ -2,13 +2,11 @@ package es.blueberrypancak.module;
 
 import es.blueberrypancak.Client;
 import es.blueberrypancak.event.EventBlockSwing;
+import es.blueberrypancak.event.EventCanHarvestBlock;
 import es.blueberrypancak.event.EventOnStr;
-import es.blueberrypancak.event.EventRender;
 import es.blueberrypancak.event.EventResetBlockRemoving;
 import es.blueberrypancak.event.Subscribe;
 import es.blueberrypancak.hook.EntityPlayerSPHook;
-import es.blueberrypancak.hook.PlayerControllerMPHook;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -27,6 +25,13 @@ public class Tool extends Module {
 	@Subscribe
 	public void onResetBlockRemoving(EventResetBlockRemoving e) {
 		swap(Client.getMinecraft().thePlayer.inventory.currentItem);
+	}
+	
+	@Subscribe
+	public void onCanHarvestBlock(EventCanHarvestBlock e) {
+		if(isEnabled()) {
+			e.setValue(true);
+		}
 	}
 
 	@Subscribe

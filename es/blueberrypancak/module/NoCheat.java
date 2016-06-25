@@ -1,11 +1,13 @@
 package es.blueberrypancak.module;
 
 import es.blueberrypancak.Client;
+import es.blueberrypancak.event.EventRecPacket;
 import es.blueberrypancak.event.EventRender;
 import es.blueberrypancak.event.EventSendPacket;
 import es.blueberrypancak.event.Subscribe;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.minecraft.network.play.server.SPacketEntityVelocity;
 
 @RegisterModule(key=41,color=11514879,listed=true)
 public class NoCheat extends Module {
@@ -19,10 +21,16 @@ public class NoCheat extends Module {
 	}
 	
 	@Subscribe
-	public void onRender(EventRender e) {
-		if(isEnabled()) {
-			
+	public void onReceivePacket(EventRecPacket e) {
+		Packet packet = e.getValue();
+		if(isEnabled() & packet instanceof SPacketEntityVelocity) {
+			e.setCancelled(true);
 		}
+	}
+	
+	@Subscribe
+	public void onRender(EventRender e) {
+		isEnabled(); // no need to hook key events
 	}
 
 	@Override

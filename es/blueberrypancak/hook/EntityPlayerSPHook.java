@@ -1,14 +1,16 @@
 package es.blueberrypancak.hook;
 
-import es.blueberrypancak.event.EventCooldown;
+import es.blueberrypancak.event.EventCanHarvestBlock;
+import es.blueberrypancak.event.EventGetHeldItem;
 import es.blueberrypancak.event.EventInWater;
 import es.blueberrypancak.event.EventIsSneaking;
 import es.blueberrypancak.event.EventManager;
 import es.blueberrypancak.event.EventSetSprint;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatisticsManager;
 import net.minecraft.world.World;
 
@@ -45,5 +47,17 @@ public class EntityPlayerSPHook extends EntityPlayerSP {
 	
 	public float getCooledAttackStrength(float adjustTicks) {
 		return super.getCooledAttackStrength(adjustTicks);
+	}
+	
+	public boolean canHarvestBlock(IBlockState state) {
+		EventCanHarvestBlock e = new EventCanHarvestBlock(super.canHarvestBlock(state));
+		EventManager.fire(e);
+		return e.getValue();
+	}
+	
+	public ItemStack getHeldItemMainhand() {
+		EventGetHeldItem e = new EventGetHeldItem(super.getHeldItemMainhand());
+		EventManager.fire(e);
+		return e.getValue();
 	}
 }

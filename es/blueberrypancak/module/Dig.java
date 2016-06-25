@@ -2,7 +2,6 @@ package es.blueberrypancak.module;
 
 import es.blueberrypancak.Client;
 import es.blueberrypancak.event.EventBlockBreak;
-import es.blueberrypancak.event.EventManager;
 import es.blueberrypancak.event.EventRender;
 import es.blueberrypancak.event.Subscribe;
 import net.minecraft.block.material.Material;

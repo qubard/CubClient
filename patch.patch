@@ -22,15 +22,14 @@ index ad84c84..14e49ea 100644
  
          if (this.gameSettings.showDebugInfo && this.gameSettings.showDebugProfilerChart && !this.gameSettings.hideGUI)
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/gui/GuiChat.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/gui/GuiChat.java
-index 394b393..0c6215a 100644
+index 394b393..9b1d339 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/gui/GuiChat.java
 +++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/gui/GuiChat.java
-@@ -233,7 +233,7 @@ public class GuiChat extends GuiScreen implements ITabCompleter
+@@ -233,7 +233,6 @@ public class GuiChat extends GuiScreen implements ITabCompleter
       */
      public void drawScreen(int mouseX, int mouseY, float partialTicks)
      {
 -        drawRect(2, this.height - 14, this.width - 2, this.height - 2, Integer.MIN_VALUE);
-+        //drawRect(2, this.height - 14, this.width - 2, this.height - 2, Integer.MIN_VALUE);
          this.inputField.drawTextBox();
          ITextComponent itextcomponent = this.mc.ingameGUI.getChatGUI().getChatComponent(Mouse.getX(), Mouse.getY());
  
@@ -57,14 +56,11 @@ index a623c57..d0780bc 100644
          lightLevel = 1.0F - lightLevel;
          lightLevel = MathHelper.clamp_float(lightLevel, 0.0F, 1.0F);
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/gui/GuiNewChat.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/gui/GuiNewChat.java
-index 742557f..f543a76 100644
+index 742557f..fdd3bac 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/gui/GuiNewChat.java
 +++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/gui/GuiNewChat.java
-@@ -85,10 +85,9 @@ public class GuiNewChat extends Gui
-                             {
-                                 int i2 = 0;
-                                 int j2 = -i1 * 9;
--                                drawRect(-2, j2 - 9, 0 + k + 4, j2, l1 / 2 << 24);
+@@ -88,7 +88,7 @@ public class GuiNewChat extends Gui
+                                 drawRect(-2, j2 - 9, 0 + k + 4, j2, l1 / 2 << 24);
                                  String s = chatline.getChatComponent().getFormattedText();
                                  GlStateManager.enableBlend();
 -                                this.mc.fontRendererObj.drawStringWithShadow(s, 0.0F, (float)(j2 - 8), 16777215 + (l1 << 24));
@@ -72,6 +68,27 @@ index 742557f..f543a76 100644
                                  GlStateManager.disableAlpha();
                                  GlStateManager.disableBlend();
                              }
+diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/multiplayer/PlayerControllerMP.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/multiplayer/PlayerControllerMP.java
+index 2e6f0c8..27fd1d9 100644
+--- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/multiplayer/PlayerControllerMP.java
++++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/multiplayer/PlayerControllerMP.java
+@@ -257,7 +257,7 @@ public class PlayerControllerMP
+                 {
+                     iblockstate.getBlock().onBlockClicked(this.mc.theWorld, loc, this.mc.thePlayer);
+                 }
+-
++                
+                 if (flag && iblockstate.getPlayerRelativeBlockHardness(this.mc.thePlayer, this.mc.thePlayer.worldObj, loc) >= 1.0F)
+                 {
+                     this.onPlayerDestroyBlock(loc);
+@@ -321,7 +321,6 @@ public class PlayerControllerMP
+             else
+             {
+                 this.curBlockDamageMP += iblockstate.getPlayerRelativeBlockHardness(this.mc.thePlayer, this.mc.thePlayer.worldObj, posBlock);
+-
+                 if (this.stepSoundTickCounter % 4.0F == 0.0F)
+                 {
+                     SoundType soundtype = block.getSoundType();
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/network/NetHandlerLoginClient.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/network/NetHandlerLoginClient.java
 index e6d5650..9842e7e 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/network/NetHandlerLoginClient.java
@@ -287,6 +304,21 @@ index 6063f7b..59c6f46 100644
      }
  
      /**
+diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/network/NetworkManager.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/network/NetworkManager.java
+index 20fd7bb..7e182ce 100644
+--- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/network/NetworkManager.java
++++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/network/NetworkManager.java
+@@ -150,7 +150,9 @@ public class NetworkManager extends SimpleChannelInboundHandler < Packet<? >>
+         {
+             try
+             {
+-                ((Packet<INetHandler>)p_channelRead0_2_).processPacket(this.packetListener);
++            	es.blueberrypancak.event.EventRecPacket e = new es.blueberrypancak.event.EventRecPacket(p_channelRead0_2_);
++            	es.blueberrypancak.event.EventManager.fire(e);	
++                if(!e.isCancelled()) ((Packet<INetHandler>)e.getValue()).processPacket(this.packetListener);
+             }
+             catch (ThreadQuickExitException var4)
+             {
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/network/play/client/CPacketEntityAction.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/network/play/client/CPacketEntityAction.java
 index 8173f18..6c507b2 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/network/play/client/CPacketEntityAction.java

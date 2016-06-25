@@ -8,7 +8,6 @@ import es.blueberrypancak.event.EventPlayerDamageBlock;
 import es.blueberrypancak.event.EventResetBlockRemoving;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.GuiScreenWorking;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.stats.StatisticsManager;

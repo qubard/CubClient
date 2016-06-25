@@ -1,7 +1,5 @@
 package es.blueberrypancak.module;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import es.blueberrypancak.Client;
 import es.blueberrypancak.event.EventRender;
 import es.blueberrypancak.event.Subscribe;

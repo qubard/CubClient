@@ -12,13 +12,13 @@ public class ModuleUI extends Module {
 
 	@Subscribe
 	public void onRender(EventRender e) {
-		if(!Client.getMinecraft().inGameHasFocus) return;
-		int i = 0;
 		Minecraft mc = Client.getMinecraft();
+		if(!mc.inGameHasFocus) return;
+		int i = 0;
 		ScaledResolution res = Client.res();
 		FontRenderer f = mc.fontRendererObj;
 		for(Module m : Module.getActiveModules()) { 
-			Client.getMinecraft().fontRendererObj.drawStringWithShadow(m.getName(), res.getScaledWidth() - f.getStringWidth(m.getName()) - 4, i * 8 + 4, m.getActiveColor());
+			mc.fontRendererObj.drawStringWithShadow(m.getName(), res.getScaledWidth() - f.getStringWidth(m.getName()) - 4, i * 8 + 4, m.getActiveColor());
 			i++;
 		}
 	}

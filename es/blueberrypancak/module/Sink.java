@@ -1,8 +1,6 @@
 package es.blueberrypancak.module;
 
-import es.blueberrypancak.Client;
 import es.blueberrypancak.event.EventInWater;
-import es.blueberrypancak.event.EventRender;
 import es.blueberrypancak.event.Subscribe;
 
 @RegisterModule(key=44,color=8372735,listed=true,pressed=true)

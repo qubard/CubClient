@@ -1,10 +1,5 @@
 package es.blueberrypancak;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
-
-import es.blueberrypancak.event.EventManager;
-import es.blueberrypancak.hook.EntityPlayerSPHook;
 import es.blueberrypancak.hook.EntityRendererHook;
 import es.blueberrypancak.hook.GuiIngameHook;
 import es.blueberrypancak.hook.RenderGlobalHook;

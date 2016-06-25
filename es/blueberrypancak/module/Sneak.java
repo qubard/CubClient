@@ -2,7 +2,6 @@ package es.blueberrypancak.module;
 
 import es.blueberrypancak.Client;
 import es.blueberrypancak.event.EventIsSneaking;
-import es.blueberrypancak.event.EventRender;
 import es.blueberrypancak.event.EventSendPacket;
 import es.blueberrypancak.event.Subscribe;
 import es.blueberrypancak.hook.EntityPlayerSPHook;
