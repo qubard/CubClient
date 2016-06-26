@@ -46,7 +46,7 @@ public class EntityPlayerSPHook extends EntityPlayerSP {
 	}
 	
 	public boolean canHarvestBlock(IBlockState state) {
-		EventCanHarvestBlock e = new EventCanHarvestBlock(super.canHarvestBlock(state));
+		EventCanHarvestBlock e = new EventCanHarvestBlock(super.canHarvestBlock(state), state);
 		EventManager.fire(e);
 		return e.getValue();
 	}

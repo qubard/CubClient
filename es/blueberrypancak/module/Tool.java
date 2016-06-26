@@ -15,6 +15,8 @@ import net.minecraft.network.play.client.CPacketHeldItemChange;
 @RegisterModule
 public class Tool extends Module {
 
+	private int lastSlot = -1;
+	
 	@Subscribe
 	public void onPlayerSwing(EventBlockSwing e) {
 		IBlockState block = Client.getMinecraft().theWorld.getBlockState(e.getBlockPos());
@@ -23,12 +25,14 @@ public class Tool extends Module {
 
 	@Subscribe
 	public void onResetBlockRemoving(EventResetBlockRemoving e) {
-		swap(Client.getMinecraft().thePlayer.inventory.currentItem);
+		if(lastSlot != Client.getMinecraft().thePlayer.inventory.currentItem) { 
+			swap(Client.getMinecraft().thePlayer.inventory.currentItem);
+		}
 	}
 	
 	@Subscribe
 	public void onCanHarvestBlock(EventCanHarvestBlock e) {
-		if(isEnabled()) {
+		if(getTool(e.getBlock()) != null) {
 			e.setValue(true);
 		}
 	}
@@ -45,6 +49,7 @@ public class Tool extends Module {
 
 	private void swap(int slot) {
 		if(slot == -1) return;
+		lastSlot = slot;
 		EntityPlayerSPHook player = (EntityPlayerSPHook) Client.getMinecraft().thePlayer;
 		player.getConnection().sendPacket(new CPacketHeldItemChange(slot));
 	}

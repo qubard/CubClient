@@ -15,6 +15,6 @@ public class EntityRendererHook extends EntityRenderer {
 	}
 	
 	protected void hurtCameraEffect(float partialTicks) {
-		
+		return;
 	}
 }
