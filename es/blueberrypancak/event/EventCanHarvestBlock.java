@@ -2,7 +2,7 @@ package es.blueberrypancak.event;
 
 import net.minecraft.block.state.IBlockState;
 
-public class EventCanHarvestBlock extends EventValue<Boolean >{
+public class EventCanHarvestBlock extends EventValue<Boolean> {
 
 	private IBlockState state;
 	

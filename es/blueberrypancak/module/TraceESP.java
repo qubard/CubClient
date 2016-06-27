@@ -21,6 +21,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderPearl;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 
@@ -138,7 +139,8 @@ public class TraceESP extends Module {
 	}
 
 	private void renderLivingLabel(EntityOtherPlayerMP e, FontRenderer p_189692_0_, String p_189692_1_, float p_189692_2_, float p_189692_3_, float p_189692_4_, float p_189692_6_, float p_189692_7_, boolean p_189692_8_, boolean p_189692_9_) {
-		RenderManager r = Client.getMinecraft().getRenderManager();
+		Minecraft mc = Client.getMinecraft();
+		RenderManager r = mc.getRenderManager();
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(p_189692_2_, p_189692_3_, p_189692_4_);
 		GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
@@ -147,7 +149,7 @@ public class TraceESP extends Module {
 		// GlStateManager.rotate((float)(p_189692_8_ ? -1 : 1) * p_189692_7_,
 		// 1.0F, 0.0F, 0.0F);
 		float var13 = var10 / 3F;
-		float var14 = 0.02366667F * var13;
+		float var14 = 0.01966667F * var13;
 		GL11.glRotatef(-r.playerViewY, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(Minecraft.getMinecraft().gameSettings.thirdPersonView == 2 ? -r.playerViewX : r.playerViewX, 1.0F, 0.0F, 0.0F);
 		GL11.glScalef(-var14, -var14, var14);
@@ -172,22 +174,68 @@ public class TraceESP extends Module {
 		int p = 0;
 		for(ItemStack o : e.getEquipmentAndArmor()) {
 			if(o != null)  {
-				p++;
+				if(!(o.getItem() instanceof ItemBlock)) {
+					p++;
+				}
 			}
 		}
-		p_189692_0_.drawStringWithShadow(p_189692_1_, -p_189692_0_.getStringWidth(p_189692_1_) / 2, 0, p_189692_9_ ? 553648127 : -1);
+		p_189692_0_.drawStringWithShadow(p_189692_1_, -p_189692_0_.getStringWidth(p_189692_1_) / 2, 0, e.isInvisible() ? 0xFFBF35 : e.isSneaking() ? 0xFF0000 : 0xFFFFFF);
+		GlStateManager.pushMatrix();
 		GlStateManager.translate(-p*7+((p<=3) ? -2 : 0)+(((p==1))?-3:0), -8, 0);
 		GlStateManager.scale(12.0F, -12.0F, 12.0F);
 		ItemRenderer x = Client.getMinecraft().getItemRenderer();
-		int z = 0;
 		for(ItemStack o : e.getEquipmentAndArmor()) {
 			if(o != null) {
-				GlStateManager.translate(1.0, 0, 0);
-				GlStateManager.disableLighting();
-				x.renderItemSide(e, o, TransformType.GUI, false);
-				z++;
+				if(!(o.getItem() instanceof ItemBlock)) {
+					GlStateManager.translate(1.0, 0, 0);
+					GlStateManager.disableLighting();
+					x.renderItemSide(e, o, TransformType.NONE, false);
+				}
 			}
 		}
+		GlStateManager.popMatrix();
+		int l = 0;
+		GlStateManager.pushMatrix();
+		double scale = 1.0;
+		GlStateManager.scale(scale, scale, scale);
+		int m = 0;
+		GlStateManager.disableLighting();
+		GlStateManager.disableDepth();
+		GlStateManager.disableAlpha();
+		GlStateManager.disableBlend();
+		for(ItemStack o : e.getEquipmentAndArmor()) {
+			if(o != null) {
+				if(!(o.getItem() instanceof ItemBlock)) {
+					int w = 0;
+					if(o.isItemStackDamageable()) { 
+						w = p_189692_0_.getStringWidth(""+100*(o.getMaxDamage()-o.getItemDamage())/o.getMaxDamage())+1;
+						int j = (int)Math.round(13.0D - (double)o.getItemDamage() * 13.0D / (double)o.getMaxDamage());
+						int k = (int)Math.round(255.0D - (double)o.getItemDamage() * 255.0D / (double)o.getMaxDamage());
+						String s = ""+100*(o.getMaxDamage()-o.getItemDamage())/o.getMaxDamage();
+						if(o.getItemDamage() != o.getMaxDamage()) {
+							if(o.getItemDamage() == 0) {
+								m += w/1.5-1;
+								continue;
+							}
+							if(p <= 2) {
+								p_189692_0_.drawStringWithShadow(""+100*(o.getMaxDamage()-o.getItemDamage())/o.getMaxDamage(), (int)(m-5), -8, ((255-k)<<16)|(k<<8));
+							} else if(p == 3) {
+								p_189692_0_.drawStringWithShadow(""+100*(o.getMaxDamage()-o.getItemDamage())/o.getMaxDamage(), (int)(m-15), -8, ((255-k)<<16)|(k<<8));
+							} else if(p == 4) {
+								p_189692_0_.drawStringWithShadow(""+100*(o.getMaxDamage()-o.getItemDamage())/o.getMaxDamage(), (int)(m-20), -8, ((255-k)<<16)|(k<<8));
+							} else if(p == 5) {
+								p_189692_0_.drawStringWithShadow(""+100*(o.getMaxDamage()-o.getItemDamage())/o.getMaxDamage(), (int)(m-25), -8, ((255-k)<<16)|(k<<8));
+							}
+							m += w;
+						}
+						l++;
+					} else {
+						m += 12;
+					}
+				}
+			}
+		}
+		GlStateManager.popMatrix();
 		GlStateManager.enableLighting();
 		GlStateManager.depthMask(true);
 		GlStateManager.disableBlend();
@@ -207,8 +255,7 @@ public class TraceESP extends Module {
 		Color c = Color.decode("#" + (hp / 2 > 7 ? "55FF55" : hp / 2 >= 4 ? "FFFF55" : "FF5555"));
 		GL11.glPushMatrix();
 		GL11.glDepthMask(false);
-		GL11.glColor4d((double) c.getRed() / 255.0, (double) c.getGreen() / 255.0, (double) c.getBlue() / 255.0,
-				opacity);
+		GL11.glColor4d((double) c.getRed() / 255.0, (double) c.getGreen() / 255.0, (double) c.getBlue() / 255.0, opacity);
 		double var3 = e.lastTickPosX + (e.posX - e.lastTickPosX) * (double) par1;
 		double var5 = e.lastTickPosY + (e.posY - e.lastTickPosY) * (double) par1;
 		double var7 = e.lastTickPosZ + (e.posZ - e.lastTickPosZ) * (double) par1;

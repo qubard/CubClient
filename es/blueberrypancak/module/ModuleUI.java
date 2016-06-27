@@ -6,6 +6,7 @@ import es.blueberrypancak.event.Subscribe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 
 @RegisterModule
 public class ModuleUI extends Module {
@@ -21,6 +22,8 @@ public class ModuleUI extends Module {
 			mc.fontRendererObj.drawStringWithShadow(m.getName(), res.getScaledWidth() - f.getStringWidth(m.getName()) - 4, i * 8 + 4, m.getActiveColor());
 			i++;
 		}
+		GlStateManager.disableLighting();
+		//mc.getRenderItem().renderItemAndEffectIntoGUI(mc.thePlayer.getHeldItemMainhand(), 1, 1);
 	}
 	
 	@Override
