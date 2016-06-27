@@ -51,9 +51,6 @@ public class TraceESP extends Module {
 	}
 
 	private void box(Minecraft mc, EntityOtherPlayerMP e, float par1, double opacity) {
-		/*
-		 * if(CubAimbot.get().isFriend(par1Entity.getName())) { opacity = 0.4; }
-		 */
 		RenderManager r = mc.getRenderManager();
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glLineWidth(1.0F);
@@ -145,9 +142,6 @@ public class TraceESP extends Module {
 		GlStateManager.translate(p_189692_2_, p_189692_3_, p_189692_4_);
 		GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
 		float var10 = e.getDistanceToEntity(r.renderViewEntity);
-		// GlStateManager.rotate(-p_189692_6_, 0.0F, 1.0F, 0.0F);
-		// GlStateManager.rotate((float)(p_189692_8_ ? -1 : 1) * p_189692_7_,
-		// 1.0F, 0.0F, 0.0F);
 		float var13 = var10 / 3F;
 		float var14 = 0.01966667F * var13;
 		GL11.glRotatef(-r.playerViewY, 0.0F, 1.0F, 0.0F);
@@ -219,12 +213,8 @@ public class TraceESP extends Module {
 							}
 							if(p <= 2) {
 								p_189692_0_.drawStringWithShadow(""+100*(o.getMaxDamage()-o.getItemDamage())/o.getMaxDamage(), (int)(m-5), -8, ((255-k)<<16)|(k<<8));
-							} else if(p == 3) {
-								p_189692_0_.drawStringWithShadow(""+100*(o.getMaxDamage()-o.getItemDamage())/o.getMaxDamage(), (int)(m-15), -8, ((255-k)<<16)|(k<<8));
-							} else if(p == 4) {
-								p_189692_0_.drawStringWithShadow(""+100*(o.getMaxDamage()-o.getItemDamage())/o.getMaxDamage(), (int)(m-20), -8, ((255-k)<<16)|(k<<8));
-							} else if(p == 5) {
-								p_189692_0_.drawStringWithShadow(""+100*(o.getMaxDamage()-o.getItemDamage())/o.getMaxDamage(), (int)(m-25), -8, ((255-k)<<16)|(k<<8));
+							} else {
+								p_189692_0_.drawStringWithShadow(""+100*(o.getMaxDamage()-o.getItemDamage())/o.getMaxDamage(), (int)(m-p*5), -8, ((255-k)<<16)|(k<<8));
 							}
 							m += w;
 						}
@@ -244,10 +234,6 @@ public class TraceESP extends Module {
 	}
 
 	private void trace(Minecraft mc, EntityOtherPlayerMP e, float par1, double opacity) {
-		/*
-		 * if (CubAimbot.get().isFriend(par1Entity.getName())) { opacity = 0.4;
-		 * }
-		 */
 		RenderManager r = mc.getRenderManager();
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glLineWidth(1F);

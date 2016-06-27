@@ -27,8 +27,7 @@ public class Wallhack extends Module {
 		if (isEnabled()) {
 			for(Location l : blocks) {
 				Block block = mc.theWorld.getBlockState(new BlockPos((double)l.getX(), (double)l.getY(), (double)l.getZ())).getBlock();
-				if(mc.getRenderViewEntity().getDistance(l.getX(), l.getY(), l.getZ()) >= Client.getMinecraft().gameSettings.renderDistanceChunks*16 || Block.getIdFromBlock(block) != l.getId())
-				{
+				if(mc.getRenderViewEntity().getDistance(l.getX(), l.getY(), l.getZ()) >= Client.getMinecraft().gameSettings.renderDistanceChunks*16 || Block.getIdFromBlock(block) != l.getId()) {
 					blocks.remove(l);
 					continue;
 				}
@@ -49,7 +48,6 @@ public class Wallhack extends Module {
 		GL11.glColor4d((double) c.getRed() / 255.0, (double) c.getGreen() / 255.0, (double) c.getBlue() / 255.0, 1);
 		
 		AxisAlignedBB ax = Block.getBlockById(l.getId()).getSelectedBoundingBox(Block.getStateById(l.getId()), Client.getMinecraft().theWorld, new BlockPos((double)l.getX(), (double)l.getY(), (double)l.getZ()));
-		System.out.println(ax.maxX-ax.minX);
 		double varX = l.getX() + 0.5;
 		double varY = l.getY();
 		double varZ = l.getZ() + 0.5;

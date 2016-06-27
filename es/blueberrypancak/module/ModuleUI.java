@@ -23,7 +23,6 @@ public class ModuleUI extends Module {
 			i++;
 		}
 		GlStateManager.disableLighting();
-		//mc.getRenderItem().renderItemAndEffectIntoGUI(mc.thePlayer.getHeldItemMainhand(), 1, 1);
 	}
 	
 	@Override
