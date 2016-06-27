@@ -15,6 +15,10 @@ public class Location {
 		this.color = Color.decode(color);
 		this.id = id;
 	}
+	
+	public void setColor(String color) {
+		this.color = Color.decode(color);
+	}
 
 	public int getX() {
 		return this.x;

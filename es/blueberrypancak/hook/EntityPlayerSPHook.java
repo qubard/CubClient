@@ -1,10 +1,13 @@
 package es.blueberrypancak.hook;
 
 import es.blueberrypancak.event.EventCanHarvestBlock;
+import es.blueberrypancak.event.EventChat;
 import es.blueberrypancak.event.EventGetHeldItem;
 import es.blueberrypancak.event.EventInWater;
 import es.blueberrypancak.event.EventIsSneaking;
+import es.blueberrypancak.event.EventIsSpectator;
 import es.blueberrypancak.event.EventManager;
+import es.blueberrypancak.event.EventOnLiving;
 import es.blueberrypancak.event.EventSetSprint;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -55,5 +58,24 @@ public class EntityPlayerSPHook extends EntityPlayerSP {
 		EventGetHeldItem e = new EventGetHeldItem(super.getHeldItemMainhand());
 		EventManager.fire(e);
 		return e.getValue();
+	}
+	
+	public boolean isSpectator() {
+		EventIsSpectator e = new EventIsSpectator(super.isSpectator());
+		EventManager.fire(e);
+		return e.getValue();
+	}
+	
+	public void sendChatMessage(String message) {
+		EventChat e = new EventChat(message);
+		EventManager.fire(e);
+		if(!e.isCancelled()) {
+			super.sendChatMessage(message);
+		}
+	}
+	
+	public void onLivingUpdate() {
+		super.onLivingUpdate();
+		EventManager.fire(new EventOnLiving());
 	}
 }

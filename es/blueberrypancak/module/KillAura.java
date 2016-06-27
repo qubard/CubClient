@@ -3,6 +3,7 @@ package es.blueberrypancak.module;
 import java.util.List;
 
 import es.blueberrypancak.Client;
+import es.blueberrypancak.event.EventChat;
 import es.blueberrypancak.event.EventRender;
 import es.blueberrypancak.event.Subscribe;
 import es.blueberrypancak.hook.EntityPlayerSPHook;
@@ -17,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
 @RegisterModule(key=34,color=16775680,listed=true)
 public class KillAura extends Module {
@@ -35,6 +37,15 @@ public class KillAura extends Module {
 					hit(p, o);
 				}
 			}
+		}
+	}
+	
+	@Subscribe
+	public void onChat(EventChat e) {
+		String message = e.getValue();
+		if(message.startsWith("-d")) {
+			this.distanceThreshold = Double.parseDouble(message.split(" ")[1]);
+			e.setCancelled(true);
 		}
 	}
 
@@ -66,6 +77,11 @@ public class KillAura extends Module {
 		}
 		return slot == -1 ? p.inventory.currentItem : slot;
 	}
+	
+	public boolean canEntityBeSeen(Entity entityIn) {
+		EntityPlayer p = Client.getMinecraft().thePlayer;
+		return Client.getMinecraft().theWorld.rayTraceBlocks(new Vec3d(p.posX, p.posY + (double)p.getEyeHeight(), p.posZ), new Vec3d(entityIn.posX, entityIn.posY + (double)entityIn.getEyeHeight(), entityIn.posZ), false, true, false) == null;
+	}
 
 	private void faceEntity(Entity par1Entity) {
 		EntityPlayerSPHook player = (EntityPlayerSPHook) Client.getMinecraft().thePlayer;
@@ -93,7 +109,7 @@ public class KillAura extends Module {
 		Entity e = null;
 		for(Entity o : l) {
 			if(o != p && (o instanceof EntityOtherPlayerMP || o instanceof EntityLiving)) {
-				if(o.isEntityAlive()) {
+				if(o.isEntityAlive() && canEntityBeSeen(o)) {
 					if(e == null || o.getDistanceSqToEntity(p) <= e.getDistanceSqToEntity(p)) {
 						if(o.getDistanceSqToEntity(p) <= distanceThreshold) {
 							e = o;

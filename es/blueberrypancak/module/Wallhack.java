@@ -20,6 +20,8 @@ import net.minecraft.util.math.BlockPos;
 public class Wallhack extends Module {
 
 	private ArrayList<Location> blocks = new ArrayList<Location>();
+	
+	private String tempList[] = {"54:00FF00", "49:4800FF"};
 
 	@Subscribe
 	public void onEntityRender(EventEntityRender e) {
@@ -131,8 +133,15 @@ public class Wallhack extends Module {
 	@Subscribe
 	public void onLoadBlock(EventLoadBlock e) {
 		Location pos = e.getValue();
-		if (pos.getId() != 54)
-			return;
+		boolean found = false;
+		for(String s : tempList) {
+			found |= Integer.parseInt(s.split(":")[0]) == pos.getId();
+			if(found) {
+				pos.setColor("#"+s.split(":")[1]);
+				break;
+			}
+		}
+		if(!found) return;
 		for (Location loc : blocks) {
 			if (loc.getX() == pos.getX() && loc.getY() == pos.getY() && loc.getZ() == pos.getZ()) {
 				return;
