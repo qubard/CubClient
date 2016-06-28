@@ -50,5 +50,4 @@ public class Reconnect extends Module {
 	public String getName() {
 		return getElapsed() + "s";
 	}
-
 }

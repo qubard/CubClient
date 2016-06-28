@@ -20,7 +20,7 @@ public class AntiAFK extends Module {
 	public void onRender(EventRender e) {
 		Minecraft mc = Client.getMinecraft();
 		if(lastPacket == 0) lastPacket = System.currentTimeMillis();
-		if(nextDelay == 0) nextDelay = (int)new Random().nextInt(3);
+		if(nextDelay == 0) nextDelay = (int)new Random().nextInt(15);
 		if(isEnabled()) {
 			if(getElapsed() > nextDelay) {
 				EntityPlayerSPHook p = (EntityPlayerSPHook) mc.thePlayer;
@@ -51,5 +51,4 @@ public class AntiAFK extends Module {
 	public String getName() {
 		return "AntiAFK \2479" + (nextDelay-getElapsed());
 	}
-
 }

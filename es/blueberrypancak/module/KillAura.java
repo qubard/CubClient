@@ -43,7 +43,7 @@ public class KillAura extends Module {
 	@Subscribe
 	public void onChat(EventChat e) {
 		String message = e.getValue();
-		if(message.startsWith("-d")) {
+		if(message.startsWith("-g")) {
 			this.distanceThreshold = Double.parseDouble(message.split(" ")[1]);
 			e.setCancelled(true);
 		}

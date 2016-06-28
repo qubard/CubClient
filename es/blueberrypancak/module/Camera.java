@@ -82,5 +82,4 @@ public class Camera extends Module {
 			return this.z;
 		}
 	}
-
 }
