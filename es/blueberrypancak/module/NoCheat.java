@@ -36,9 +36,6 @@ public class NoCheat extends Module {
 			if(p.stepHeight != 1.0F) {
 				p.stepHeight = 1.0F;
 			}
-			if(p.isCollidedHorizontally) {
-				System.out.println("collioded vertically");
-			}
 		}
 	}
 
