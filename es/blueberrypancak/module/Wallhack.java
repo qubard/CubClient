@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 
 import es.blueberrypancak.Client;
 import es.blueberrypancak.Location;
+import es.blueberrypancak.event.EventChat;
 import es.blueberrypancak.event.EventEntityRender;
 import es.blueberrypancak.event.EventLoadBlock;
 import es.blueberrypancak.event.Subscribe;
@@ -21,7 +22,7 @@ public class Wallhack extends Module {
 
 	private ArrayList<Location> blocks = new ArrayList<Location>();
 	
-	private String tempList[] = {"54:00FF00", "49:4800FF"};
+	private ArrayList<String> tempList = new ArrayList<String>();
 
 	@Subscribe
 	public void onEntityRender(EventEntityRender e) {
@@ -35,6 +36,26 @@ public class Wallhack extends Module {
 				}
 				drawBlock(l);
 			}
+		}
+	}
+	
+	@Subscribe
+	public void onChat(EventChat e) {
+		String message = e.getValue();
+		if(message.startsWith("-w")) {
+			String k = message.split(" ")[1];
+			boolean found = false;
+			for(String s: tempList) {
+				found |= s.equals(k);
+			}
+			if(!found) {
+				tempList.add(k); 
+			}
+			System.out.println(tempList);
+			e.setCancelled(true);
+		} else if(message.equals("-clear")) {
+			tempList.clear();
+			e.setCancelled(true);
 		}
 	}
 

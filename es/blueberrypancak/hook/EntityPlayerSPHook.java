@@ -4,6 +4,7 @@ import es.blueberrypancak.event.EventCanHarvestBlock;
 import es.blueberrypancak.event.EventChat;
 import es.blueberrypancak.event.EventGetHeldItem;
 import es.blueberrypancak.event.EventInWater;
+import es.blueberrypancak.event.EventIsOnLadder;
 import es.blueberrypancak.event.EventIsSneaking;
 import es.blueberrypancak.event.EventIsSpectator;
 import es.blueberrypancak.event.EventManager;
@@ -77,5 +78,11 @@ public class EntityPlayerSPHook extends EntityPlayerSP {
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
 		EventManager.fire(new EventOnLiving());
+	}
+	
+	public boolean isOnLadder() {
+		EventIsOnLadder e = new EventIsOnLadder(super.isOnLadder());
+		EventManager.fire(e);
+		return e.getValue();
 	}
 }

@@ -1,12 +1,10 @@
 package es.blueberrypancak.module;
 
 import es.blueberrypancak.Client;
-import es.blueberrypancak.event.EventOnLiving;
 import es.blueberrypancak.event.EventRecPacket;
 import es.blueberrypancak.event.EventRender;
 import es.blueberrypancak.event.EventSendPacket;
 import es.blueberrypancak.event.Subscribe;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.CPacketPlayer;
@@ -37,6 +35,9 @@ public class NoCheat extends Module {
 		if(isEnabled()) {
 			if(p.stepHeight != 1.0F) {
 				p.stepHeight = 1.0F;
+			}
+			if(p.isCollidedHorizontally) {
+				System.out.println("collioded vertically");
 			}
 		}
 	}

@@ -24,7 +24,13 @@ public class Sneak extends Module {
 	
 	@Subscribe
 	public void onIsSneaking(EventIsSneaking e) {
-		e.setValue(isEnabled());
+		if(isEnabled()) {
+			EntityPlayerSP p = Client.getMinecraft().thePlayer;
+			e.setValue(true);
+			p.movementInput.sneak = true;
+			p.motionX *= 0.2F;
+			p.motionZ *= 0.2F;
+		}
 	}
 	
 	@Override

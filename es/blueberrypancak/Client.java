@@ -1,5 +1,7 @@
 package es.blueberrypancak;
 
+import org.apache.logging.log4j.LogManager;
+
 import es.blueberrypancak.hook.EntityRendererHook;
 import es.blueberrypancak.hook.GuiIngameHook;
 import es.blueberrypancak.hook.RenderGlobalHook;
@@ -15,6 +17,7 @@ public class Client {
 		this.mc = mc;
 		registerHooks();
 		Module.registerModules("es.blueberrypancak.module");
+		LogManager.getLogger().info(Client.getMinecraft().getSession().getSessionID());
 	}
 	
 	private void registerHooks() {
