@@ -5,6 +5,7 @@ import es.blueberrypancak.event.EventDisconnect;
 import es.blueberrypancak.event.EventRender;
 import es.blueberrypancak.event.Subscribe;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiDisconnected;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.multiplayer.GuiConnecting;
 
@@ -17,11 +18,11 @@ public class Reconnect extends Module {
 	public void onRender(EventRender e) {
 		Minecraft mc = Client.getMinecraft();
 		if(lastReconnect == 0) lastReconnect = System.currentTimeMillis();
-		if(isEnabled() && !mc.inGameHasFocus) {
+		if(isEnabled() && !mc.inGameHasFocus && mc.currentScreen instanceof GuiDisconnected) {
 			mc.fontRendererObj.drawStringWithShadow(getName(), 0, 0, getActiveColor());
-			if(getElapsed() >= 10) {
-				lastReconnect = 0;
+			if(getElapsed() >= 5) {
 				mc.displayGuiScreen(new GuiConnecting(new GuiMainMenu(), mc, "2b2t.org", 25565));
+				lastReconnect = 0;
 			}
 		}
 	}
