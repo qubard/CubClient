@@ -21,6 +21,22 @@ index ad84c84..14e49ea 100644
          this.mcProfiler.endSection();
  
          if (this.gameSettings.showDebugInfo && this.gameSettings.showDebugProfilerChart && !this.gameSettings.hideGUI)
+diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/entity/EntityPlayerSP.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/entity/EntityPlayerSP.java
+index 38f8c49..064b6fa 100644
+--- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/entity/EntityPlayerSP.java
++++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/entity/EntityPlayerSP.java
+@@ -924,8 +924,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
+ 
+         if (this.isHandActive() && !this.isRiding())
+         {
+-            this.movementInput.moveStrafe *= 0.2F;
+-            this.movementInput.moveForward *= 0.2F;
++            /*this.movementInput.moveStrafe *= 0.2F;
++            this.movementInput.moveForward *= 0.2F;*/
++        	// seems to not work to override this
+             this.sprintToggleTimer = 0;
+         }
+ 
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/gui/GuiChat.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/gui/GuiChat.java
 index 394b393..9b1d339 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/gui/GuiChat.java
@@ -68,11 +84,39 @@ index 742557f..fdd3bac 100644
                                  GlStateManager.disableAlpha();
                                  GlStateManager.disableBlend();
                              }
+diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/multiplayer/GuiConnecting.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/multiplayer/GuiConnecting.java
+index b9d8f8e..7aa9584 100644
+--- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/multiplayer/GuiConnecting.java
++++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/multiplayer/GuiConnecting.java
+@@ -48,6 +48,7 @@ public class GuiConnecting extends GuiScreen
+     private void connect(final String ip, final int port)
+     {
+         LOGGER.info("Connecting to {}, {}", new Object[] {ip, Integer.valueOf(port)});
++        LOGGER.info("SESSION:"+GuiConnecting.this.mc.getSession().getSessionID());
+         (new Thread("Server Connector #" + CONNECTION_ID.incrementAndGet())
+         {
+             public void run()
+@@ -92,7 +93,6 @@ public class GuiConnecting extends GuiScreen
+                         String s1 = inetaddress + ":" + port;
+                         s = s.replaceAll(s1, "");
+                     }
+-
+                     GuiConnecting.this.mc.displayGuiScreen(new GuiDisconnected(GuiConnecting.this.previousGuiScreen, "connect.failed", new TextComponentTranslation("disconnect.genericReason", new Object[] {s})));
+                 }
+             }
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/multiplayer/PlayerControllerMP.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/multiplayer/PlayerControllerMP.java
-index 2e6f0c8..27fd1d9 100644
+index 2e6f0c8..b0ac882 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/multiplayer/PlayerControllerMP.java
 +++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/multiplayer/PlayerControllerMP.java
-@@ -257,7 +257,7 @@ public class PlayerControllerMP
+@@ -26,6 +26,7 @@ import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
+ import net.minecraft.network.play.client.CPacketCustomPayload;
+ import net.minecraft.network.play.client.CPacketEnchantItem;
+ import net.minecraft.network.play.client.CPacketHeldItemChange;
++import net.minecraft.network.play.client.CPacketPlayer;
+ import net.minecraft.network.play.client.CPacketPlayerDigging;
+ import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
+ import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
+@@ -257,7 +258,7 @@ public class PlayerControllerMP
                  {
                      iblockstate.getBlock().onBlockClicked(this.mc.theWorld, loc, this.mc.thePlayer);
                  }
@@ -81,7 +125,7 @@ index 2e6f0c8..27fd1d9 100644
                  if (flag && iblockstate.getPlayerRelativeBlockHardness(this.mc.thePlayer, this.mc.thePlayer.worldObj, loc) >= 1.0F)
                  {
                      this.onPlayerDestroyBlock(loc);
-@@ -321,7 +321,6 @@ public class PlayerControllerMP
+@@ -321,7 +322,6 @@ public class PlayerControllerMP
              else
              {
                  this.curBlockDamageMP += iblockstate.getPlayerRelativeBlockHardness(this.mc.thePlayer, this.mc.thePlayer.worldObj, posBlock);
@@ -125,7 +169,7 @@ index c484866..943f3ab 100644
          this.gameController.gameSettings.difficulty = packetIn.getDifficulty();
          this.gameController.loadWorld(this.clientWorldController);
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/EntityRenderer.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/EntityRenderer.java
-index 25e1fb8..39d05bf 100644
+index 25e1fb8..0e69cd5 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/EntityRenderer.java
 +++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/EntityRenderer.java
 @@ -525,7 +525,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
@@ -136,6 +180,15 @@ index 25e1fb8..39d05bf 100644
 +    protected float getFOVModifier(float partialTicks, boolean useFOVSetting)
      {
          if (this.debugView)
+         {
+@@ -559,7 +559,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
+         }
+     }
+ 
+-    private void hurtCameraEffect(float partialTicks)
++    protected void hurtCameraEffect(float partialTicks)
+     {
+         if (this.mc.getRenderViewEntity() instanceof EntityLivingBase)
          {
 @@ -1459,7 +1459,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
          GlStateManager.enableCull();
@@ -186,23 +239,40 @@ index 25e1fb8..39d05bf 100644
          GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
          GlStateManager.popMatrix();
      }
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/ItemRenderer.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/ItemRenderer.java
-index 2619f50..4c2fb89 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/ItemRenderer.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/ItemRenderer.java
-@@ -488,7 +488,7 @@ public class ItemRenderer
-         {
-             if (this.mc.thePlayer.isInsideOfMaterial(Material.WATER))
-             {
--                this.renderWaterOverlayTexture(partialTicks);
-+                //this.renderWaterOverlayTexture(partialTicks);
-             }
- 
-             if (this.mc.thePlayer.isBurning())
+diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/RenderGlobal.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/RenderGlobal.java
+index 7e4283f..c942907 100644
+--- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/RenderGlobal.java
++++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/RenderGlobal.java
+@@ -636,7 +636,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
+                         if (flag)
+                         {
+                             boolean flag1 = this.mc.getRenderViewEntity() instanceof EntityLivingBase ? ((EntityLivingBase)this.mc.getRenderViewEntity()).isPlayerSleeping() : false;
+-
++                            
+                             if ((entity2 != this.mc.getRenderViewEntity() || this.mc.gameSettings.thirdPersonView != 0 || flag1) && (entity2.posY < 0.0D || entity2.posY >= 256.0D || this.theWorld.isBlockLoaded(blockpos$pooledmutableblockpos.func_189535_a(entity2))))
+                             {
+                                 ++this.countEntitiesRendered;
+@@ -680,7 +680,6 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
+                     this.entityOutlineFramebuffer.bindFramebuffer(false);
+                     RenderHelper.disableStandardItemLighting();
+                     this.renderManager.setRenderOutlines(true);
+-
+                     for (int j = 0; j < ((List)list1).size(); ++j)
+                     {
+                         this.renderManager.renderEntityStatic((Entity)list1.get(j), partialTicks, false);
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/RenderItem.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/RenderItem.java
-index 0ed8384..391b2e6 100644
+index 0ed8384..c257a1b 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/RenderItem.java
 +++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/RenderItem.java
+@@ -129,7 +129,7 @@ public class RenderItem implements IResourceManagerReloadListener
+ 
+         for (EnumFacing enumfacing : EnumFacing.values())
+         {
+-            this.renderQuads(vertexbuffer, model.getQuads((IBlockState)null, enumfacing, 0L), color, stack);
++        	this.renderQuads(vertexbuffer, model.getQuads((IBlockState)null, enumfacing, 0L), color, stack);
+         }
+ 
+         this.renderQuads(vertexbuffer, model.getQuads((IBlockState)null, (EnumFacing)null, 0L), color, stack);
 @@ -439,23 +439,20 @@ public class RenderItem implements IResourceManagerReloadListener
  
              if (stack.isItemDamaged())
@@ -234,10 +304,36 @@ index 0ed8384..391b2e6 100644
              }
  
              EntityPlayerSP entityplayersp = Minecraft.getMinecraft().thePlayer;
+diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/chunk/RenderChunk.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/chunk/RenderChunk.java
+index ddb2ec5..29bbab7 100644
+--- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/chunk/RenderChunk.java
++++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/chunk/RenderChunk.java
+@@ -177,7 +177,11 @@ public class RenderChunk
+                         }
+                     }
+                 }
+-
++                
++                if(iblockstate.getMaterial() != net.minecraft.block.material.Material.AIR) {
++                	es.blueberrypancak.event.EventManager.fire(new es.blueberrypancak.event.EventLoadBlock(new es.blueberrypancak.Location(blockpos$mutableblockpos.getX(), blockpos$mutableblockpos.getY(), blockpos$mutableblockpos.getZ(), "#00FF00", Block.getIdFromBlock(block))));
++                }
++                
+                 BlockRenderLayer blockrenderlayer1 = block.getBlockLayer();
+                 int j = blockrenderlayer1.ordinal();
+ 
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/entity/Render.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/entity/Render.java
-index 77cbe03..4db8c95 100644
+index 77cbe03..292a44e 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/entity/Render.java
 +++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/entity/Render.java
+@@ -100,7 +100,7 @@ public abstract class Render<T extends Entity>
+ 
+     protected void renderEntityName(T entityIn, double x, double y, double z, String name, double p_188296_9_)
+     {
+-        this.renderLivingLabel(entityIn, name, x, y, z, 64);
++        //this.renderLivingLabel(entityIn, name, x, y, z, 64);
+     }
+ 
+     /**
 @@ -361,17 +361,13 @@ public abstract class Render<T extends Entity>
      protected void renderLivingLabel(T entityIn, String str, double x, double y, double z, int maxDistance)
      {
@@ -284,18 +380,36 @@ index d150b26..28d2fd9 100644
  
      public void doRenderEntity(Entity entityIn, double x, double y, double z, float yaw, float partialTicks, boolean p_188391_10_)
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/entity/RenderPlayer.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/entity/RenderPlayer.java
-index f19179d..562aaa2 100644
+index f19179d..78b1811 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/entity/RenderPlayer.java
 +++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/entity/RenderPlayer.java
-@@ -180,8 +180,6 @@ public class RenderPlayer extends RenderLivingBase<AbstractClientPlayer>
+@@ -180,7 +180,6 @@ public class RenderPlayer extends RenderLivingBase<AbstractClientPlayer>
                  y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.025F);
              }
          }
 -
--        super.renderEntityName(entityIn, x, y, z, name, p_188296_9_);
+         super.renderEntityName(entityIn, x, y, z, name, p_188296_9_);
      }
  
-     public void renderRightArm(AbstractClientPlayer clientPlayer)
+diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/entity/EntityLivingBase.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/entity/EntityLivingBase.java
+index 24a6e35..dceaf43 100644
+--- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/entity/EntityLivingBase.java
++++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/entity/EntityLivingBase.java
+@@ -1994,12 +1994,12 @@ public abstract class EntityLivingBase extends Entity
+                                 this.motionY = -0.15D;
+                             }
+ 
+-                            boolean flag = this.isSneaking() && this instanceof EntityPlayer;
++                            /*boolean flag = this.isSneaking() && this instanceof EntityPlayer;
+ 
+                             if (flag && this.motionY < 0.0D)
+                             {
+                                 this.motionY = 0.0D;
+-                            }
++                            }*/
+                         }
+ 
+                         this.moveEntity(this.motionX, this.motionY, this.motionZ);
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/entity/player/EntityPlayer.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/entity/player/EntityPlayer.java
 index 6063f7b..59c6f46 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/entity/player/EntityPlayer.java
