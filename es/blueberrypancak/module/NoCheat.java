@@ -17,7 +17,7 @@ public class NoCheat extends Module {
 	public void onSendPacket(EventSendPacket e) {
 		Packet packet = e.getValue();
 		if(isEnabled() && packet instanceof CPacketPlayer) {
-			((CPacketPlayer)packet).onGround = true;
+			//((CPacketPlayer)packet).onGround = true;
 		}
 	}
 	
@@ -33,20 +33,20 @@ public class NoCheat extends Module {
 	public void onRender(EventRender e) {
 		EntityPlayer p = Client.getMinecraft().thePlayer;
 		if(isEnabled()) {
-			if(p.stepHeight != 1.0F) {
+			/*if(p.stepHeight != 1.0F) {
 				p.stepHeight = 1.0F;
-			}
+			}*/
 		}
 	}
 
 	@Override
 	public void onEnabled() {
-		Client.getMinecraft().thePlayer.stepHeight = 1.0F;
+		//Client.getMinecraft().thePlayer.stepHeight = 1.0F;
 	}
 
 	@Override
 	public void onDisabled() {
-		Client.getMinecraft().thePlayer.stepHeight = 0;
+		//Client.getMinecraft().thePlayer.stepHeight = 0;
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package es.blueberrypancak.module;
 import java.util.Random;
 
 import es.blueberrypancak.Client;
+import es.blueberrypancak.event.EventOnUpdateEntity;
 import es.blueberrypancak.event.EventRender;
 import es.blueberrypancak.event.Subscribe;
 import es.blueberrypancak.hook.EntityPlayerSPHook;
@@ -14,21 +15,28 @@ public class AntiAFK extends Module {
 
 	private long lastPacket;
 	
-	private int nextDelay;
+	private int start = 10, nextDelay = 60;
 	
 	@Subscribe
 	public void onRender(EventRender e) {
 		Minecraft mc = Client.getMinecraft();
 		if(lastPacket == 0) lastPacket = System.currentTimeMillis();
-		if(nextDelay == 0) nextDelay = (int)new Random().nextInt(15);
 		if(isEnabled()) {
-			if(getElapsed() > nextDelay) {
-				EntityPlayerSPHook p = (EntityPlayerSPHook) mc.thePlayer;
-				float rYaw = new Random().nextFloat()*90*(new Random().nextInt(1) == 0 ? 1 : -1);
-				float rPitch = new Random().nextFloat()*90*(new Random().nextInt(1) == 0 ? 1 : -1);
-				p.getConnection().sendPacket(new CPacketPlayer.Rotation(rYaw, rPitch, true));
-				nextDelay = (int)new Random().nextInt(10);
+			if(getElapsed() >= nextDelay) {
+				start = new Random().nextInt(nextDelay-10);
 				lastPacket = System.currentTimeMillis();
+			}
+		}
+	}
+	
+	@Subscribe
+	public void onUpdateEntity(EventOnUpdateEntity e) {
+		Minecraft mc = Client.getMinecraft();
+		if(isEnabled()) {
+			if(getElapsed() >= start && getElapsed() <= start+1) {
+				mc.thePlayer.moveForward = 1.0F;
+			} else if(getElapsed() > start+1 && getElapsed() <= start+3) {
+				mc.thePlayer.moveForward = -1.0F;
 			}
 		}
 	}
@@ -39,7 +47,7 @@ public class AntiAFK extends Module {
 	
 	@Override
 	public void onEnabled() {
-		
+		lastPacket = System.currentTimeMillis();
 	}
 
 	@Override
@@ -49,6 +57,6 @@ public class AntiAFK extends Module {
 
 	@Override
 	public String getName() {
-		return "AntiAFK \2479" + (nextDelay-getElapsed());
+		return "AntiAFK \2479" + (getElapsed());
 	}
 }

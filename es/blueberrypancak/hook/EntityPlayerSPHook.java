@@ -9,6 +9,7 @@ import es.blueberrypancak.event.EventIsSneaking;
 import es.blueberrypancak.event.EventIsSpectator;
 import es.blueberrypancak.event.EventManager;
 import es.blueberrypancak.event.EventOnLiving;
+import es.blueberrypancak.event.EventOnUpdateEntity;
 import es.blueberrypancak.event.EventSetSprint;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -85,4 +86,9 @@ public class EntityPlayerSPHook extends EntityPlayerSP {
 		EventManager.fire(e);
 		return e.getValue();
 	}
+	
+	public void updateEntityActionState() {
+        super.updateEntityActionState();
+        EventManager.fire(new EventOnUpdateEntity());
+    }
 }

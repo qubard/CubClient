@@ -31,6 +31,10 @@ public class Sprint extends Module {
 			player.motionX = direction.xCoord;
 			player.motionZ = direction.zCoord;
 			player.stepHeight = 1.0f;*/
+		} else if(!isEnabled() && player.moveForward != 0) {
+			if(player.isSprinting()) {
+				player.setSprinting(false);
+			}
 		}
 		active_color = player.moveForward != 0 ? getColor() : getSecondaryColor();
 	}

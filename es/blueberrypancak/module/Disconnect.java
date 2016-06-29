@@ -18,7 +18,7 @@ public class Disconnect extends Module {
 	public void onRender(EventRender e) {
 		Minecraft mc = Client.getMinecraft();
 		if(isEnabled()) {
-			if(getClosestPlayer(mc) != null) {
+			if(getClosestPlayer(mc) != null || mc.thePlayer.getFoodStats().getFoodLevel() <= 0) {
 				disconnect(mc);
 			}
 		}

@@ -51,11 +51,27 @@ public class Wallhack extends Module {
 			if(!found) {
 				tempList.add(k); 
 			}
-			System.out.println(tempList);
 			e.setCancelled(true);
 		} else if(message.equals("-clear")) {
+			blocks.clear();
 			tempList.clear();
 			e.setCancelled(true);
+		} else if(message.startsWith("-c")) {
+			String k = message.split(" ")[1];
+			boolean found = false;
+			for(String s: tempList) {
+				found |= s.contains(k);
+				if(found) {
+					tempList.remove(s);
+					break;
+				}
+			}
+			for(Location loc : blocks) {
+				if(loc.getId() == Integer.parseInt(k)) {
+					blocks.remove(loc);
+					continue;
+				}
+			}
 		}
 	}
 
