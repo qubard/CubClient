@@ -23,8 +23,11 @@ public class AntiAFK extends Module {
 		if(lastPacket == 0) lastPacket = System.currentTimeMillis();
 		if(isEnabled()) {
 			if(getElapsed() >= nextDelay) {
-				start = new Random().nextInt(nextDelay-10);
+				start = new Random().nextInt(nextDelay-30);
 				lastPacket = System.currentTimeMillis();
+				mc.thePlayer.inventory.currentItem = new Random().nextInt(9);
+				mc.thePlayer.rotationYaw = new Random().nextFloat()*360;
+				mc.thePlayer.rotationPitch = new Random().nextFloat()*-40;
 			}
 		}
 	}
@@ -33,9 +36,9 @@ public class AntiAFK extends Module {
 	public void onUpdateEntity(EventOnUpdateEntity e) {
 		Minecraft mc = Client.getMinecraft();
 		if(isEnabled()) {
-			if(getElapsed() >= start && getElapsed() <= start+1) {
+			if(getElapsed() >= start && getElapsed() <= start+10) {
 				mc.thePlayer.moveForward = 1.0F;
-			} else if(getElapsed() > start+1 && getElapsed() <= start+3) {
+			} else if(getElapsed() > start+10 && getElapsed() <= start+20) {
 				mc.thePlayer.moveForward = -1.0F;
 			}
 		}
