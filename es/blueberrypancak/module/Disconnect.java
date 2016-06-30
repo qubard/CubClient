@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ScreenShotHelper;
 
 @RegisterModule(key=24,color=0xFF664F,listed=true)
 public class Disconnect extends Module {
@@ -18,7 +19,8 @@ public class Disconnect extends Module {
 	public void onRender(EventRender e) {
 		Minecraft mc = Client.getMinecraft();
 		if(isEnabled()) {
-			if(getClosestPlayer(mc) != null || mc.thePlayer.getFoodStats().getFoodLevel() <= 0) {
+			if(getClosestPlayer(mc) != null || mc.thePlayer.getFoodStats().getFoodLevel() <= 0 || mc.thePlayer.getHealth()/2 <= 5) {
+				ScreenShotHelper.saveScreenshot(mc.mcDataDir, mc.displayWidth, mc.displayHeight, mc.getFramebuffer());
 				disconnect(mc);
 			}
 		}
