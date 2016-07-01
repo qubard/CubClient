@@ -1,6 +1,7 @@
 package es.blueberrypancak.module;
 
 import es.blueberrypancak.Client;
+import es.blueberrypancak.event.EventIsPushed;
 import es.blueberrypancak.event.EventRecPacket;
 import es.blueberrypancak.event.EventRender;
 import es.blueberrypancak.event.EventSendPacket;
@@ -36,6 +37,13 @@ public class NoCheat extends Module {
 			/*if(p.stepHeight != 1.0F) {
 				p.stepHeight = 1.0F;
 			}*/
+		}
+	}
+	
+	@Subscribe
+	public void onIsPushed(EventIsPushed e) {
+		if(isEnabled()) {
+			e.setValue(false);
 		}
 	}
 

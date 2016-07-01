@@ -5,6 +5,7 @@ import es.blueberrypancak.event.EventChat;
 import es.blueberrypancak.event.EventGetHeldItem;
 import es.blueberrypancak.event.EventInWater;
 import es.blueberrypancak.event.EventIsOnLadder;
+import es.blueberrypancak.event.EventIsPushed;
 import es.blueberrypancak.event.EventIsSneaking;
 import es.blueberrypancak.event.EventIsSpectator;
 import es.blueberrypancak.event.EventManager;
@@ -88,7 +89,13 @@ public class EntityPlayerSPHook extends EntityPlayerSP {
 	}
 	
 	public void updateEntityActionState() {
-        super.updateEntityActionState();
-        EventManager.fire(new EventOnUpdateEntity());
+		super.updateEntityActionState();
+		EventManager.fire(new EventOnUpdateEntity());
     }
+	
+	public boolean isPushedByWater() {
+		EventIsPushed e = new EventIsPushed(super.isPushedByWater());
+		EventManager.fire(e);
+		return e.getValue();
+	}
 }

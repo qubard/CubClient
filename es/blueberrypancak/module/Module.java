@@ -71,7 +71,7 @@ public abstract class Module {
 		}
 	}
 	
-	public void remove(Module m) {
+	private void remove(Module m) {
 		if(active_modules.contains(m)) {
 			active_modules.remove(m);
 			this.onDisabled();

@@ -24,6 +24,10 @@ import net.minecraft.util.math.Vec3d;
 public class KillAura extends Module {
 
 	private static double distanceThreshold = 36.0D;
+	
+	private long nextSwing;
+	
+	private int delay;
 
 	@Subscribe
 	public void onRender(EventRender e) {
@@ -33,8 +37,9 @@ public class KillAura extends Module {
 		if(isEnabled()) {
 			if(p.getCooledAttackStrength(1.0F) == 1.0 && !p.isHandActive()) {
 				Entity o = getClosestEntity();
-				if(o != null && !p.isSwingInProgress) {
+				if(o != null && !p.isSwingInProgress && System.currentTimeMillis() >= nextSwing) {
 					hit(p, o);
+					nextSwing = System.currentTimeMillis() + delay;
 				}
 			}
 		}
@@ -44,8 +49,9 @@ public class KillAura extends Module {
 	public void onChat(EventChat e) {
 		String message = e.getValue();
 		if(message.startsWith("-g")) {
-			this.distanceThreshold = Double.parseDouble(message.split(" ")[1]);
 			e.setCancelled(true);
+			this.distanceThreshold = Double.parseDouble(message.split(" ")[1]);
+			this.delay = Integer.parseInt(message.split(" ")[2]);
 		}
 	}
 
@@ -141,6 +147,6 @@ public class KillAura extends Module {
 
 	@Override
 	public String getName() {
-		return String.format("%.1f", new Object[] { Double.valueOf(distanceThreshold) }) + "m";
+		return String.format("%.1f", new Object[] { Double.valueOf(distanceThreshold) }) + "m" + (this.delay != 0 ? " \2476" + (this.delay < 1000 ? this.delay + "ms" : (double)this.delay/1000 + "s") : "");
 	}
 }
