@@ -20,7 +20,8 @@ public class AutoRun extends Module {
 			for(double i = -2; i < 3; i += 0.1) { 
 				b =  b&!(mc.theWorld.getBlockState(new BlockPos(p.posX+p.getLookVec().xCoord, p.posY-1+i, p.posZ+p.getLookVec().zCoord)).getMaterial() instanceof MaterialLiquid);
 			}
-			if(b && mc.theWorld.isBlockFullCube(new BlockPos(p.posX+p.motionX, p.posY-1, p.posZ+p.motionZ))) {
+			BlockPos pos = new BlockPos(p.posX+p.motionX, p.posY-1, p.posZ+p.motionZ);
+			if(b && mc.theWorld.isBlockFullCube(pos) && !mc.theWorld.isAirBlock(pos)) {
 				p.moveForward = 1.0F;
 			}
 		}

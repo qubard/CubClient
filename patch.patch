@@ -22,10 +22,19 @@ index ad84c84..14e49ea 100644
  
          if (this.gameSettings.showDebugInfo && this.gameSettings.showDebugProfilerChart && !this.gameSettings.hideGUI)
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/entity/EntityPlayerSP.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/entity/EntityPlayerSP.java
-index 38f8c49..064b6fa 100644
+index 38f8c49..4708164 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/entity/EntityPlayerSP.java
-@@ -924,8 +924,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -2,6 +2,8 @@ package net.minecraft.client.entity;
+ 
+ import java.util.List;
+ import javax.annotation.Nullable;
++
++import es.blueberrypancak.Client;
+ import net.minecraft.block.state.IBlockState;
+ import net.minecraft.client.Minecraft;
+ import net.minecraft.client.audio.ElytraSound;
+@@ -924,8 +926,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
          if (this.isHandActive() && !this.isRiding())
          {
@@ -50,9 +59,18 @@ index 394b393..9b1d339 100644
          ITextComponent itextcomponent = this.mc.ingameGUI.getChatGUI().getChatComponent(Mouse.getX(), Mouse.getY());
  
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/gui/GuiIngame.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/gui/GuiIngame.java
-index a623c57..d0780bc 100644
+index a623c57..51adf9f 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/gui/GuiIngame.java
 +++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/gui/GuiIngame.java
+@@ -117,7 +117,7 @@ public class GuiIngame extends Gui
+         this.itemRenderer = mcIn.getRenderItem();
+         this.overlayDebug = new GuiOverlayDebug(mcIn);
+         this.spectatorGui = new GuiSpectator(mcIn);
+-        this.persistantChatGUI = new GuiNewChat(mcIn);
++        this.persistantChatGUI = new es.blueberrypancak.hook.GuiNewChatHook(mcIn);
+         this.overlayPlayerList = new GuiPlayerTabOverlay(mcIn, this);
+         this.overlayBoss = new GuiBossOverlay(mcIn);
+         this.overlaySubtitle = new GuiSubtitleOverlay(mcIn);
 @@ -1025,7 +1025,7 @@ public class GuiIngame extends Gui
          }
      }
@@ -147,18 +165,9 @@ index e6d5650..9842e7e 100644
  
      /**
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/network/NetHandlerPlayClient.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/network/NetHandlerPlayClient.java
-index c484866..943f3ab 100644
+index c484866..9ec0cd7 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/network/NetHandlerPlayClient.java
 +++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/network/NetHandlerPlayClient.java
-@@ -252,7 +252,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
-      * Seems to be either null (integrated server) or an instance of either GuiMultiplayer (when connecting to a server)
-      * or GuiScreenReamlsTOS (when connecting to MCO server)
-      */
--    private final GuiScreen guiScreenServer;
-+    public final GuiScreen guiScreenServer;
- 
-     /**
-      * Reference to the Minecraft instance, which many handler methods operate on
 @@ -302,7 +302,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      public void handleJoinGame(SPacketJoinGame packetIn)
      {
