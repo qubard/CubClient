@@ -42,9 +42,7 @@ public class NoCheat extends Module {
 	
 	@Subscribe
 	public void onIsPushed(EventIsPushed e) {
-		if(isEnabled()) {
-			e.setValue(false);
-		}
+		e.setValue(isEnabled() ? false : e.getValue());
 	}
 
 	@Override

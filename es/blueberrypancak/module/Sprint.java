@@ -27,10 +27,6 @@ public class Sprint extends Module {
 			if(!player.isSprinting()) {
 				player.setSprinting(true);
 			}
-			/*Vec3d direction = player.getLookVec();
-			player.motionX = direction.xCoord;
-			player.motionZ = direction.zCoord;
-			player.stepHeight = 1.0f;*/
 		} else if(!isEnabled() && player.moveForward != 0) {
 			if(player.isSprinting()) {
 				player.setSprinting(false);

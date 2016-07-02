@@ -3,6 +3,7 @@ package es.blueberrypancak.hook;
 import es.blueberrypancak.event.EventCanHarvestBlock;
 import es.blueberrypancak.event.EventChat;
 import es.blueberrypancak.event.EventGetHeldItem;
+import es.blueberrypancak.event.EventInLava;
 import es.blueberrypancak.event.EventInWater;
 import es.blueberrypancak.event.EventIsOnLadder;
 import es.blueberrypancak.event.EventIsPushed;
@@ -35,6 +36,12 @@ public class EntityPlayerSPHook extends EntityPlayerSP {
 	
 	public boolean isInWater() { 
 		EventInWater e = new EventInWater(super.isInWater());
+		EventManager.fire(e);
+		return e.getValue();
+	}
+	
+	public boolean isInLava() {
+		EventInLava e = new EventInLava(super.isInLava());
 		EventManager.fire(e);
 		return e.getValue();
 	}
