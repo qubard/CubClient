@@ -1,5 +1,5 @@
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/Minecraft.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/Minecraft.java
-index ad84c84..14e49ea 100644
+index ad84c84..17a1af4 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/Minecraft.java
 +++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/Minecraft.java
 @@ -621,6 +621,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
@@ -21,20 +21,39 @@ index ad84c84..14e49ea 100644
          this.mcProfiler.endSection();
  
          if (this.gameSettings.showDebugInfo && this.gameSettings.showDebugProfilerChart && !this.gameSettings.hideGUI)
+@@ -1826,7 +1829,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+                 });
+                 throw new ReportedException(crashreport);
+             }
+-
++            
+             if (this.currentScreen != null)
+             {
+                 try
+@@ -1848,7 +1851,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+                 }
+             }
+         }
+-
++        
++        es.blueberrypancak.event.EventManager.fire(new es.blueberrypancak.event.EventTick());
++        
+         if (this.currentScreen == null || this.currentScreen.allowUserInput)
+         {
+             this.mcProfiler.endStartSection("mouse");
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/entity/EntityPlayerSP.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/entity/EntityPlayerSP.java
-index 38f8c49..4708164 100644
+index 38f8c49..193d032 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/entity/EntityPlayerSP.java
-@@ -2,6 +2,8 @@ package net.minecraft.client.entity;
+@@ -2,6 +2,7 @@ package net.minecraft.client.entity;
  
  import java.util.List;
  import javax.annotation.Nullable;
 +
-+import es.blueberrypancak.Client;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.client.Minecraft;
  import net.minecraft.client.audio.ElytraSound;
-@@ -924,8 +926,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -924,8 +925,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
          if (this.isHandActive() && !this.isRiding())
          {

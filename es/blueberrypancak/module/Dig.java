@@ -3,6 +3,7 @@ package es.blueberrypancak.module;
 import es.blueberrypancak.Client;
 import es.blueberrypancak.event.EventBlockBreak;
 import es.blueberrypancak.event.EventRender;
+import es.blueberrypancak.event.EventTick;
 import es.blueberrypancak.event.Subscribe;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -28,6 +29,25 @@ public class Dig extends Module {
 			digCount++;
 		}
 	}
+	
+	@Subscribe
+	public void onTick(EventTick e) {
+		Minecraft mc = Client.getMinecraft();
+		boolean hittingBlock = mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK;
+		if(isEnabled()) {
+			if (hittingBlock) {
+				BlockPos blockpos = mc.objectMouseOver.getBlockPos();
+				if (mc.theWorld.getBlockState(blockpos).getMaterial() != Material.AIR && mc.playerController.onPlayerDamageBlock(blockpos, mc.objectMouseOver.sideHit)) {
+					mc.effectRenderer.addBlockHitEffects(blockpos, mc.objectMouseOver.sideHit);
+					mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
+				}
+			}
+		} else {
+			if(!hittingBlock) {
+				mc.playerController.resetBlockRemoving();
+			}
+		}
+	}
 
 	@Subscribe
 	public void onRender(EventRender e) {
@@ -41,15 +61,6 @@ public class Dig extends Module {
 				int col = (red << 16) | (green << 8) | blue;
 				n = (n + 1) % 160;
 				mc.fontRendererObj.drawStringWithShadow("+" + digCount, 30, Client.res().getScaledHeight() - 10, col);
-			}
-			if(mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK && System.currentTimeMillis() >= delay) {
-				BlockPos blockpos = mc.objectMouseOver.getBlockPos();
-
-				if(mc.theWorld.getBlockState(blockpos).getMaterial() != Material.AIR && mc.playerController.onPlayerDamageBlock(blockpos, mc.objectMouseOver.sideHit)) {
-					delay = System.currentTimeMillis() + 50;
-					mc.effectRenderer.addBlockHitEffects(blockpos, mc.objectMouseOver.sideHit);
-					mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
-				}
 			}
 		}
 	}

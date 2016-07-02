@@ -15,7 +15,9 @@ public class Reflection {
 					classes.add(info.load());
 				}
 			}
-		} catch (Exception e) { }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return classes;
 	}
 }

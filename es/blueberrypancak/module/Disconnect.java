@@ -17,8 +17,8 @@ public class Disconnect extends Module {
 	
 	@Subscribe
 	public void onRender(EventRender e) {
-		Minecraft mc = Client.getMinecraft();
 		if(isEnabled()) {
+			Minecraft mc = Client.getMinecraft();
 			if(getClosestPlayer(mc) != null || mc.thePlayer.getFoodStats().getFoodLevel() <= 0 || mc.thePlayer.getHealth()/2 <= 5) {
 				ScreenShotHelper.saveScreenshot(mc.mcDataDir, mc.displayWidth, mc.displayHeight, mc.getFramebuffer());
 				disconnect(mc);
