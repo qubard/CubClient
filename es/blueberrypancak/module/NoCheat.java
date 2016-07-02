@@ -18,7 +18,7 @@ public class NoCheat extends Module {
 	public void onSendPacket(EventSendPacket e) {
 		Packet packet = e.getValue();
 		if(isEnabled() && packet instanceof CPacketPlayer) {
-			//((CPacketPlayer)packet).onGround = true;
+			((CPacketPlayer)packet).onGround = true;
 		}
 	}
 	

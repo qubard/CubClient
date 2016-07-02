@@ -32,19 +32,14 @@ public class Dig extends Module {
 	
 	@Subscribe
 	public void onTick(EventTick e) {
-		Minecraft mc = Client.getMinecraft();
-		boolean hittingBlock = mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK;
 		if(isEnabled()) {
-			if (hittingBlock) {
+			Minecraft mc = Client.getMinecraft();
+			if (mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
 				BlockPos blockpos = mc.objectMouseOver.getBlockPos();
 				if (mc.theWorld.getBlockState(blockpos).getMaterial() != Material.AIR && mc.playerController.onPlayerDamageBlock(blockpos, mc.objectMouseOver.sideHit)) {
 					mc.effectRenderer.addBlockHitEffects(blockpos, mc.objectMouseOver.sideHit);
 					mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
 				}
-			}
-		} else {
-			if(!hittingBlock) {
-				mc.playerController.resetBlockRemoving();
 			}
 		}
 	}
