@@ -25,6 +25,7 @@ public class AntiAFK extends Module {
 				EntityPlayerSPHook player = (EntityPlayerSPHook) Client.getMinecraft().thePlayer;
 				player.getConnection().sendPacket(new CPacketHeldItemChange(new Random().nextInt(9)));
 				player.getConnection().sendPacket(new CPacketPlayer.Rotation(new Random().nextFloat()*360, new Random().nextFloat()*-40, true));
+				player.getConnection().sendPacket(new CPacketPlayer.Rotation(player.rotationYaw, player.rotationPitch, true));
 			}
 		}
 	}
