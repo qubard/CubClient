@@ -24,6 +24,10 @@ public class AutoRun extends Module {
 			if(b && mc.theWorld.isBlockFullCube(pos) && !mc.theWorld.isAirBlock(pos)) {
 				p.moveForward = 1.0F;
 			}
+			if(mc.mouseHelper.deltaX + mc.mouseHelper.deltaY == 0) {
+				p.rotationYaw = Math.round(p.rotationYaw/45)*45;
+				p.rotationPitch = Math.round(p.rotationPitch/90)*90;
+			}
 		}
 	}
 	
@@ -41,5 +45,4 @@ public class AutoRun extends Module {
 	public String getName() {
 		return "AutoRun";
 	}
-
 }

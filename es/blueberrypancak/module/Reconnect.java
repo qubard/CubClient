@@ -38,6 +38,7 @@ public class Reconnect extends Module {
 	
 	@Override
 	public void onEnabled() {
+		
 	}
 
 	@Override

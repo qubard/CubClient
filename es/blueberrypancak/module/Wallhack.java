@@ -189,10 +189,12 @@ public class Wallhack extends Module {
 
 	@Override
 	public void onEnabled() {
+		
 	}
 
 	@Override
 	public void onDisabled() {
+		
 	}
 
 	@Override
