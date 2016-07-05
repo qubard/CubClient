@@ -6,6 +6,7 @@ import es.blueberrypancak.event.EventRender;
 import es.blueberrypancak.event.EventSendPacket;
 import es.blueberrypancak.event.Subscribe;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketPlayer;
 
@@ -16,7 +17,8 @@ public class Camera extends Module {
 	
 	@Subscribe
 	public void onSendPacket(EventSendPacket e) {
-		if(isEnabled() && (e.getValue() instanceof CPacketPlayer || e.getValue() instanceof CPacketEntityAction)) {
+		Packet packet = e.getValue();
+		if(isEnabled() && !(packet instanceof CPacketPlayer.Rotation) && (packet instanceof CPacketPlayer || packet instanceof CPacketEntityAction)) {
 			e.setCancelled(true);
 		}
 	}

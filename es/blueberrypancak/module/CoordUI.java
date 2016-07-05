@@ -28,8 +28,9 @@ public class CoordUI extends Module {
 	
 	private int[] getCount() {
 		int i[] = {0,0};
-		for(Entity e :  Client.getMinecraft().theWorld.getLoadedEntityList()) {
-			if(e instanceof EntityMob) {
+		Minecraft mc = Client.getMinecraft();
+		for(Entity e :  mc.theWorld.getLoadedEntityList()) {
+			if(e instanceof EntityMob && e.getDistanceSqToEntity(mc.thePlayer) < 30) {
 				i[0]++;
 			} else if(e instanceof EntityOtherPlayerMP) {
 				i[1]++;
