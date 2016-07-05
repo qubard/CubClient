@@ -11,7 +11,7 @@ import net.minecraft.client.multiplayer.GuiConnecting;
 @RegisterModule(color=0xFF9028)
 public class Reconnect extends Module {
 
-	private long lastReconnect = 0;
+	private long lastReconnect;
 	
 	@Subscribe
 	public void onRender(EventRender e) {
@@ -22,7 +22,7 @@ public class Reconnect extends Module {
 			mc.fontRendererObj.drawStringWithShadow(getName(), 0, 0, getActiveColor());
 			if(getElapsed() >= 5) {
 				mc.displayGuiScreen(new GuiConnecting(new GuiMainMenu(), mc, ip, 25565));
-				lastReconnect = 0;
+				lastReconnect = System.currentTimeMillis();
 			}
 		}
 	}

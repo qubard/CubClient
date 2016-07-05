@@ -21,7 +21,7 @@ public class CoordUI extends Module {
 			int posX = (int) mc.thePlayer.posX;
 			int posY = (int) mc.thePlayer.posY;
 			int posZ = (int) mc.thePlayer.posZ;
-			String s =  "" + (posX >= 0 ? "+" : "") + (int)posX + ", " + (posY >= 0 ? "+" : "") + (int)posY + ", " + (posZ >= 0 ? "+" : "") +(int)posZ + (mobCount != 0 ? "\247f : \247c" + mobCount + "" : "") + (playerCount != 0 ? "\247f : \247b" + playerCount : "") + "\247f :\247a " + mc.getDebugFPS() + "fps";
+			String s =  (posX >= 0 ? "+" : "") + (int)posX + ", " + (posY >= 0 ? "+" : "") + (int)posY + ", " + (posZ >= 0 ? "+" : "") +(int)posZ + (mobCount != 0 ? "\247f \247c" + mobCount + "" : "") + (playerCount != 0 ? " \247b" + playerCount : "") + "\247a " + mc.getDebugFPS() + "fps";
 			mc.fontRendererObj.drawStringWithShadow(s, 5, 4, 16777215);
 		}
 	}

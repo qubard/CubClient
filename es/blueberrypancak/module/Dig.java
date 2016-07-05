@@ -41,6 +41,7 @@ public class Dig extends Module {
 					mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
 				}
 			}
+			n = (n + 4) % 480;
 		}
 	}
 
@@ -54,7 +55,6 @@ public class Dig extends Module {
 				int green = (int) (Math.sin(frequency * n / 5 + 2 * Math.PI / 3) * 127 + 128);
 				int blue = (int) (Math.sin(frequency * n / 5 + 4 * Math.PI / 3) * 127 + 128);
 				int col = (red << 16) | (green << 8) | blue;
-				n = (n + 1) % 160;
 				mc.fontRendererObj.drawStringWithShadow("+" + digCount, 30, Client.res().getScaledHeight() - 10, col);
 			}
 		}

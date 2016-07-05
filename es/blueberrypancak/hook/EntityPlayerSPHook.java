@@ -12,6 +12,7 @@ import es.blueberrypancak.event.EventIsSpectator;
 import es.blueberrypancak.event.EventManager;
 import es.blueberrypancak.event.EventOnLiving;
 import es.blueberrypancak.event.EventOnUpdateEntity;
+import es.blueberrypancak.event.EventRespawn;
 import es.blueberrypancak.event.EventSetSprint;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -104,5 +105,11 @@ public class EntityPlayerSPHook extends EntityPlayerSP {
 		EventIsPushed e = new EventIsPushed(super.isPushedByWater());
 		EventManager.fire(e);
 		return e.getValue();
+	}
+	
+	public void respawnPlayer() {
+		EventRespawn e = new EventRespawn();
+		EventManager.fire(e);
+		super.respawnPlayer();
 	}
 }

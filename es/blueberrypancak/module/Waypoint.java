@@ -5,12 +5,15 @@ import org.lwjgl.opengl.GL11;
 import es.blueberrypancak.Client;
 import es.blueberrypancak.event.EventChat;
 import es.blueberrypancak.event.EventEntityRender;
+import es.blueberrypancak.event.EventRespawn;
 import es.blueberrypancak.event.Subscribe;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.text.TextComponentString;
 
 @RegisterModule
 public class Waypoint extends Module {
@@ -42,6 +45,15 @@ public class Waypoint extends Module {
 			}
 			e.setCancelled(true);
 		}
+	}
+	
+	@Subscribe
+	public void onRespawn(EventRespawn e) {
+		EntityPlayer p = Client.getMinecraft().thePlayer;
+		int posX = (int) p.posX;
+		int posY = (int) p.posY;
+		int posZ = (int) p.posZ;
+		p.addChatMessage(new TextComponentString("You died at " + (posX >= 0 ? "\247a+" : "\247c") + (int)posX + ", " + (posY >= 0 ? "\247a+" : "\247c") + (int)posY + ", " + (posZ >= 0 ? "\247a+" : "\247c") +(int)posZ));
 	}
 	
 	@Override
