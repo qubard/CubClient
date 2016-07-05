@@ -50,15 +50,15 @@ public class NoCheat extends Module {
 	@Subscribe
 	public void onTick(EventTick e) {
 		Minecraft mc = Client.getMinecraft();
-		EntityPlayer p = mc.thePlayer;
+		EntityPlayerSPHook p = (EntityPlayerSPHook) mc.thePlayer;
 		int slot = getWaterBucket();
 		if(isEnabled() && slot != -1 && !(mc.theWorld.provider instanceof WorldProviderHell)) {
 			if(p.motionY < -0.70) {
 				falling = true;
 				if(falling && !Client.getMinecraft().theWorld.isAirBlock(new BlockPos(p.posX, p.getEntityBoundingBox().minY-4, p.posZ))) {
 					falling = false;
-					((EntityPlayerSPHook)p).getConnection().sendPacket(new CPacketHeldItemChange(slot));
-					((EntityPlayerSPHook)p).getConnection().sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
+					p.getConnection().sendPacket(new CPacketHeldItemChange(slot));
+					p.getConnection().sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
 					lastPickup = System.currentTimeMillis();
 					wasFalling = true;
 				}
@@ -69,10 +69,10 @@ public class NoCheat extends Module {
 			}
 		}
 		if(p.onGround && getElapsed() >= 300 && wasFalling) {
-			((EntityPlayerSPHook)p).getConnection().sendPacket(new CPacketPlayer.PositionRotation(p.posX, p.posY, p.posZ, p.rotationYaw, 90, p.onGround));
-			((EntityPlayerSPHook)p).getConnection().sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
-			((EntityPlayerSPHook)p).getConnection().sendPacket(new CPacketHeldItemChange(p.inventory.currentItem));
-			((EntityPlayerSPHook)p).getConnection().sendPacket(new CPacketPlayer.PositionRotation(p.posX, p.posY, p.posZ, p.rotationYaw, 0, p.onGround));
+			p.getConnection().sendPacket(new CPacketPlayer.PositionRotation(p.posX, p.posY, p.posZ, p.rotationYaw, 90, p.onGround));
+			p.getConnection().sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
+			p.getConnection().sendPacket(new CPacketHeldItemChange(p.inventory.currentItem));
+			p.getConnection().sendPacket(new CPacketPlayer.PositionRotation(p.posX, p.posY, p.posZ, p.rotationYaw, 0, p.onGround));
 			wasFalling = false;
 		}
 	}
