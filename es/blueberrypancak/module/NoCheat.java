@@ -78,7 +78,7 @@ public class NoCheat extends Module {
 	}
 	
 	private int getWaterBucket() {
-		for(int i = 0; i < 8; i++) {
+		for(int i = 0; i < 9; i++) {
 			ItemStack o = Client.getMinecraft().thePlayer.inventory.mainInventory[i];
 			if(o != null && Item.getIdFromItem(o.getItem()) == 326) {
 				return i;
