@@ -1,7 +1,7 @@
 package es.blueberrypancak.module;
 
 import es.blueberrypancak.Client;
-import es.blueberrypancak.event.EventOnUpdateEntity;
+import es.blueberrypancak.event.EventUpdateEntity;
 import es.blueberrypancak.event.Subscribe;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.client.Minecraft;
@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 public class AutoRun extends Module {
 
 	@Subscribe
-	public void onUpdateEntity(EventOnUpdateEntity e) {
+	public void onUpdateEntity(EventUpdateEntity e) {
 		Minecraft mc = Client.getMinecraft();
 		EntityPlayerSP p = mc.thePlayer;
 		if(isEnabled()) {

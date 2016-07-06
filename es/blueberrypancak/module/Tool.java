@@ -3,8 +3,8 @@ package es.blueberrypancak.module;
 import es.blueberrypancak.Client;
 import es.blueberrypancak.event.EventBlockSwing;
 import es.blueberrypancak.event.EventCanHarvestBlock;
-import es.blueberrypancak.event.EventOnStr;
 import es.blueberrypancak.event.EventResetBlockRemoving;
+import es.blueberrypancak.event.EventStr;
 import es.blueberrypancak.event.Subscribe;
 import es.blueberrypancak.hook.EntityPlayerSPHook;
 import net.minecraft.block.state.IBlockState;
@@ -38,7 +38,7 @@ public class Tool extends Module {
 	}
 
 	@Subscribe
-	public void onStrVsBlock(EventOnStr e) {
+	public void onStrVsBlock(EventStr e) {
 		float var2 = 1.0F;
 		ItemStack tool = getTool(e.getBlock());
 		if(tool != null) {

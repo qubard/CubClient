@@ -11,9 +11,9 @@ import es.blueberrypancak.event.EventIsSneaking;
 import es.blueberrypancak.event.EventIsSpectator;
 import es.blueberrypancak.event.EventManager;
 import es.blueberrypancak.event.EventOnLiving;
-import es.blueberrypancak.event.EventOnUpdateEntity;
 import es.blueberrypancak.event.EventRespawn;
 import es.blueberrypancak.event.EventSetSprint;
+import es.blueberrypancak.event.EventUpdateEntity;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -98,7 +98,7 @@ public class EntityPlayerSPHook extends EntityPlayerSP {
 	
 	public void updateEntityActionState() {
 		super.updateEntityActionState();
-		EventManager.fire(new EventOnUpdateEntity());
+		EventManager.fire(new EventUpdateEntity());
     }
 	
 	public boolean isPushedByWater() {

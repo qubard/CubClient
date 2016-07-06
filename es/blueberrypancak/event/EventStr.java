@@ -2,11 +2,11 @@ package es.blueberrypancak.event;
 
 import net.minecraft.block.state.IBlockState;
 
-public class EventOnStr extends EventValue<Float> {
+public class EventStr extends EventValue<Float> {
 
 	private IBlockState block;
 	
-	public EventOnStr(float f, IBlockState block) {
+	public EventStr(float f, IBlockState block) {
 		super(f);
 		this.block = block;
 	}
