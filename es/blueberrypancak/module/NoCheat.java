@@ -33,7 +33,7 @@ public class NoCheat extends Module {
 		if(isEnabled() && packet instanceof CPacketPlayer) {
 			((CPacketPlayer)packet).onGround = true;
 			EntityPlayer p = Client.getMinecraft().thePlayer;
-			if(p.fallDistance > 1 && p.motionY < -0.4) {
+			if(getWaterBucket() != -1 && p.fallDistance > 1 && p.motionY < -0.4) {
 				e.setValue(new CPacketPlayer.PositionRotation(p.posX, p.posY, p.posZ, p.rotationYaw, 90, p.onGround));
 			}
 		}

@@ -32,8 +32,10 @@ public class CoordUI extends Module {
 		for(Entity e :  mc.theWorld.getLoadedEntityList()) {
 			if(e instanceof EntityMob && e.getDistanceSqToEntity(mc.thePlayer) < 30) {
 				i[0]++;
-			} else if(e instanceof EntityOtherPlayerMP) {
-				i[1]++;
+			} else if(e instanceof EntityOtherPlayerMP ) {
+				if(((EntityOtherPlayerMP)e).getGameProfile() != mc.thePlayer.getGameProfile()) {
+					i[1]++;
+				}
 			}
 		}
 		return i;

@@ -22,6 +22,7 @@ import net.minecraft.entity.item.EntityEnderPearl;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemShield;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 
@@ -168,7 +169,7 @@ public class TraceESP extends Module {
 		int p = 0;
 		for(ItemStack o : e.getEquipmentAndArmor()) {
 			if(o != null)  {
-				if(!(o.getItem() instanceof ItemBlock)) {
+				if(!(o.getItem() instanceof ItemBlock) && !(o.getItem() instanceof ItemShield)) {
 					p++;
 				}
 			}
@@ -180,7 +181,7 @@ public class TraceESP extends Module {
 		ItemRenderer x = Client.getMinecraft().getItemRenderer();
 		for(ItemStack o : e.getEquipmentAndArmor()) {
 			if(o != null) {
-				if(!(o.getItem() instanceof ItemBlock)) {
+				if(!(o.getItem() instanceof ItemBlock) && !(o.getItem() instanceof ItemShield)) {
 					GlStateManager.translate(1.0, 0, 0);
 					GlStateManager.disableLighting();
 					x.renderItemSide(e, o, TransformType.NONE, false);

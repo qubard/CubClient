@@ -5,6 +5,7 @@ import es.blueberrypancak.event.EventIsSpectator;
 import es.blueberrypancak.event.EventRender;
 import es.blueberrypancak.event.EventSendPacket;
 import es.blueberrypancak.event.Subscribe;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.CPacketEntityAction;
@@ -44,6 +45,11 @@ public class Camera extends Module {
 	public void onEnabled() {
 		EntityPlayer player = Client.getMinecraft().thePlayer;
 		lastPos = new Position(player.posX, player.posY, player.posZ);
+		EntityOtherPlayerMP spawn = new EntityOtherPlayerMP(Client.getMinecraft().theWorld, player.getGameProfile());
+		spawn.inventory = player.inventory;
+		spawn.inventoryContainer = player.inventoryContainer;
+		spawn.setPositionAndRotation(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
+		Client.getMinecraft().theWorld.addEntityToWorld(-420, spawn);
 	}
 
 	@Override
@@ -56,6 +62,7 @@ public class Camera extends Module {
 		player.motionY = 0;
 		player.setInvisible(false);
 		player.motionZ = 0;
+		Client.getMinecraft().theWorld.removeEntityFromWorld(-420);
 	}
 
 	@Override

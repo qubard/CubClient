@@ -16,6 +16,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -66,10 +67,14 @@ public class KillAura extends Module {
 				double damage = -1;
 				double speed = -1;
 				for(String s : data) {
-					if(s.contains("Damage")) {
-						damage = Double.parseDouble(s.split(" ")[1]);
-					} else if(s.contains("Speed")) {
-						speed = Double.parseDouble(s.split(" ")[1]);
+					try { 
+						if(s.contains("Damage")) {
+							damage = Double.parseDouble(s.split(" ")[1]);
+						} else if(s.contains("Speed")) {
+							speed = Double.parseDouble(s.split(" ")[1]);
+						}
+					} catch(Exception e) {
+						continue;
 					}
 				}
 				if (damage != -1 && speed != -1) {
