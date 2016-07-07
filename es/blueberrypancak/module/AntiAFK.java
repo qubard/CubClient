@@ -47,6 +47,6 @@ public class AntiAFK extends Module {
 
 	@Override
 	public String getName() {
-		return "AntiAFK \2479" + (getElapsed());
+		return "AntiAFK \2479" + getElapsed();
 	}
 }
