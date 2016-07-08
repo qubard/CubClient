@@ -38,7 +38,7 @@ public class AutoFish extends Module {
 	}
 	
 	private boolean equipRod() {
-		int slot = getFishingRod();
+		int slot = getFishingRod(36);
 		if(slot < 0) return false;
 		EntityPlayerSPHook p = (EntityPlayerSPHook) Client.getMinecraft().thePlayer;
 		int chosenSlot = getEmptySlot();
@@ -60,9 +60,9 @@ public class AutoFish extends Module {
 		return p.inventory.currentItem;
 	}
 	
-	private int getFishingRod() {
+	private int getFishingRod(int l) {
 		EntityPlayer p = Client.getMinecraft().thePlayer;
-		for(int i = 0; i < 36; i++) {
+		for(int i = 0; i < l; i++) {
 			ItemStack o = p.inventory.mainInventory[i];
 			if(o != null && o.getItem() instanceof ItemFishingRod) {
 				return i;
@@ -70,7 +70,7 @@ public class AutoFish extends Module {
 		}
 		return -1;
 	}
-	
+
 	private void move(int from, int to) {
 		Minecraft mc = Client.getMinecraft();
 		EntityPlayer p = mc.thePlayer;
@@ -85,7 +85,9 @@ public class AutoFish extends Module {
 	
 	@Subscribe
 	public void onRender(EventRender e) {
-		isEnabled();
+		if(isEnabled() && getFishingRod(9) == -1) {
+			onEnabled();
+		}
 	}
 
 	@Override
