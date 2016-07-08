@@ -8,7 +8,9 @@ import es.blueberrypancak.event.Subscribe;
 import es.blueberrypancak.hook.EntityPlayerSPHook;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemStack;
@@ -19,7 +21,7 @@ import net.minecraft.network.play.server.SPacketParticles;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 
-@RegisterModule(key=37,color=0x3F7F47,listed=true)
+@RegisterModule(key=37,color=0x3F7F47,secondary_color=0xFF1C07,listed=true)
 public class AutoFish extends Module {
 	
 	private int lastSlot = -1;
@@ -98,12 +100,25 @@ public class AutoFish extends Module {
 		p.getConnection().sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
 	}
 	
+	private boolean isFishing() {
+		Minecraft mc = Client.getMinecraft();
+		for(Entity e : mc.theWorld.loadedEntityList) {
+			if(e instanceof EntityFishHook) {
+				if(e.getDistanceToEntity(mc.thePlayer) < 15) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	@Subscribe
 	public void onRender(EventRender e) {
 		if(isEnabled()) {
 			if(lastSlot == -1 || Client.getMinecraft().thePlayer.inventory.mainInventory[lastSlot] == null) {
 				onEnabled();
 			}
+			active_color = getFishingRod() != -1 ? getColor() : getSecondaryColor();
 		}
 	}
 
@@ -116,13 +131,13 @@ public class AutoFish extends Module {
 
 	@Override
 	public void onDisabled() {
-		if(Client.getMinecraft().thePlayer.fishEntity != null) { 
+		if(isFishing() || Client.getMinecraft().thePlayer.fishEntity != null) { 
 			onEnabled();
 		}
 	}
 
 	@Override
 	public String getName() {
-		return "AutoFish";
+		return getFishingRod() != -1 ? "AutoFish" : "No rod!";
 	}
 }

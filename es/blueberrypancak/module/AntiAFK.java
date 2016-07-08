@@ -1,13 +1,11 @@
 package es.blueberrypancak.module;
 
-import java.util.Random;
-
 import es.blueberrypancak.Client;
 import es.blueberrypancak.event.EventRender;
 import es.blueberrypancak.event.Subscribe;
 import es.blueberrypancak.hook.EntityPlayerSPHook;
-import net.minecraft.network.play.client.CPacketHeldItemChange;
-import net.minecraft.network.play.client.CPacketPlayer;
+import net.minecraft.network.play.client.CPacketAnimation;
+import net.minecraft.util.EnumHand;
 
 @RegisterModule(key=49,color=0x665EFF,listed=true)
 public class AntiAFK extends Module {
@@ -23,10 +21,7 @@ public class AntiAFK extends Module {
 			if(getElapsed() >= nextDelay) {
 				lastPacket = System.currentTimeMillis();
 				EntityPlayerSPHook p = (EntityPlayerSPHook) Client.getMinecraft().thePlayer;
-				p.getConnection().sendPacket(new CPacketHeldItemChange(new Random().nextInt(9)));
-				p.getConnection().sendPacket(new CPacketPlayer.Rotation(new Random().nextFloat()*360, new Random().nextFloat()*-40, true));
-				p.getConnection().sendPacket(new CPacketPlayer.Rotation(p.rotationYaw, p.rotationPitch, true));
-				p.getConnection().sendPacket(new CPacketHeldItemChange(p.inventory.currentItem));
+				p.getConnection().sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
 			}
 		}
 	}
