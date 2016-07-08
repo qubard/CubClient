@@ -31,22 +31,24 @@ public class AutoFish extends Module {
 			if(particle.getParticleType() == EnumParticleTypes.WATER_WAKE) {
 				if(particle.getParticleCount() == 6 && particle.getParticleSpeed() == 0.2F) {
 					EntityPlayerSPHook p = (EntityPlayerSPHook) Client.getMinecraft().thePlayer;
-					equipRod();
-					p.getConnection().sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
-					p.getConnection().sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
+					if(equipRod()){
+						toss();
+						toss();
+					}
 				}
 			}
 		}
 	}
 	
-	private void equipRod() {
+	private boolean equipRod() {
 		EntityPlayerSPHook p = (EntityPlayerSPHook) Client.getMinecraft().thePlayer;
 		int slot = getFishingRod();
+		if(slot < 0) return false;
 		if(slot > 9) {
 			move(slot, p.inventory.currentItem);
-		} else { 
-			p.getConnection().sendPacket(new CPacketHeldItemChange(slot));
 		}
+		p.getConnection().sendPacket(new CPacketHeldItemChange(slot));
+		return true;
 	}
 	
 	private int getFishingRod() {
@@ -57,7 +59,7 @@ public class AutoFish extends Module {
 				return i;
 			}
 		}
-		return p.inventory.currentItem;
+		return -1;
 	}
 	
 	private void move(int from, int to) {
@@ -67,6 +69,11 @@ public class AutoFish extends Module {
 		controller.windowClick(0, from, to, ClickType.SWAP, p);
 	}
 	
+	private void toss() {
+		EntityPlayerSPHook p = (EntityPlayerSPHook) Client.getMinecraft().thePlayer;
+		p.getConnection().sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
+	}
+	
 	@Subscribe
 	public void onRender(EventRender e) {
 		isEnabled();
@@ -74,12 +81,14 @@ public class AutoFish extends Module {
 
 	@Override
 	public void onEnabled() {
-		equipRod();
+		if(equipRod()) {
+			toss();
+		}
 	}
 
 	@Override
 	public void onDisabled() {
-		
+		onEnabled();
 	}
 
 	@Override

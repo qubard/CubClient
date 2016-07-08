@@ -48,6 +48,7 @@ public class Camera extends Module {
 		EntityOtherPlayerMP spawn = new EntityOtherPlayerMP(Client.getMinecraft().theWorld, player.getGameProfile());
 		spawn.inventory = player.inventory;
 		spawn.inventoryContainer = player.inventoryContainer;
+		spawn.rotationYawHead = player.rotationYawHead;
 		spawn.setPositionAndRotation(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
 		Client.getMinecraft().theWorld.addEntityToWorld(-420, spawn);
 	}
