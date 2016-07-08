@@ -197,7 +197,7 @@ index c484866..9ec0cd7 100644
          this.gameController.gameSettings.difficulty = packetIn.getDifficulty();
          this.gameController.loadWorld(this.clientWorldController);
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/EntityRenderer.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/EntityRenderer.java
-index 25e1fb8..0e69cd5 100644
+index 25e1fb8..39d05bf 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/EntityRenderer.java
 +++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/EntityRenderer.java
 @@ -525,7 +525,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
@@ -208,15 +208,6 @@ index 25e1fb8..0e69cd5 100644
 +    protected float getFOVModifier(float partialTicks, boolean useFOVSetting)
      {
          if (this.debugView)
-         {
-@@ -559,7 +559,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
-         }
-     }
- 
--    private void hurtCameraEffect(float partialTicks)
-+    protected void hurtCameraEffect(float partialTicks)
-     {
-         if (this.mc.getRenderViewEntity() instanceof EntityLivingBase)
          {
 @@ -1459,7 +1459,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
          GlStateManager.enableCull();
@@ -289,7 +280,7 @@ index 7e4283f..c942907 100644
                      {
                          this.renderManager.renderEntityStatic((Entity)list1.get(j), partialTicks, false);
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/RenderItem.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/RenderItem.java
-index 0ed8384..c257a1b 100644
+index 0ed8384..98ae313 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/RenderItem.java
 +++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/RenderItem.java
 @@ -129,7 +129,7 @@ public class RenderItem implements IResourceManagerReloadListener
@@ -301,7 +292,7 @@ index 0ed8384..c257a1b 100644
          }
  
          this.renderQuads(vertexbuffer, model.getQuads((IBlockState)null, (EnumFacing)null, 0L), color, stack);
-@@ -439,23 +439,20 @@ public class RenderItem implements IResourceManagerReloadListener
+@@ -439,23 +439,21 @@ public class RenderItem implements IResourceManagerReloadListener
  
              if (stack.isItemDamaged())
              {
@@ -323,7 +314,8 @@ index 0ed8384..c257a1b 100644
 -                GlStateManager.enableTexture2D();
 +                String s = ""+100*(stack.getMaxDamage()-stack.getItemDamage())/stack.getMaxDamage();
 +                if(stack.getItemDamage() != stack.getMaxDamage()) {
-+                	 fr.drawStringWithShadow(""+100*(stack.getMaxDamage()-stack.getItemDamage())/stack.getMaxDamage(), (float)(xPosition + 19 - 2 - fr.getStringWidth(s)), (float)(yPosition + 6 + 3), ((255-i)<<16)|(i<<8));
++                	 fr.drawStringWithShadow(s, (float)(xPosition + 19 - 2 - fr.getStringWidth(s)), (float)(yPosition + 6 + 3), ((255-i)<<16)|(i<<8));
++                	 GlStateManager.color(1, 1, 1, 1);
 +                }
                  GlStateManager.enableLighting();
                  GlStateManager.enableDepth();
