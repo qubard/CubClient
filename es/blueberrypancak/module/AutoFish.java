@@ -109,7 +109,7 @@ public class AutoFish extends Module {
 				}
 			}
 		}
-		return false;
+		return mc.thePlayer.fishEntity != null;
 	}
 	
 	@Subscribe
@@ -131,7 +131,7 @@ public class AutoFish extends Module {
 
 	@Override
 	public void onDisabled() {
-		if(isFishing() || Client.getMinecraft().thePlayer.fishEntity != null) { 
+		if(isFishing()) {
 			onEnabled();
 		}
 	}
