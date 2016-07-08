@@ -21,6 +21,8 @@ import net.minecraft.util.EnumParticleTypes;
 @RegisterModule(key=37,color=0x3F7F47,listed=true)
 public class AutoFish extends Module {
 	
+	private int lastSlot = -1;
+	
 	@Subscribe
 	public void onReceivePacket(EventRecPacket e) {
 		Packet packet = e.getValue();
@@ -38,14 +40,15 @@ public class AutoFish extends Module {
 	}
 	
 	private boolean equipRod() {
-		int slot = getFishingRod(36);
+		int slot = getFishingRod();
 		if(slot < 0) return false;
 		EntityPlayerSPHook p = (EntityPlayerSPHook) Client.getMinecraft().thePlayer;
 		int chosenSlot = getEmptySlot();
 		if(slot >= 9) {
 			move(slot, chosenSlot);
 		}
-		p.getConnection().sendPacket(new CPacketHeldItemChange(slot >= 9 ? chosenSlot : slot));
+		lastSlot = slot >= 9 ? chosenSlot : slot;
+		p.getConnection().sendPacket(new CPacketHeldItemChange(lastSlot));
 		return true;
 	}
 	
@@ -60,9 +63,9 @@ public class AutoFish extends Module {
 		return p.inventory.currentItem;
 	}
 	
-	private int getFishingRod(int l) {
+	private int getFishingRod() {
 		EntityPlayer p = Client.getMinecraft().thePlayer;
-		for(int i = 0; i < l; i++) {
+		for(int i = 0; i < 36; i++) {
 			ItemStack o = p.inventory.mainInventory[i];
 			if(o != null && o.getItem() instanceof ItemFishingRod) {
 				return i;
@@ -85,8 +88,10 @@ public class AutoFish extends Module {
 	
 	@Subscribe
 	public void onRender(EventRender e) {
-		if(isEnabled() && getFishingRod(9) == -1) {
-			onEnabled();
+		if(isEnabled()) {
+			if(lastSlot == -1 || Client.getMinecraft().thePlayer.inventory.mainInventory[lastSlot] == null) {
+				onEnabled();
+			}
 		}
 	}
 
