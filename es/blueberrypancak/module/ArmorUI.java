@@ -6,7 +6,6 @@ import es.blueberrypancak.event.Subscribe;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -20,7 +19,6 @@ public class ArmorUI extends Module {
 	public void onRender(EventRender e) {
 		EntityPlayer player = Client.getMinecraft().thePlayer;
 		ItemStack[] equipped = player.inventory.armorInventory;
-		RenderItem r = Client.getMinecraft().getRenderItem();
 		ScaledResolution res = Client.res();
 		int barWidth = 60;
 		int k = 0;

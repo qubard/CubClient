@@ -20,7 +20,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderPearl;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemShield;
 import net.minecraft.item.ItemStack;
@@ -39,7 +38,6 @@ public class TraceESP extends Module {
 				trace(mc, (EntityEnderPearl) o, e.getValue(), "#00FF90");
 			} else if (o instanceof EntityOtherPlayerMP) {
 				EntityOtherPlayerMP g = (EntityOtherPlayerMP) o;
-				EntityPlayer p = mc.thePlayer;
 				box(mc, g, e.getValue(), 1.0);
 				trace(mc, g, e.getValue(), 1.0);
 				RenderManager r = mc.getRenderManager();
@@ -204,9 +202,7 @@ public class TraceESP extends Module {
 					int w = 0;
 					if(o.isItemStackDamageable()) { 
 						w = p_189692_0_.getStringWidth(""+100*(o.getMaxDamage()-o.getItemDamage())/o.getMaxDamage())+1;
-						int j = (int)Math.round(13.0D - (double)o.getItemDamage() * 13.0D / (double)o.getMaxDamage());
 						int k = (int)Math.round(255.0D - (double)o.getItemDamage() * 255.0D / (double)o.getMaxDamage());
-						String s = ""+100*(o.getMaxDamage()-o.getItemDamage())/o.getMaxDamage();
 						if(o.getItemDamage() != o.getMaxDamage()) {
 							if(o.getItemDamage() == 0) {
 								m += w/1.5-1;

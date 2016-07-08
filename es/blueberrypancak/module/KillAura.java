@@ -33,7 +33,6 @@ public class KillAura extends Module {
 	public void onRender(EventRender e) {
 		if(isEnabled()) {
 			Minecraft mc = Client.getMinecraft();
-			List<Entity> l = mc.theWorld.getLoadedEntityList();
 			EntityPlayer p = mc.thePlayer;
 			if(p.getCooledAttackStrength(1.0F) == 1.0 && !p.isHandActive()) {
 				Entity o = getClosestEntity();

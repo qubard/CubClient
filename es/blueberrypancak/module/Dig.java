@@ -16,8 +16,6 @@ public class Dig extends Module {
 
 	private int digCount, n;
 
-	private long delay = 0;
-
 	public Dig() {
 		digCount = 0;
 		n = 0;

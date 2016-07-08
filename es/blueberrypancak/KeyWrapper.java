@@ -1,13 +1,10 @@
 package es.blueberrypancak;
 
-import es.blueberrypancak.module.Module;
 import net.minecraft.client.settings.KeyBinding;
 
 public class KeyWrapper {
 	
 	private KeyBinding bind;
-	
-	private Module module;
 	
 	private boolean pressed, active;
 	
