@@ -134,6 +134,8 @@ public class AutoFish extends Module {
 		if(isFishing()) {
 			onEnabled();
 		}
+		EntityPlayerSPHook p = (EntityPlayerSPHook) Client.getMinecraft().thePlayer;
+		p.getConnection().sendPacket(new CPacketHeldItemChange(p.inventory.currentItem));
 	}
 
 	@Override
