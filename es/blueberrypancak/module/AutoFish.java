@@ -8,7 +8,6 @@ import es.blueberrypancak.hook.EntityPlayerSPHook;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemStack;
@@ -27,10 +26,8 @@ public class AutoFish extends Module {
 		Packet packet = e.getValue();
 		if(isEnabled() && packet instanceof SPacketParticles) {
 			SPacketParticles particle = (SPacketParticles) packet;
-			EntityFishHook hook = Client.getMinecraft().thePlayer.fishEntity;
 			if(particle.getParticleType() == EnumParticleTypes.WATER_WAKE) {
 				if(particle.getParticleCount() == 6 && particle.getParticleSpeed() == 0.2F) {
-					EntityPlayerSPHook p = (EntityPlayerSPHook) Client.getMinecraft().thePlayer;
 					if(equipRod()){
 						toss();
 						toss();
@@ -41,14 +38,26 @@ public class AutoFish extends Module {
 	}
 	
 	private boolean equipRod() {
-		EntityPlayerSPHook p = (EntityPlayerSPHook) Client.getMinecraft().thePlayer;
 		int slot = getFishingRod();
 		if(slot < 0) return false;
-		if(slot > 9) {
-			move(slot, p.inventory.currentItem);
+		EntityPlayerSPHook p = (EntityPlayerSPHook) Client.getMinecraft().thePlayer;
+		int chosenSlot = getEmptySlot();
+		if(slot >= 9) {
+			move(slot, chosenSlot);
 		}
-		p.getConnection().sendPacket(new CPacketHeldItemChange(slot));
+		p.getConnection().sendPacket(new CPacketHeldItemChange(slot >= 9 ? chosenSlot : slot));
 		return true;
+	}
+	
+	private int getEmptySlot() {
+		EntityPlayer p = Client.getMinecraft().thePlayer;
+		for(int i = 0; i < 9; i++) {
+			ItemStack o = p.inventory.mainInventory[i];
+			if(o == null) {
+				return i;
+			}
+		}
+		return p.inventory.currentItem;
 	}
 	
 	private int getFishingRod() {
@@ -88,7 +97,9 @@ public class AutoFish extends Module {
 
 	@Override
 	public void onDisabled() {
-		onEnabled();
+		if(Client.getMinecraft().thePlayer.fishEntity != null) { 
+			onEnabled();
+		}
 	}
 
 	@Override
