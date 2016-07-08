@@ -3,6 +3,7 @@ package es.blueberrypancak.module;
 import es.blueberrypancak.Client;
 import es.blueberrypancak.event.EventRecPacket;
 import es.blueberrypancak.event.EventRender;
+import es.blueberrypancak.event.EventSendPacket;
 import es.blueberrypancak.event.Subscribe;
 import es.blueberrypancak.hook.EntityPlayerSPHook;
 import net.minecraft.client.Minecraft;
@@ -22,6 +23,17 @@ import net.minecraft.util.EnumParticleTypes;
 public class AutoFish extends Module {
 	
 	private int lastSlot = -1;
+	
+	@Subscribe
+	public void onSendPacket(EventSendPacket e) {
+		Packet packet = e.getValue();
+		if(isEnabled() && packet instanceof CPacketHeldItemChange) {
+			CPacketHeldItemChange change = (CPacketHeldItemChange) packet;
+			if(lastSlot != -1 && change.getSlotId() != lastSlot) {
+				e.setValue(new CPacketHeldItemChange(lastSlot));
+			}
+		}
+	}
 	
 	@Subscribe
 	public void onReceivePacket(EventRecPacket e) {
