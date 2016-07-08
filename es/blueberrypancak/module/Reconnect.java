@@ -16,9 +16,9 @@ public class Reconnect extends Module {
 	@Subscribe
 	public void onRender(EventRender e) {
 		Minecraft mc = Client.getMinecraft();
-		if(lastReconnect == 0) lastReconnect = System.currentTimeMillis();
 		String ip = mc.getCurrentServerData().serverIP;
 		if(isEnabled() && ip != null && mc.theWorld == null && !(mc.currentScreen instanceof GuiConnecting)) {
+			if(lastReconnect == 0) lastReconnect = System.currentTimeMillis();
 			mc.fontRendererObj.drawStringWithShadow(getName(), 0, 0, getActiveColor());
 			if(getElapsed() >= 5) {
 				mc.displayGuiScreen(new GuiConnecting(new GuiMainMenu(), mc, ip, 25565));
