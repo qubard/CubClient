@@ -223,7 +223,6 @@ public class TraceESP extends Module {
 			}
 		}
 		GlStateManager.popMatrix();
-		GlStateManager.enableLighting();
 		GlStateManager.depthMask(true);
 		GlStateManager.disableBlend();
 		GlStateManager.enableDepth();

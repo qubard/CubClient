@@ -258,6 +258,35 @@ index 25e1fb8..39d05bf 100644
          GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
          GlStateManager.popMatrix();
      }
+diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/ItemRenderer.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/ItemRenderer.java
+index 2619f50..3f236ea 100644
+--- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/ItemRenderer.java
++++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/ItemRenderer.java
+@@ -570,7 +570,7 @@ public class ItemRenderer
+     {
+         Tessellator tessellator = Tessellator.getInstance();
+         VertexBuffer vertexbuffer = tessellator.getBuffer();
+-        GlStateManager.color(1.0F, 1.0F, 1.0F, 0.9F);
++        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+         GlStateManager.depthFunc(519);
+         GlStateManager.depthMask(false);
+         GlStateManager.enableBlend();
+@@ -594,10 +594,11 @@ public class ItemRenderer
+             GlStateManager.translate((float)(-(i * 2 - 1)) * 0.24F, -0.3F, 0.0F);
+             GlStateManager.rotate((float)(i * 2 - 1) * 10.0F, 0.0F, 1.0F, 0.0F);
+             vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
+-            vertexbuffer.pos(-0.5D, -0.5D, -0.5D).tex((double)f2, (double)f4).endVertex();
+-            vertexbuffer.pos(0.5D, -0.5D, -0.5D).tex((double)f1, (double)f4).endVertex();
+-            vertexbuffer.pos(0.5D, 0.5D, -0.5D).tex((double)f1, (double)f3).endVertex();
+-            vertexbuffer.pos(-0.5D, 0.5D, -0.5D).tex((double)f2, (double)f3).endVertex();
++            float scale = 0.4F;
++            vertexbuffer.pos(-0.5D*scale, -0.5D*scale, -0.5D*scale).tex((double)f2, (double)f4).endVertex();
++            vertexbuffer.pos(0.5D*scale, -0.5D*scale*0.5, -0.5D*scale).tex((double)f1, (double)f4).endVertex();
++            vertexbuffer.pos(0.5D*scale, 0.5D*scale, -0.5D*scale).tex((double)f1, (double)f3).endVertex();
++            vertexbuffer.pos(-0.5D*scale, 0.5D*scale, -0.5D*scale).tex((double)f2, (double)f3).endVertex();
+             tessellator.draw();
+             GlStateManager.popMatrix();
+         }
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/RenderGlobal.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/RenderGlobal.java
 index 7e4283f..c942907 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/RenderGlobal.java

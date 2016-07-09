@@ -24,6 +24,8 @@ import net.minecraft.util.EnumParticleTypes;
 @RegisterModule(key=37,color=0x3F7F47,secondary_color=0xFF1C07,listed=true)
 public class AutoFish extends Module {
 	
+	private long nextTick;
+	
 	private int lastSlot = -1;
 	
 	@Subscribe
@@ -116,7 +118,10 @@ public class AutoFish extends Module {
 	public void onRender(EventRender e) {
 		if(isEnabled()) {
 			if(lastSlot == -1 || Client.getMinecraft().thePlayer.inventory.mainInventory[lastSlot] == null) {
-				onEnabled();
+				if(System.currentTimeMillis() > nextTick) { 
+					onEnabled();
+					nextTick = System.currentTimeMillis() + 1500;
+				}
 			}
 			active_color = getFishingRod() != -1 ? getColor() : getSecondaryColor();
 		}

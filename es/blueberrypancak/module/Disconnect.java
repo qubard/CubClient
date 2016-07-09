@@ -43,8 +43,10 @@ public class Disconnect extends Module {
 		for(Entity o :  mc.theWorld.getLoadedEntityList()) {
 			if(o instanceof EntityOtherPlayerMP) {
 				EntityOtherPlayerMP p = (EntityOtherPlayerMP) o;
-				if(p.getGameProfile() != mc.thePlayer.getGameProfile() && p.getDistanceToEntity(mc.thePlayer) <= threshold || threshold < 0) {
-					return p;
+				if(p.getGameProfile() != mc.thePlayer.getGameProfile() ) {
+					if(p.getDistanceToEntity(mc.thePlayer) <= threshold || threshold < 0) {
+						return p;
+					}
 				}
 			}
 		}
