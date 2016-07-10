@@ -14,7 +14,7 @@ public class Sprint extends Module {
 	public void onSetSprint(EventSetSprint e) {
 		EntityPlayer player = Client.getMinecraft().thePlayer;
 		if(isEnabled() && player.moveForward != 0) {
-			if(!e.getValue()){ 
+			if(!e.getValue() && (float)player.getFoodStats().getFoodLevel() > 6.0F){ 
 				e.setValue(true);
 			}
 		}
@@ -25,7 +25,7 @@ public class Sprint extends Module {
 		EntityPlayerSP player = Client.getMinecraft().thePlayer;
 		if(isEnabled() && player.moveForward != 0) {
 			if(!player.isSprinting()) {
-				player.setSprinting(true);
+				player.setSprinting((float)player.getFoodStats().getFoodLevel() > 6.0F);
 			}
 		} else if(!isEnabled() && player.moveForward != 0) {
 			if(player.isSprinting()) {
