@@ -19,7 +19,7 @@ public class Camera extends Module {
 	@Subscribe
 	public void onSendPacket(EventSendPacket e) {
 		Packet packet = e.getValue();
-		if(isEnabled() && !(packet instanceof CPacketPlayer.Rotation) && (packet instanceof CPacketPlayer || packet instanceof CPacketEntityAction)) {
+		if(isEnabled() && (packet instanceof CPacketPlayer || packet instanceof CPacketEntityAction)) {
 			e.setCancelled(true);
 		}
 	}
