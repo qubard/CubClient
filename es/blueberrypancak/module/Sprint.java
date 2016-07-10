@@ -13,7 +13,7 @@ public class Sprint extends Module {
 	@Subscribe
 	public void onSetSprint(EventSetSprint e) {
 		EntityPlayer player = Client.getMinecraft().thePlayer;
-		if(isEnabled() && player.moveForward != 0) {
+		if(isEnabled() && player.moveForward > 0) {
 			if(!e.getValue() && (float)player.getFoodStats().getFoodLevel() > 6.0F){ 
 				e.setValue(true);
 			}
@@ -23,16 +23,16 @@ public class Sprint extends Module {
 	@Subscribe
 	public void onRender(EventRender e) {
 		EntityPlayerSP player = Client.getMinecraft().thePlayer;
-		if(isEnabled() && player.moveForward != 0) {
+		if(isEnabled() && player.moveForward > 0) {
 			if(!player.isSprinting()) {
 				player.setSprinting((float)player.getFoodStats().getFoodLevel() > 6.0F);
 			}
-		} else if(!isEnabled() && player.moveForward != 0) {
+		} else if(!isEnabled()) {
 			if(player.isSprinting()) {
 				player.setSprinting(false);
 			}
 		}
-		active_color = player.moveForward != 0 ? getColor() : getSecondaryColor();
+		active_color = player.isSprinting() ? getColor() : getSecondaryColor();
 	}
 	
 	@Override
