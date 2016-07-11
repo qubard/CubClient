@@ -12,7 +12,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
-import net.minecraft.util.EnumHand;
 
 @RegisterModule
 public class Tool extends Module {
@@ -55,9 +54,9 @@ public class Tool extends Module {
 		ItemStack tool = getTool(e.getBlock());
 		if(tool != null && p.getHeldItemMainhand() != tool) {
 			ItemStack last = p.getHeldItemMainhand();
-			p.setHeldItem(EnumHand.MAIN_HAND, tool);
+			p.inventory.mainInventory[p.inventory.currentItem] = tool;
 			e.setValue(p.getDigSpeed(e.getBlock()));
-			p.setHeldItem(EnumHand.MAIN_HAND, last);
+			p.inventory.mainInventory[p.inventory.currentItem] = last;
 		}
 	}
 
