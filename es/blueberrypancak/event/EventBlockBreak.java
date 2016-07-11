@@ -13,5 +13,4 @@ public class EventBlockBreak implements Event {
 	public BlockPos getBlockPos() {
 		return this.pos;
 	}
-	
 }

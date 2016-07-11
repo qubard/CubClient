@@ -2,6 +2,7 @@ package es.blueberrypancak.hook;
 
 import es.blueberrypancak.event.EventCanHarvestBlock;
 import es.blueberrypancak.event.EventChat;
+import es.blueberrypancak.event.EventDigSpeed;
 import es.blueberrypancak.event.EventGetHeldItem;
 import es.blueberrypancak.event.EventInLava;
 import es.blueberrypancak.event.EventInWater;
@@ -64,6 +65,12 @@ public class EntityPlayerSPHook extends EntityPlayerSP {
 		EventManager.fire(e);
 		return e.getValue();
 	}
+	
+	 public float getDigSpeed(IBlockState state) {
+		 EventDigSpeed e = new EventDigSpeed(state, super.getDigSpeed(state));
+		 EventManager.fire(e);
+		 return e.getValue();
+	 }
 	
 	public ItemStack getHeldItemMainhand() {
 		EventGetHeldItem e = new EventGetHeldItem(super.getHeldItemMainhand());
