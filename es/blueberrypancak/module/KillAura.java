@@ -118,7 +118,7 @@ public class KillAura extends Module {
 		Entity e = null;
 		for(Entity o : l) {
 			if(o != p && (o instanceof EntityOtherPlayerMP || o instanceof EntityLiving)) {
-				if(o.isEntityAlive() && canEntityBeSeen(o)) {
+				if(o.isEntityAlive() && (canEntityBeSeen(o) || mc.objectMouseOver.entityHit == o)) {
 					if(e == null || o.getDistanceSqToEntity(p) <= e.getDistanceSqToEntity(p)) {
 						if(o.getDistanceSqToEntity(p) <= distanceThreshold) {
 							e = o;

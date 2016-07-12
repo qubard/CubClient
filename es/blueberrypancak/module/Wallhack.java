@@ -31,7 +31,8 @@ public class Wallhack extends Module {
 		if (isEnabled()) {
 			for(Location l : blocks) {
 				Block block = mc.theWorld.getBlockState(new BlockPos((double)l.getX(), (double)l.getY(), (double)l.getZ())).getBlock();
-				if(mc.getRenderViewEntity().getDistance(l.getX(), l.getY(), l.getZ()) >= Client.getMinecraft().gameSettings.renderDistanceChunks*16 || Block.getIdFromBlock(block) != l.getId()) {
+				double dist = mc.getRenderViewEntity().getDistance(l.getX(), l.getY(), l.getZ());
+				if(dist >= mc.gameSettings.renderDistanceChunks*16 || Block.getIdFromBlock(block) != l.getId()) {
 					blocks.remove(l);
 					continue;
 				}
@@ -99,7 +100,21 @@ public class Wallhack extends Module {
 				return;
 			}
 		}
-		blocks.add(e.getValue());
+		boolean max = countBlocks(pos.getId()) <= 200;
+		double dist = Client.getMinecraft().thePlayer.getDistanceSqToCenter(new BlockPos((double)pos.getX(), (double)pos.getY(), (double)pos.getZ()));
+		if(max || (!max && dist <= 100)) { 
+			blocks.add(e.getValue());
+		}
+	}
+	
+	private int countBlocks(int id) {
+		int i = 0;
+		for(Location l : blocks) {
+			if(l.getId() == id) {
+				i++;
+			}
+		}
+		return i;
 	}
 	
 	private void refresh() {
