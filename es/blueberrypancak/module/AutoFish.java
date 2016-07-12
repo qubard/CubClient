@@ -31,7 +31,7 @@ public class AutoFish extends Module {
 	@Subscribe
 	public void onSendPacket(EventSendPacket e) {
 		Packet packet = e.getValue();
-		if(isEnabled() && packet instanceof CPacketHeldItemChange) {
+		if(isEnabled() && packet instanceof CPacketHeldItemChange && getFishingRod() != -1) {
 			CPacketHeldItemChange change = (CPacketHeldItemChange) packet;
 			if(lastSlot != -1 && change.getSlotId() != lastSlot) {
 				e.setValue(new CPacketHeldItemChange(lastSlot));
