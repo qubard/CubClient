@@ -12,6 +12,7 @@ import es.blueberrypancak.event.EventEntityRender;
 import es.blueberrypancak.event.EventLoadBlock;
 import es.blueberrypancak.event.Subscribe;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,7 +52,7 @@ public class Wallhack extends Module {
 			if(!found) {
 				tempList.add(k); 
 			}
-			onEnabled();
+			refresh();
 			e.setCancelled(true);
 		} else if(message.equals("-clear")) {
 			blocks.clear();
@@ -61,18 +62,24 @@ public class Wallhack extends Module {
 			String k = message.split(" ")[1];
 			boolean found = false;
 			for(String s: tempList) {
-				found |= s.contains(k);
+				found |= s.equals(k);
 				if(found) {
 					tempList.remove(s);
 					break;
 				}
 			}
+			ArrayList<Integer> removed = new ArrayList<Integer>();
+			int z = 0;
 			for(Location loc : blocks) {
 				if(loc.getId() == Integer.parseInt(k)) {
-					blocks.remove(loc);
-					continue;
+					removed.add(blocks.indexOf(loc)-z);
+					z++;
 				}
 			}
+			for(Integer remove : removed) {
+				blocks.remove(blocks.get(remove));
+			}
+			e.setCancelled(true);
 		}
 	}
 	
@@ -83,7 +90,6 @@ public class Wallhack extends Module {
 		for(String s : tempList) {
 			found |= Integer.parseInt(s.split(":")[0]) == pos.getId();
 			if(found) {
-				pos.setColor("#"+s.split(":")[1]);
 				break;
 			}
 		}
@@ -95,12 +101,21 @@ public class Wallhack extends Module {
 		}
 		blocks.add(e.getValue());
 	}
+	
+	private void refresh() {
+		Minecraft mc = Client.getMinecraft();
+		EntityPlayer p = mc.thePlayer;
+		int d = mc.gameSettings.renderDistanceChunks*16;
+		mc.theWorld.markBlockRangeForRenderUpdate(new BlockPos(p.posX-d, p.posY-d, p.posZ-d), new BlockPos(p.posX+d, p.posY+d, p.posZ+d));
+	}
 
 	private void drawBlock(Location l) {
-		RenderManager r = Client.getMinecraft().getRenderManager();
+		Minecraft mc = Client.getMinecraft();
+		IBlockState state = mc.theWorld.getBlockState(new BlockPos((double)l.getX(), (double)l.getY(), (double)l.getZ()));
+		RenderManager r = mc.getRenderManager();
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glLineWidth(1.0F);
-		Color c = l.getColor();
+		Color c = new Color(state.getMapColor().colorValue);
 		GL11.glPushMatrix();
 		GL11.glDepthMask(false);
 		GL11.glEnable(GL11.GL_BLEND);
@@ -113,11 +128,10 @@ public class Wallhack extends Module {
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		double w = 0.5;
-		double h = 1;
+		double h = 1.0;
 		GL11.glBegin(GL11.GL_LINES);
 
-		Minecraft mc = Client.getMinecraft();
-		Block current = mc.theWorld.getBlockState(new BlockPos((double)l.getX(), (double)l.getY(), (double)l.getZ())).getBlock();
+		Block current = state.getBlock();
 		Block up = mc.theWorld.getBlockState(new BlockPos((double)l.getX(), (double)l.getY()+1, (double)l.getZ())).getBlock();
 		Block down = mc.theWorld.getBlockState(new BlockPos((double)l.getX(), (double)l.getY()-1, (double)l.getZ())).getBlock();
 		Block left = mc.theWorld.getBlockState(new BlockPos((double)l.getX()-1, (double)l.getY(), (double)l.getZ())).getBlock();		
@@ -251,10 +265,7 @@ public class Wallhack extends Module {
 
 	@Override
 	public void onEnabled() {
-		Minecraft mc = Client.getMinecraft();
-		EntityPlayer p = mc.thePlayer;
-		int d = mc.gameSettings.renderDistanceChunks*16;
-		mc.theWorld.markBlockRangeForRenderUpdate(new BlockPos(p.posX-d, p.posY-d, p.posZ-d), new BlockPos(p.posX+d, p.posY+d, p.posZ+d));
+		refresh();
 	}
 
 	@Override
