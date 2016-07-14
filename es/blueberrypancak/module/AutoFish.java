@@ -20,6 +20,8 @@ import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
 import net.minecraft.network.play.server.SPacketParticles;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 
 @RegisterModule(key=37,color=0x3F7F47,secondary_color=0xFF1C07,listed=true)
 public class AutoFish extends Module {
@@ -114,10 +116,23 @@ public class AutoFish extends Module {
 		return mc.thePlayer.fishEntity != null;
 	}
 	
+	private boolean facingWater(int dist) {
+		Minecraft mc = Client.getMinecraft();
+		EntityPlayer p = mc.thePlayer;
+		Vec3d vec3d = ((Entity)p).getPositionEyes(1F);
+		Vec3d vec3d1 = ((Entity)p).getLook(1F);
+		Vec3d vec3d2 = vec3d.addVector(vec3d1.xCoord * dist, vec3d1.yCoord * dist, vec3d1.zCoord * dist);
+		RayTraceResult result = mc.theWorld.rayTraceBlocks(vec3d, vec3d2, true, false, true);
+		if(result.typeOfHit == RayTraceResult.Type.BLOCK) {
+			return mc.theWorld.getBlockState(result.getBlockPos()).toString().contains("water");
+		}
+		return false;
+	}
+	
 	@Subscribe
 	public void onRender(EventRender e) {
 		if(isEnabled()) {
-			if(lastSlot == -1 || Client.getMinecraft().thePlayer.inventory.mainInventory[lastSlot] == null) {
+			if(lastSlot == -1 || Client.getMinecraft().thePlayer.inventory.mainInventory[lastSlot] == null || !isFishing()) {
 				if(System.currentTimeMillis() > nextTick) { 
 					onEnabled();
 					nextTick = System.currentTimeMillis() + 1500;
@@ -129,7 +144,7 @@ public class AutoFish extends Module {
 
 	@Override
 	public void onEnabled() {
-		if(equipRod()) {
+		if(equipRod() && facingWater(15)) {
 			toss();
 		}
 	}
