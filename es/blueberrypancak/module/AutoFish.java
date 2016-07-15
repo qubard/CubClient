@@ -108,7 +108,7 @@ public class AutoFish extends Module {
 		Minecraft mc = Client.getMinecraft();
 		for(Entity e : mc.theWorld.loadedEntityList) {
 			if(e instanceof EntityFishHook) {
-				if(e.getDistanceToEntity(mc.thePlayer) < 15) {
+				if(((EntityFishHook)e).angler == mc.thePlayer) {
 					return true;
 				}
 			}
@@ -135,7 +135,6 @@ public class AutoFish extends Module {
 			if(lastSlot == -1 || Client.getMinecraft().thePlayer.inventory.mainInventory[lastSlot] == null || !isFishing()) {
 				if(System.currentTimeMillis() > nextTick) { 
 					onEnabled();
-					nextTick = System.currentTimeMillis() + 1500;
 				}
 			}
 			active_color = getFishingRod() != -1 ? getColor() : getSecondaryColor();
@@ -147,6 +146,7 @@ public class AutoFish extends Module {
 		if(equipRod() && facingWater(15)) {
 			toss();
 		}
+		nextTick = System.currentTimeMillis() + 1500;
 	}
 
 	@Override
