@@ -38,8 +38,9 @@ public class TraceESP extends Module {
 				trace(mc, (EntityEnderPearl) o, e.getValue(), "#00FF90");
 			} else if (o instanceof EntityOtherPlayerMP) {
 				EntityOtherPlayerMP g = (EntityOtherPlayerMP) o;
-				box(mc, g, e.getValue(), 1.0);
-				trace(mc, g, e.getValue(), 1.0);
+				double opacity = Friend.isFriend(g) ? 0.4 : 1.0;
+				box(mc, g, e.getValue(), opacity);
+				trace(mc, g, e.getValue(), opacity);
 				RenderManager r = mc.getRenderManager();
 				double d0 = g.lastTickPosX + (g.posX - g.lastTickPosX) * (double) e.getValue();
 				double d1 = g.lastTickPosY + (g.posY - g.lastTickPosY) * (double) e.getValue();

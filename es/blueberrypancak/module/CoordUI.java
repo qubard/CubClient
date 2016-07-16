@@ -33,7 +33,8 @@ public class CoordUI extends Module {
 			if(e instanceof EntityMob && e.getDistanceSqToEntity(mc.thePlayer) < 30) {
 				i[0]++;
 			} else if(e instanceof EntityOtherPlayerMP ) {
-				if(((EntityOtherPlayerMP)e).getGameProfile() != mc.thePlayer.getGameProfile()) {
+				EntityOtherPlayerMP p = (EntityOtherPlayerMP) e;
+				if(p.getGameProfile() != mc.thePlayer.getGameProfile() && !Friend.isFriend(p)) {
 					i[1]++;
 				}
 			}
