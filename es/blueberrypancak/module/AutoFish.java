@@ -64,11 +64,12 @@ public class AutoFish extends Module {
 		int slot = getFishingRod();
 		if(slot < 0) return false;
 		EntityPlayerSPHook p = (EntityPlayerSPHook) Client.getMinecraft().thePlayer;
-		int chosenSlot = getEmptySlot();
+		lastSlot = slot;
 		if(slot >= 9) {
+			int chosenSlot = getEmptySlot();
 			move(slot, chosenSlot);
+			lastSlot = chosenSlot;
 		}
-		lastSlot = slot >= 9 ? chosenSlot : slot;
 		p.getConnection().sendPacket(new CPacketHeldItemChange(lastSlot));
 		return true;
 	}
