@@ -48,9 +48,12 @@ public class AutoFish extends Module {
 			SPacketParticles particle = (SPacketParticles) packet;
 			if(particle.getParticleType() == EnumParticleTypes.WATER_WAKE) {
 				if(particle.getParticleCount() == 6 && particle.getParticleSpeed() == 0.2F) {
-					if(equipRod()){
-						toss();
-						toss();
+					EntityFishHook o = getFishHook();
+					if(o != null && o.getDistance(particle.getXCoordinate(), particle.getYCoordinate(), particle.getZCoordinate()) < 1.5) {
+						if(equipRod()){
+							toss();
+							toss();
+						}
 					}
 				}
 			}
@@ -104,16 +107,21 @@ public class AutoFish extends Module {
 		p.getConnection().sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
 	}
 	
-	private boolean isFishing() {
+	private EntityFishHook getFishHook() {
 		Minecraft mc = Client.getMinecraft();
 		for(Entity e : mc.theWorld.loadedEntityList) {
 			if(e instanceof EntityFishHook) {
-				if(((EntityFishHook)e).angler == mc.thePlayer) {
-					return true;
+				EntityFishHook o = (EntityFishHook) e;
+				if(o.angler == mc.thePlayer) {
+					return o;
 				}
 			}
 		}
-		return mc.thePlayer.fishEntity != null;
+		return mc.thePlayer.fishEntity;
+	}
+	
+	private boolean isFishing() {
+		return getFishHook() != null;
 	}
 	
 	private boolean facingWater(int dist) {
