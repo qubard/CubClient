@@ -42,7 +42,7 @@ public class NoCheat extends Module {
 	@Subscribe
 	public void onReceivePacket(EventRecPacket e) {
 		Packet packet = e.getValue();
-		if(isEnabled() && packet instanceof SPacketEntityVelocity) {
+		if(super.isEnabled() && packet instanceof SPacketEntityVelocity) {
 			e.setCancelled(true);
 		}
 	}
@@ -52,7 +52,7 @@ public class NoCheat extends Module {
 		Minecraft mc = Client.getMinecraft();
 		EntityPlayerSPHook p = (EntityPlayerSPHook) mc.thePlayer;
 		int slot = getWaterBucket();
-		if(isEnabled() && slot != -1 && !(mc.theWorld.provider instanceof WorldProviderHell)) {
+		if(isEnabled() && slot != -1) {
 			if(p.motionY < -0.70) {
 				falling = true;
 				if(falling && !Client.getMinecraft().theWorld.isAirBlock(new BlockPos(p.posX, p.getEntityBoundingBox().minY-4, p.posZ))) {
@@ -89,6 +89,10 @@ public class NoCheat extends Module {
 	
 	private int getElapsed() {
 		return (int)(System.currentTimeMillis()-lastPickup);
+	}
+	
+	public boolean isEnabled() {
+		return super.isEnabled() && !(Client.getMinecraft().theWorld.provider instanceof WorldProviderHell);
 	}
 	
 	@Subscribe
