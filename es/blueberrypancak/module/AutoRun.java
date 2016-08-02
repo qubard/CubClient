@@ -24,17 +24,7 @@ public class AutoRun extends Module {
 		Packet packet = e.getValue();
 		if(isEnabled() && packet instanceof CPacketPlayerDigging) {
 			CPacketPlayerDigging digging = (CPacketPlayerDigging) packet;
-			Minecraft mc = Client.getMinecraft();
-			boolean b = true;
-			BlockPos pos = digging.getPosition();
-			for(int x = -2; x < 2; x++) { 
-				for(int y = -1; y < 1; y++) { 
-					for(int z = -2; z < 2; z++) { 
-						b = b&!(mc.theWorld.getBlockState(new BlockPos(pos.getX()+x, pos.getY()+y, pos.getZ()+z)).getMaterial() instanceof MaterialLiquid);
-					}
-				}
-			}
-			e.setCancelled(!b);
+			e.setCancelled(isNearLiquid(digging.getPosition()));
 		}
 	}
 
@@ -74,6 +64,21 @@ public class AutoRun extends Module {
 			message((snapYaw ? "\247aEn" : "\247cDis") + "abled snapYaw!");
 			e.setCancelled(true);
 		}
+	}
+	
+	private boolean isNearLiquid(BlockPos pos) {
+		Minecraft mc = Client.getMinecraft();
+		boolean b = false;
+		for(int x = -2; x < 2; x++) {
+			for(int y = -2; y < 2; y++) { 
+				for(int z = -2; z < 2; z++) { 
+					if(mc.theWorld.getBlockState(new BlockPos(pos.getX()+x, pos.getY()+y, pos.getZ()+z)).getMaterial() instanceof MaterialLiquid) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 	
 	private void message(String s) {
