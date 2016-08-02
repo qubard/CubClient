@@ -16,8 +16,6 @@ public class Reconnect extends Module {
 	
 	private long lastReconnect;
 	
-	private boolean connecting;
-	
 	@Subscribe
 	public void onRender(EventRender e) {
 		Minecraft mc = Client.getMinecraft();
@@ -25,16 +23,12 @@ public class Reconnect extends Module {
 		if(data != null) {
 			lastIp = data.serverIP;
 		}
-		if(connecting && !(mc.currentScreen instanceof GuiConnecting)) {
-			connecting = false;
-			lastReconnect = System.currentTimeMillis();
-		}
 		if(lastIp != null && mc.theWorld == null && !(mc.currentScreen instanceof GuiConnecting)) {
 			if(lastReconnect == 0) lastReconnect = System.currentTimeMillis();
 			mc.fontRendererObj.drawStringWithShadow(getName(), 0, 0, getActiveColor());
-			if(getElapsed() >= 5 && !connecting) {
+			if(getElapsed() >= 5) {
 				mc.displayGuiScreen(new GuiConnecting(new GuiMainMenu(), mc, lastIp, 25565));
-				connecting = true;
+				lastReconnect = System.currentTimeMillis();
 			}
 		}
 	}
