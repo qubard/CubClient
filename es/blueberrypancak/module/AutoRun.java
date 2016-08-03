@@ -67,17 +67,11 @@ public class AutoRun extends Module {
 	}
 	
 	private boolean isNearLiquid(BlockPos pos) {
-		Minecraft mc = Client.getMinecraft();
-		for(int x = -2; x < 2; x++) {
-			for(int y = -2; y < 2; y++) { 
-				for(int z = -2; z < 2; z++) { 
-					if(mc.theWorld.getBlockState(new BlockPos(pos.getX()+x, pos.getY()+y, pos.getZ()+z)).getMaterial() instanceof MaterialLiquid) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
+		return isLiquid(pos.east()) || isLiquid(pos.west()) || isLiquid(pos.south()) || isLiquid(pos.north()) || isLiquid(pos.up()) || isLiquid(pos.down());
+	}
+	
+	private boolean isLiquid(BlockPos pos) {
+		return Client.getMinecraft().theWorld.getBlockState(pos).getMaterial() instanceof MaterialLiquid;
 	}
 	
 	private void message(String s) {
