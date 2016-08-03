@@ -7,6 +7,8 @@ import es.blueberrypancak.event.EventTick;
 import es.blueberrypancak.event.Subscribe;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -25,6 +27,9 @@ public class Dig extends Module {
 	public void onBlockBreak(EventBlockBreak e) {
 		if(isEnabled()) { 
 			digCount++;
+			Minecraft mc = Client.getMinecraft();
+			EntityPlayerSP p = mc.thePlayer;
+			mc.playerController.processRightClickBlock(p, mc.theWorld, p.inventory.getCurrentItem(), e.getBlockPos(), EnumFacing.DOWN, p.getLookVec(), EnumHand.MAIN_HAND);
 		}
 	}
 	
