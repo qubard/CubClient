@@ -52,7 +52,7 @@ public class Reharvest extends Module {
 		if(isEnabled() && (InventoryHelper.isItem(lastSlot, BONEMEAL) || equipBonemeal())) {
 			Minecraft mc = Client.getMinecraft();
 			EntityPlayerSPHook p = (EntityPlayerSPHook) Client.getMinecraft().thePlayer;
-			if (System.currentTimeMillis() > nextTick && (p.noClip || p.getDistanceSq(soil) < 6)) {
+			if (System.currentTimeMillis() >= nextTick && (p.noClip || p.getDistanceSq(soil) < 6)) {
 				String seeds = mc.theWorld.getBlockState(soil.up()).toString();
 				String block = mc.theWorld.getBlockState(soil).toString();
 				if(seeds.contains("wheat")) {

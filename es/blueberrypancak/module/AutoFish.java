@@ -116,7 +116,7 @@ public class AutoFish extends Module {
 	public void onRender(EventRender e) {
 		if(isEnabled()) {
 			if(lastSlot == -1 || Client.getMinecraft().thePlayer.inventory.mainInventory[lastSlot] == null || !isFishing()) {
-				if(System.currentTimeMillis() > nextTick) { 
+				if(System.currentTimeMillis() >= nextTick) { 
 					onEnabled();
 				}
 			}
