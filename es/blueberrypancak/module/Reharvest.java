@@ -115,7 +115,7 @@ public class Reharvest extends Module {
 		if(slot != -1) {
 			EntityPlayer p = Client.getMinecraft().thePlayer;
 			PlayerControllerMP controller = Client.getMinecraft().playerController;
-			controller.windowClick(0, slot+36, 0, ClickType.PICKUP, p);
+			controller.windowClick(0, slot < 9 ? slot+36 : slot, 0, ClickType.PICKUP, p);
 			controller.windowClick(0, 1, 0, ClickType.PICKUP, p);
 			controller.windowClick(0, 0, 0, ClickType.QUICK_MOVE, p);
 		}
