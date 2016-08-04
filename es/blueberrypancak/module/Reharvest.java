@@ -158,5 +158,4 @@ public class Reharvest extends Module {
 	public String getName() {
 		return soil != null ? delay != 150 ? delay + "ms" : "Reharvest" : "Can't find soil";
 	}
-
 }
