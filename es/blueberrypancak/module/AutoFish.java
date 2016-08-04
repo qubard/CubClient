@@ -5,15 +5,12 @@ import es.blueberrypancak.event.EventRecPacket;
 import es.blueberrypancak.event.EventRender;
 import es.blueberrypancak.event.EventSendPacket;
 import es.blueberrypancak.event.Subscribe;
+import es.blueberrypancak.helper.InventoryHelper;
 import es.blueberrypancak.hook.EntityPlayerSPHook;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityFishHook;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.item.ItemFishingRod;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
@@ -29,6 +26,8 @@ public class AutoFish extends Module {
 	private long nextTick;
 	
 	private int lastSlot = -1;
+	
+	private final int FISHING_ROD = 346;
 	
 	@Subscribe
 	public void onSendPacket(EventSendPacket e) {
@@ -66,41 +65,16 @@ public class AutoFish extends Module {
 		EntityPlayerSPHook p = (EntityPlayerSPHook) Client.getMinecraft().thePlayer;
 		lastSlot = slot;
 		if(slot >= 9) {
-			int chosenSlot = getEmptySlot();
-			move(slot, chosenSlot);
+			int chosenSlot = InventoryHelper.getEmptySlot();
+			InventoryHelper.move(slot, chosenSlot);
 			lastSlot = chosenSlot;
 		}
 		p.getConnection().sendPacket(new CPacketHeldItemChange(lastSlot));
 		return true;
 	}
 	
-	private int getEmptySlot() {
-		EntityPlayer p = Client.getMinecraft().thePlayer;
-		for(int i = 0; i < 9; i++) {
-			ItemStack o = p.inventory.mainInventory[i];
-			if(o == null) {
-				return i;
-			}
-		}
-		return p.inventory.currentItem;
-	}
-	
 	private int getFishingRod() {
-		EntityPlayer p = Client.getMinecraft().thePlayer;
-		for(int i = 0; i < 36; i++) {
-			ItemStack o = p.inventory.mainInventory[i];
-			if(o != null && o.getItem() instanceof ItemFishingRod) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	private void move(int from, int to) {
-		Minecraft mc = Client.getMinecraft();
-		EntityPlayer p = mc.thePlayer;
-		PlayerControllerMP controller = mc.playerController;
-		controller.windowClick(0, from, to, ClickType.SWAP, p);
+		return InventoryHelper.getItem(FISHING_ROD);
 	}
 	
 	private void toss() {
