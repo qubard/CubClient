@@ -259,10 +259,18 @@ index 25e1fb8..39d05bf 100644
          GlStateManager.popMatrix();
      }
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/ItemRenderer.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/ItemRenderer.java
-index 2619f50..3f236ea 100644
+index 2619f50..0fb632f 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/ItemRenderer.java
 +++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/ItemRenderer.java
-@@ -570,7 +570,7 @@ public class ItemRenderer
+@@ -488,7 +488,6 @@ public class ItemRenderer
+         {
+             if (this.mc.thePlayer.isInsideOfMaterial(Material.WATER))
+             {
+-                this.renderWaterOverlayTexture(partialTicks);
+             }
+ 
+             if (this.mc.thePlayer.isBurning())
+@@ -570,7 +569,7 @@ public class ItemRenderer
      {
          Tessellator tessellator = Tessellator.getInstance();
          VertexBuffer vertexbuffer = tessellator.getBuffer();
@@ -271,7 +279,7 @@ index 2619f50..3f236ea 100644
          GlStateManager.depthFunc(519);
          GlStateManager.depthMask(false);
          GlStateManager.enableBlend();
-@@ -594,10 +594,11 @@ public class ItemRenderer
+@@ -594,10 +593,11 @@ public class ItemRenderer
              GlStateManager.translate((float)(-(i * 2 - 1)) * 0.24F, -0.3F, 0.0F);
              GlStateManager.rotate((float)(i * 2 - 1) * 10.0F, 0.0F, 1.0F, 0.0F);
              vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
@@ -354,7 +362,7 @@ index 0ed8384..98ae313 100644
  
              EntityPlayerSP entityplayersp = Minecraft.getMinecraft().thePlayer;
 diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/chunk/RenderChunk.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/chunk/RenderChunk.java
-index ddb2ec5..29bbab7 100644
+index ddb2ec5..b51cdfb 100644
 --- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/chunk/RenderChunk.java
 +++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/chunk/RenderChunk.java
 @@ -177,7 +177,11 @@ public class RenderChunk
@@ -364,7 +372,7 @@ index ddb2ec5..29bbab7 100644
 -
 +                
 +                if(iblockstate.getMaterial() != net.minecraft.block.material.Material.AIR) {
-+                	es.blueberrypancak.event.EventManager.fire(new es.blueberrypancak.event.EventLoadBlock(new es.blueberrypancak.Location(blockpos$mutableblockpos.getX(), blockpos$mutableblockpos.getY(), blockpos$mutableblockpos.getZ(), "#00FF00", Block.getIdFromBlock(block))));
++                	es.blueberrypancak.event.EventManager.fire(new es.blueberrypancak.event.EventLoadBlock(new es.blueberrypancak.Location(blockpos$mutableblockpos.getX(), blockpos$mutableblockpos.getY(), blockpos$mutableblockpos.getZ(), Block.getIdFromBlock(block))));
 +                }
 +                
                  BlockRenderLayer blockrenderlayer1 = block.getBlockLayer();
@@ -531,4 +539,3 @@ index d66f3d0..d117d02 100644
 +    public boolean onGround;
      protected boolean moving;
      protected boolean rotating;
- 
