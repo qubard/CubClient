@@ -8,5 +8,5 @@ Because it takes me 10 minutes to update this where it used to take 6+ hours.
 
 # Screenshots
 
-![image](http://upload.blueberrypancak.es/2016-07-01_23.10.08.png)
-![image](http://upload.blueberrypancak.es/2016-07-01_04.37.56.png)
+![image](https://upload.blueberrypancake.xyz/2016-07-01_23.10.08.png)
+![image](https://upload.blueberrypancake.xyz/2016-07-01_04.37.56.png)
