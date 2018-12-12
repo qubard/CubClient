@@ -43,26 +43,26 @@ public class Build extends Module {
 	private static HashMap<Integer, Location> work = new HashMap<Integer, Location>();
 
 	private static int distance = 3;
-	
+
 	private static int renderDistance = 100;
-	
+
 	private final int OFFHAND = 45;
 
 	private long last = 0;
-	
+
 	private Color color = new Color(151 | (201 << 8) | (47 << 16));
 
 	private Location start, end;
-	
+
 	private boolean equipBlock(int id) {
-		if(!InventoryHelper.isItemOffhand(id)) {
+		if (!InventoryHelper.isItemOffhand(id)) {
 			int slot = InventoryHelper.getItem(id);
-			if(slot != -1) {
+			if (slot != -1) {
 				EntityPlayer p = Client.getMinecraft().player;
 				Minecraft mc = Client.getMinecraft();
 				PlayerControllerMP controller = mc.playerController;
-				if(slot <= 8) {
-					slot = 45-(9-slot);
+				if (slot <= 8) {
+					slot = 45 - (9 - slot);
 				}
 				controller.windowClick(0, slot, 0, ClickType.PICKUP, p);
 				controller.windowClick(0, OFFHAND, 0, ClickType.PICKUP, p);
@@ -85,58 +85,60 @@ public class Build extends Module {
 		} else if (message.startsWith("-save")) {
 			e.setCancelled(true);
 			String[] args = message.split(" ");
-			if(args.length > 1) {
+			if (args.length > 1) {
 				try {
 					saveBounds(args[1]);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
 			}
-		} else if(message.startsWith("-load")) {
+		} else if (message.startsWith("-load")) {
 			e.setCancelled(true);
 			String[] args = message.split(" ");
-			if(start == null && args.length <= 3) {
+			if (start == null && args.length <= 3) {
 				message("\247cSet a start position first.");
 			} else {
-				if(args.length > 1) {
-					if(args.length > 3) {
-						start = new Location(new BlockPos(Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4])), -1);
+				if (args.length > 1) {
+					if (args.length > 3) {
+						start = new Location(new BlockPos(Integer.parseInt(args[2]), Integer.parseInt(args[3]),
+								Integer.parseInt(args[4])), -1);
 					}
 					loadModel(args[1]);
 				}
 			}
-		} else if(message.startsWith("-rotate")) {
-			rotateYaw(Math.PI/2);
+		} else if (message.startsWith("-rotate")) {
+			rotateYaw(Math.PI / 2);
 			message("\2479Rotated by 90 degrees on the y-axis.");
 			e.setCancelled(true);
-		} else if(message.startsWith("-render")) {
+		} else if (message.startsWith("-render")) {
 			String[] args = message.split(" ");
-			if(args.length > 1) {
+			if (args.length > 1) {
 				renderDistance = Integer.parseInt(args[1]);
 			}
 			e.setCancelled(true);
 		}
 	}
-	
+
 	private void message(String s) {
 		EntityPlayer p = Client.getMinecraft().player;
 		p.addChatMessage(new TextComponentString(s));
 	}
-	
+
 	public void rotateYaw(double angle) {
 		double cos = Math.cos(angle);
 		double sin = Math.sin(angle);
 		Iterator it = work.entrySet().iterator();
 
-		double mx = (double)(start.getX()+(end.getX()-start.getX())/2);
-		double mz = (double)(start.getZ()+(end.getZ()-start.getZ())/2);
-		
+		double mx = (double) (start.getX() + (end.getX() - start.getX()) / 2);
+		double mz = (double) (start.getZ() + (end.getZ() - start.getZ()) / 2);
+
 		HashMap<Integer, Location> new_work = new HashMap<Integer, Location>();
-		// easier to generate a new_work hashmap when rotating since the hashcodes change
-		
+		// easier to generate a new_work hashmap when rotating since the hashcodes
+		// change
+
 		start = new Location(rotateYaw(start.getPos(), angle, mx, mz), start.getId());
 		end = new Location(rotateYaw(end.getPos(), angle, mx, mz), end.getId());
-		
+
 		while (it.hasNext()) {
 			Map.Entry pair = (Map.Entry) it.next();
 			Location l = (Location) (pair.getValue());
@@ -147,41 +149,44 @@ public class Build extends Module {
 		}
 		work = new_work;
 	}
-	
+
 	private BlockPos rotateYaw(BlockPos pos, double angle, double mx, double mz) {
 		double cos = Math.cos(angle);
 		double sin = Math.sin(angle);
-		double x = pos.getX()-mx;
-		double z = pos.getZ()-mz;
-		double newX = (double) (cos*x + sin*z);
+		double x = pos.getX() - mx;
+		double z = pos.getZ() - mz;
+		double newX = (double) (cos * x + sin * z);
 		double newY = (double) pos.getY();
-		double newZ = (double) (-sin*x + cos*z);
-		return new BlockPos((int)(mx+newX), (int)newY, (int)(mz+newZ));
+		double newZ = (double) (-sin * x + cos * z);
+		return new BlockPos((int) (mx + newX), (int) newY, (int) (mz + newZ));
 	}
 
 	public void saveBounds(String filename) throws IOException {
-		if(!filename.endsWith(".model")) {
+		if (!filename.endsWith(".model")) {
 			filename += ".model";
 		}
 
 		FileOutputStream out = null;
-		
+
 		try {
 			out = new FileOutputStream(filename);
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		}
-		
+
 		Iterator<BlockPos> it = BlockPos.getAllInBox(start.getPos(), end.getPos()).iterator();
-		
-		out.write(new Location(new BlockPos(end.getX()-start.getX(), end.getY()-start.getY(), end.getZ()-start.getZ()), -1).toBytes());
-		
+
+		out.write(new Location(
+				new BlockPos(end.getX() - start.getX(), end.getY() - start.getY(), end.getZ() - start.getZ()), -1)
+						.toBytes());
+
 		while (it.hasNext()) {
-			BlockPos pos  = it.next();
+			BlockPos pos = it.next();
 			IBlockState state = Client.getMinecraft().world.getBlockState(pos);
 			if (state.getBlock() != Blocks.AIR && state.isFullBlock()) {
 				if (out != null) {
-					out.write(new Location(new BlockPos(pos.getX()-start.getX(), pos.getY()-start.getY(), pos.getZ()-start.getZ()), Block.getIdFromBlock(state.getBlock())).toBytes());
+					out.write(new Location(new BlockPos(pos.getX() - start.getX(), pos.getY() - start.getY(),
+							pos.getZ() - start.getZ()), Block.getIdFromBlock(state.getBlock())).toBytes());
 				}
 			}
 		}
@@ -209,7 +214,7 @@ public class Build extends Module {
 					drawBlock(pos, false);
 				}
 			}
-			
+
 			if (start != null & end != null) {
 				drawBound();
 			}
@@ -228,62 +233,62 @@ public class Build extends Module {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-		double dX = end.getX()-start.getX();
-		double dZ = end.getZ()-start.getZ();
-		double dY = end.getY()-start.getY();
-		
-		if(dX == 0) {
+		double dX = end.getX() - start.getX();
+		double dZ = end.getZ() - start.getZ();
+		double dY = end.getY() - start.getY();
+
+		if (dX == 0) {
 			dX = 1;
 		}
-		
-		if(dZ == 0) {
+
+		if (dZ == 0) {
 			dZ = 1;
 		}
-		
-		if(dY == 0) {
+
+		if (dY == 0) {
 			dY = 1;
 		}
-		
-		double sx = (double)dX/Math.abs(dX);
-		double sz = (double)dZ/Math.abs(dZ);
-		double sy = (double)dY/Math.abs(dY);
-		
+
+		double sx = (double) dX / Math.abs(dX);
+		double sz = (double) dZ / Math.abs(dZ);
+		double sy = (double) dY / Math.abs(dY);
+
 		double a = 0.01;
 		double b = 0.01;
 		double c = 0.01;
 		double d = 0.01;
-		
+
 		double e = 0.01;
 		double f = 0.01;
-		
-		if(sx > 0 && sz > 0) {
+
+		if (sx > 0 && sz > 0) {
 			c = 0.99;
 			d = 0.99;
 		}
-		
-		if(sx > 0 && sz < 0) {
+
+		if (sx > 0 && sz < 0) {
 			b = 0.99;
 			c = 0.99;
 		}
-		
-		if(sy > 0) {
+
+		if (sy > 0) {
 			e = 0.01;
 			f = 0.99;
 		} else {
 			e = 0.99;
 			f = 0.01;
 		}
-		
-		if(sx < 0 && sz > 0) {
+
+		if (sx < 0 && sz > 0) {
 			a = 0.99;
 			d = 0.99;
 		}
 
-		if(sx < 0 && sz < 0) {
+		if (sx < 0 && sz < 0) {
 			a = 0.99;
 			b = 0.99;
 		}
-		
+
 		double startX = start.getX() + a;
 		double startY = start.getY() + e;
 		double startZ = start.getZ() + b;
@@ -411,7 +416,7 @@ public class Build extends Module {
 
 		GL11.glColor4d((double) color.getRed() / 255.0, (double) color.getGreen() / 255.0,
 				(double) color.getBlue() / 255.0, 0.5);
-		
+
 		Location up = work.get(new Location(new BlockPos(l.getX(), l.getY() + 1, l.getZ()), 1).hashCode());
 		Location down = work.get(new Location(new BlockPos(l.getX(), l.getY() - 1, l.getZ()), 1).hashCode());
 		Location left = work.get(new Location(new BlockPos(l.getX() - 1, l.getY(), l.getZ()), 1).hashCode());
@@ -578,7 +583,7 @@ public class Build extends Module {
 			double dx = p.posX - pos.getX();
 			double dy = p.posY - pos.getY();
 			double dz = p.posZ - pos.getZ();
-			if (Math.sqrt(dx*dx + dz*dz + dy*dy) <= distance) {
+			if (Math.sqrt(dx * dx + dz * dz + dy * dy) <= distance) {
 				if (pos.getY() < i) {
 					i = pos.getY();
 				}
@@ -595,11 +600,11 @@ public class Build extends Module {
 
 			Iterator it = work.entrySet().iterator();
 			int count = 0;
-			
+
 			boolean under = false;
-			
+
 			int lowest = getLowestLevel(4);
-			
+
 			while (it.hasNext()) {
 				Map.Entry pair = (Map.Entry) it.next();
 				Location l = (Location) pair.getValue();
@@ -611,29 +616,31 @@ public class Build extends Module {
 				Block down = mc.world.getBlockState(pos.add(0, -1, 0)).getBlock();
 				Block up = mc.world.getBlockState(pos.add(0, 1, 0)).getBlock();
 				float dist = 10;
-				
-				double dot = p.getLookVec().dotProduct(new Vec3d((int)p.posX-pos.getX(), (int)p.posY-pos.getY(), (int)p.posZ-pos.getZ()).normalize());
+
+				double dot = p.getLookVec().dotProduct(
+						new Vec3d((int) p.posX - pos.getX(), (int) p.posY - pos.getY(), (int) p.posZ - pos.getZ())
+								.normalize());
 				if (lowest == pos.getY() && p.getDistance(pos.getX(), pos.getY(), pos.getZ()) <= distance && dot < 0) {
-					if(down != Blocks.AIR) {
+					if (down != Blocks.AIR) {
 						placeBlock(l.getId(), pos.add(0, -1, 0), EnumFacing.UP);
 						count++;
-					} else if(left != Blocks.AIR) {
+					} else if (left != Blocks.AIR) {
 						placeBlock(l.getId(), pos.add(-1, 0, 0), EnumFacing.EAST);
 						count++;
-					} else if(right != Blocks.AIR) {
+					} else if (right != Blocks.AIR) {
 						placeBlock(l.getId(), pos.add(1, 0, 0), EnumFacing.WEST);
 						count++;
-					} else if(forward != Blocks.AIR) {
+					} else if (forward != Blocks.AIR) {
 						placeBlock(l.getId(), pos.add(0, 0, 1), EnumFacing.NORTH);
 						count++;
-					} else if(backward != Blocks.AIR) {
+					} else if (backward != Blocks.AIR) {
 						placeBlock(l.getId(), pos.add(0, 0, -1), EnumFacing.SOUTH);
 						count++;
-					} else if(up != Blocks.AIR) {
+					} else if (up != Blocks.AIR) {
 						placeBlock(l.getId(), pos.add(0, 1, 0), EnumFacing.DOWN);
 						count++;
 					}
-					
+
 					if (count > 4) {
 						break;
 					}
@@ -642,10 +649,10 @@ public class Build extends Module {
 			last = System.currentTimeMillis() + 150;
 		}
 	}
-	
+
 	private void removeFilled() {
 		Minecraft mc = Client.getMinecraft();
-		
+
 		Iterator it = work.entrySet().iterator();
 		ArrayList<Object> remove = new ArrayList<Object>();
 
@@ -663,10 +670,10 @@ public class Build extends Module {
 	}
 
 	private void loadModel(String filename) {
-		if(!filename.endsWith(".model")) {
+		if (!filename.endsWith(".model")) {
 			filename += ".model";
 		}
-		
+
 		try {
 			FileInputStream input = new FileInputStream(filename);
 			byte[] b;
@@ -682,7 +689,7 @@ public class Build extends Module {
 					Location l = Location.readBytes(slice);
 					end = start.add(l.getX(), l.getY(), l.getZ());
 				}
-				
+
 				for (int i = 7; i < b.length; i += 7) {
 					byte[] slice = new byte[7];
 					for (int k = 0; k < slice.length; k++) {
@@ -692,12 +699,13 @@ public class Build extends Module {
 					l = l.add(start.getX(), start.getY(), start.getZ());
 					work.put(l.hashCode(), l);
 				}
-				
+
 				if (input != null) {
-					message("\2476Loaded " + filename + " with " + work.size() + " entries at " + start.getPos().getX() + "," + start.getPos().getY() + "," + start.getPos().getZ());
+					message("\2476Loaded " + filename + " with " + work.size() + " entries at " + start.getPos().getX()
+							+ "," + start.getPos().getY() + "," + start.getPos().getZ());
 					input.close();
 				}
-				
+
 			} catch (IOException e) {
 				message("\247cError loading file.");
 				e.printStackTrace();
@@ -707,14 +715,14 @@ public class Build extends Module {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void onEnabled() {
 		removeFilled();
 	}
 
 	private void placeBlock(int id, BlockPos pos, EnumFacing face) {
-		if(equipBlock(id) && InventoryHelper.isItemOffhand(id)) {
+		if (equipBlock(id) && InventoryHelper.isItemOffhand(id)) {
 			Minecraft mc = Client.getMinecraft();
 			EntityPlayerSPHook p = (EntityPlayerSPHook) mc.player;
 			p.getConnection().sendPacket(new CPacketPlayerTryUseItemOnBlock(pos, face, EnumHand.OFF_HAND, 0, 1, 0));
@@ -725,7 +733,7 @@ public class Build extends Module {
 
 	@Override
 	public void onDisabled() {
-		
+
 	}
 
 	@Override

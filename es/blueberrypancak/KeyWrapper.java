@@ -12,6 +12,10 @@ public class KeyWrapper {
 		this.pressed = pressed;
 		this.bind = new KeyBinding("key."+keyCode, keyCode, "key.categories.misc");
 	}
+	
+	public int getKeyCode() {
+		return this.bind.getKeyCode();
+	}
 
 	public boolean isToggled() {
 		if(bind.getKeyCode() == -1) return true;

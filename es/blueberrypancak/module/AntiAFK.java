@@ -7,29 +7,30 @@ import es.blueberrypancak.hook.EntityPlayerSPHook;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.util.EnumHand;
 
-@RegisterModule(key=49,color=0x665EFF,listed=true)
+@RegisterModule(key = 49, color = 0x665EFF, listed = true)
 public class AntiAFK extends Module {
 
 	private long lastPacket;
-	
+
 	private int nextDelay = 60;
-	
+
 	@Subscribe
 	public void onRender(EventRender e) {
-		if(lastPacket == 0) lastPacket = System.currentTimeMillis();
-		if(isEnabled()) {
-			if(getElapsed() >= nextDelay) {
+		if (lastPacket == 0)
+			lastPacket = System.currentTimeMillis();
+		if (isEnabled()) {
+			if (getElapsed() >= nextDelay) {
 				lastPacket = System.currentTimeMillis();
-				EntityPlayerSPHook p = (EntityPlayerSPHook) Client.getMinecraft().thePlayer;
+				EntityPlayerSPHook p = (EntityPlayerSPHook) Client.getMinecraft().player;
 				p.getConnection().sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
 			}
 		}
 	}
-	
+
 	private int getElapsed() {
-		return (int)(System.currentTimeMillis()-lastPacket)/1000;
+		return (int) (System.currentTimeMillis() - lastPacket) / 1000;
 	}
-	
+
 	@Override
 	public void onEnabled() {
 		lastPacket = System.currentTimeMillis();
@@ -37,7 +38,7 @@ public class AntiAFK extends Module {
 
 	@Override
 	public void onDisabled() {
-		
+
 	}
 
 	@Override

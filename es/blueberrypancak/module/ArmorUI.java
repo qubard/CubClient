@@ -5,27 +5,30 @@ import es.blueberrypancak.event.EventRender;
 import es.blueberrypancak.event.Subscribe;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemAir;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 @RegisterModule
 public class ArmorUI extends Module {
 
 	@Subscribe
 	public void onRender(EventRender e) {
-		EntityPlayer player = Client.getMinecraft().thePlayer;
-		ItemStack[] equipped = player.inventory.armorInventory;
+		EntityPlayer player = Client.getMinecraft().player;
+		NonNullList<ItemStack> equipped = player.inventory.armorInventory;
 		ScaledResolution res = Client.res();
 		int barWidth = 60;
 		int k = 0;
-		if(player.isCreative()) return;
-		for(int i = 0; i < equipped.length; i++) {
-			ItemStack o = equipped[i];
-			if(o != null) {
+		if (player.isCreative())
+			return;
+		for (int i = 0; i < equipped.size(); i++) {
+			ItemStack o = equipped.get(i);
+			if (!(o.getItem() instanceof ItemAir)) {
 				float dura = (float) (o.getMaxDamage() - o.getItemDamage()) / o.getMaxDamage();
 				int j = (int) Math.round(dura * barWidth);
 				int z = (int) Math.round(255.0D - (double) o.getItemDamage() * 255.0D / (double) o.getMaxDamage());
@@ -34,7 +37,7 @@ public class ArmorUI extends Module {
 				GlStateManager.disableAlpha();
 				GlStateManager.disableBlend();
 				Tessellator tessellator = Tessellator.getInstance();
-				VertexBuffer vertexbuffer = tessellator.getBuffer();
+				BufferBuilder vertexbuffer = tessellator.getBuffer();
 				int dX = res.getScaledWidth() / 2 + 30;
 				int dY = res.getScaledHeight() - 43 - k * 2 - (player.isInsideOfMaterial(Material.WATER) ? 10 : 0);
 				draw(vertexbuffer, dX, dY, barWidth, 2, 0, 0, 0, 255);
@@ -49,7 +52,8 @@ public class ArmorUI extends Module {
 		}
 	}
 
-	private void draw(VertexBuffer renderer, int x, int y, int width, int height, int red, int green, int blue, int alpha) {
+	private void draw(BufferBuilder renderer, int x, int y, int width, int height, int red, int green, int blue,
+			int alpha) {
 		renderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
 		renderer.pos((double) (x + 0), (double) (y + 0), 0.0D).color(red, green, blue, alpha).endVertex();
 		renderer.pos((double) (x + 0), (double) (y + height), 0.0D).color(red, green, blue, alpha).endVertex();

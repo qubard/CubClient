@@ -24,19 +24,19 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 
-@RegisterModule(key=Keyboard.KEY_M,color=0xBBAAFF,listed=true,pressed=false)
+@RegisterModule(key = Keyboard.KEY_M, color = 0xBBAAFF, listed = true, pressed = false)
 public class Turtle extends Module {
-	
+
 	private Color color = new Color(255 | (170 << 8) | (187 << 16));
-	
+
 	private BlockPos start, end;
-	
+
 	private long nextBuild = 0;
-	
+
 	private boolean running = false;
-	
+
 	private LinkedList<BlockPos> queue = new LinkedList<BlockPos>();
-	
+
 	@Override
 	public void onEnabled() {
 		build();
@@ -44,12 +44,12 @@ public class Turtle extends Module {
 
 	@Override
 	public void onDisabled() {
-		if(running) { 
+		if (running) {
 			running = false;
 			message(running ? "\247aTurtle mode enabled." : "\247cTurtle mode disabled.");
 		}
 	}
-	
+
 	@Subscribe
 	public void onChat(EventChat e) {
 		String message = e.getValue();
@@ -59,51 +59,52 @@ public class Turtle extends Module {
 		} else if (message.startsWith("-tend")) {
 			end = new BlockPos(Client.getMinecraft().player.getPosition());
 			e.setCancelled(true);
-		} else if(message.startsWith("-turtle")) {
+		} else if (message.startsWith("-turtle")) {
 			running = !running;
 			message(running ? "\247aTurtle mode enabled." : "\247cTurtle mode disabled.");
 			e.setCancelled(true);
-		} else if(message.startsWith("-tclear")) {
+		} else if (message.startsWith("-tclear")) {
 			start = end = null;
 			queue.clear();
 			e.setCancelled(true);
 		}
-		
-		if(message.startsWith("-tend") || message.startsWith("-tstart")) {
+
+		if (message.startsWith("-tend") || message.startsWith("-tstart")) {
 			build();
 		}
 	}
-	
+
 	// all of these occurrences should be static at some point in time
 	private void message(String s) {
 		EntityPlayer p = Client.getMinecraft().player;
 		p.addChatMessage(new TextComponentString(s));
 	}
-	
+
 	// build the queue by which blocks are dug out
 	private void build() {
 		queue.clear();
-		
-		int dx = end.getX()-start.getX();
-		int dy = end.getY()-start.getY();
-		int dz = end.getZ()-start.getZ();
-		
+
+		int dx = end.getX() - start.getX();
+		int dy = end.getY() - start.getY();
+		int dz = end.getZ() - start.getZ();
+
 		int adx = Math.abs(dx);
 		int ady = Math.abs(dy);
 		int adz = Math.abs(dz);
-		for(int i = 0; i <= ady; i++) {
-			for(int j = 0; j <= adx; j++) {
-				for(int k = j%2 == 0 ? 0 : adz; j%2 == 0 ? k <= adz : k >= 0; k = k+(j%2 == 0 ? 1 : -1)) {
-					BlockPos pos = new BlockPos(start.getX()+j*dx/Math.abs(dx), start.getY()+i*dy/Math.abs(dy), start.getZ()+k*dz/Math.abs(dz));
+		for (int i = 0; i <= ady; i++) {
+			for (int j = 0; j <= adx; j++) {
+				for (int k = j % 2 == 0 ? 0 : adz; j % 2 == 0 ? k <= adz : k >= 0; k = k + (j % 2 == 0 ? 1 : -1)) {
+					BlockPos pos = new BlockPos(start.getX() + j * dx / Math.abs(dx),
+							start.getY() + i * dy / Math.abs(dy), start.getZ() + k * dz / Math.abs(dz));
 					IBlockState state = Client.getMinecraft().world.getBlockState(pos);
-					if(state.getBlock() != Blocks.AIR) {
+					if (state.getBlock() != Blocks.AIR) {
 						queue.add(pos);
 					}
 				}
 			}
 		}
 	}
-	
+
 	private void drawBound() {
 		Minecraft mc = Client.getMinecraft();
 		RenderManager r = mc.getRenderManager();
@@ -116,62 +117,62 @@ public class Turtle extends Module {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-		double dX = end.getX()-start.getX();
-		double dZ = end.getZ()-start.getZ();
-		double dY = end.getY()-start.getY();
-		
-		if(dX == 0) {
+		double dX = end.getX() - start.getX();
+		double dZ = end.getZ() - start.getZ();
+		double dY = end.getY() - start.getY();
+
+		if (dX == 0) {
 			dX = 1;
 		}
-		
-		if(dZ == 0) {
+
+		if (dZ == 0) {
 			dZ = 1;
 		}
-		
-		if(dY == 0) {
+
+		if (dY == 0) {
 			dY = 1;
 		}
-		
-		double sx = (double)dX/Math.abs(dX);
-		double sz = (double)dZ/Math.abs(dZ);
-		double sy = (double)dY/Math.abs(dY);
-		
+
+		double sx = (double) dX / Math.abs(dX);
+		double sz = (double) dZ / Math.abs(dZ);
+		double sy = (double) dY / Math.abs(dY);
+
 		double a = 0.01;
 		double b = 0.01;
 		double c = 0.01;
 		double d = 0.01;
-		
+
 		double e = 0.01;
 		double f = 0.01;
-		
-		if(sx > 0 && sz > 0) {
+
+		if (sx > 0 && sz > 0) {
 			c = 0.99;
 			d = 0.99;
 		}
-		
-		if(sx > 0 && sz < 0) {
+
+		if (sx > 0 && sz < 0) {
 			b = 0.99;
 			c = 0.99;
 		}
-		
-		if(sy > 0) {
+
+		if (sy > 0) {
 			e = 0.01;
 			f = 0.99;
 		} else {
 			e = 0.99;
 			f = 0.01;
 		}
-		
-		if(sx < 0 && sz > 0) {
+
+		if (sx < 0 && sz > 0) {
 			a = 0.99;
 			d = 0.99;
 		}
 
-		if(sx < 0 && sz < 0) {
+		if (sx < 0 && sz < 0) {
 			a = 0.99;
 			b = 0.99;
 		}
-		
+
 		double startX = start.getX() + a;
 		double startY = start.getY() + e;
 		double startZ = start.getZ() + b;
@@ -271,7 +272,7 @@ public class Turtle extends Module {
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glPopMatrix();
 	}
-	
+
 	private void drawBlock(BlockPos l, boolean depth) {
 		Minecraft mc = Client.getMinecraft();
 		IBlockState state = mc.world.getBlockState(l);
@@ -293,7 +294,7 @@ public class Turtle extends Module {
 		double varZ = l.getZ() + 0.5;
 
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		
+
 		double w = 0.5;
 		double h = 1.0;
 
@@ -343,7 +344,7 @@ public class Turtle extends Module {
 		GL11.glColor4d((double) color.getRed() / 255.0, (double) color.getGreen() / 255.0,
 				(double) color.getBlue() / 255.0, (double) 0.12);
 		GL11.glDisable(GL11.GL_CULL_FACE);
-		
+
 		GL11.glBegin(GL11.GL_QUADS);
 
 		GL11.glVertex3d(varX - r.renderPosX + w, varY - r.renderPosY + h, varZ - r.renderPosZ - w);
@@ -387,33 +388,34 @@ public class Turtle extends Module {
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glPopMatrix();
 	}
-	
+
 	@Subscribe
 	public void onUpdateEntity(EventUpdateEntity e) {
-		if(isEnabled() && running) {
+		if (isEnabled() && running) {
 			Minecraft mc = Client.getMinecraft();
 			EntityPlayerSP p = mc.player;
 			BlockPos next = queue.peek();
-			if(next != null) {
-				double dx = p.posX - (double)(next.getX()+0.5);
-				double dy = p.posY - (double)(next.getY()+0.5);
-				double dz = p.posZ - (double)(next.getZ()+0.5);
-				float dist = (float) Math.sqrt(dx*dx+dz*dz);
+			if (next != null) {
+				double dx = p.posX - (double) (next.getX() + 0.5);
+				double dy = p.posY - (double) (next.getY() + 0.5);
+				double dz = p.posZ - (double) (next.getZ() + 0.5);
+				float dist = (float) Math.sqrt(dx * dx + dz * dz);
 				if (dist > 0.2) { // approximation of sqrt(2)
-					float r = (float) Math.sqrt(dx*dx + dy*dy + dz*dz);
-					float yaw = (float) (Math.atan2(dx, dz)*180f/Math.PI);
-					yaw = 180-yaw;
-					p.moveForward = 1.0f;
+					float r = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
+					float yaw = (float) (Math.atan2(dx, dz) * 180f / Math.PI);
+					yaw = 180 - yaw;
+					mc.gameSettings.keyBindForward.setKeyBindState(mc.gameSettings.keyBindForward.getKeyCode(), true);
 					p.rotationYaw = yaw;
-					if((int)p.posY > next.getY()) {
+					if ((int) p.posY > next.getY()) {
 						p.rotationPitch = 90f;
 					} else {
 						p.rotationPitch = 45f;
 					}
 				}
-				
-				if(p.getDistanceSqToCenter(next) < 3) {
-					if (mc.world.getBlockState(next).getMaterial() != Material.AIR && mc.playerController.onPlayerDamageBlock(next, EnumFacing.UP)) {
+
+				if (p.getDistanceSqToCenter(next) < 3) {
+					if (mc.world.getBlockState(next).getMaterial() != Material.AIR
+							&& mc.playerController.onPlayerDamageBlock(next, EnumFacing.UP)) {
 						mc.effectRenderer.addBlockHitEffects(next, EnumFacing.UP);
 						mc.player.swingArm(EnumHand.MAIN_HAND);
 					} else {
@@ -423,42 +425,43 @@ public class Turtle extends Module {
 			}
 		}
 	}
-	
+
 	@Subscribe
 	public void onEntityRender(EventEntityRender e) {
-		if(isEnabled()) {
-			if(queue.size() > 0) {
+		if (isEnabled()) {
+			if (queue.size() > 0) {
 				drawBlock(queue.peek(), false);
 			}
-			
-			if(start != null && end != null) { 
+
+			if (start != null && end != null) {
 				drawBound();
 			} else {
-				if(start != null) {
+				if (start != null) {
 					drawBlock(start, false);
 				}
-				
-				if(end != null) {
+
+				if (end != null) {
 					drawBlock(end, false);
 				}
 			}
-			
+
 			Minecraft mc = Client.getMinecraft();
 			EntityPlayer p = mc.player;
-			
-			if(System.currentTimeMillis() > nextBuild) {
+
+			if (System.currentTimeMillis() > nextBuild) {
 				build();
 				nextBuild = System.currentTimeMillis() + 5000;
 			}
 		}
 	}
-	
+
 	@Subscribe
 	public void onBlockBreak(EventBlockBreak e) {
-		if(isEnabled()) { 
+		if (isEnabled()) {
 			Minecraft mc = Client.getMinecraft();
 			EntityPlayerSP p = mc.player;
-			mc.playerController.processRightClickBlock(p, mc.world, e.getBlockPos(), EnumFacing.DOWN, p.getLookVec(), EnumHand.MAIN_HAND);
+			mc.playerController.processRightClickBlock(p, mc.world, e.getBlockPos(), EnumFacing.DOWN, p.getLookVec(),
+					EnumHand.MAIN_HAND);
 		}
 	}
 

@@ -13,6 +13,7 @@ import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.stats.RecipeBook;
 import net.minecraft.stats.StatisticsManager;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -37,8 +38,8 @@ public class PlayerControllerMPHook extends PlayerControllerMP {
 		return super.clickBlock(loc, face);
 	}
 	
-	public EntityPlayerSP createClientPlayer(World worldIn, StatisticsManager statWriter) {
-		return new EntityPlayerSPHook(Client.getMinecraft(), worldIn, this.connection, statWriter);
+	public EntityPlayerSP func_192830_a(World worldIn, StatisticsManager statWriter, RecipeBook recipe) {
+		return new EntityPlayerSPHook(Client.getMinecraft(), worldIn, this.connection, statWriter, recipe);
 	}
 	
 	public boolean onPlayerDamageBlock(BlockPos posBlock, EnumFacing directionFacing) {

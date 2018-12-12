@@ -20,6 +20,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.RecipeBook;
 import net.minecraft.stats.StatisticsManager;
 import net.minecraft.world.World;
 
@@ -27,8 +28,8 @@ public class EntityPlayerSPHook extends EntityPlayerSP {
 
 	private NetHandlerPlayClient connection;
 	
-	public EntityPlayerSPHook(Minecraft mcIn, World worldIn, NetHandlerPlayClient netHandler, StatisticsManager statFile) {
-		super(mcIn, worldIn, netHandler, statFile);
+	public EntityPlayerSPHook(Minecraft mcIn, World worldIn, NetHandlerPlayClient netHandler, StatisticsManager statFile, RecipeBook recipe) {
+		super(mcIn, worldIn, netHandler, statFile, recipe);
 		this.connection = netHandler;
 	}
 	

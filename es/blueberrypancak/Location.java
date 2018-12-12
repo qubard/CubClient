@@ -25,7 +25,7 @@ public class Location {
 	
 	@Override
 	public int hashCode() {
-		return (pos.getY() + pos.getZ() * 859433) * 859433 + pos.getX(); // choose a huge fucking prime
+		return (pos.getY() + pos.getZ() * 859433) * 859433 + pos.getX(); // choose a huge prime
 	}
 	
 	public BlockPos getPos() {

@@ -14,24 +14,26 @@ public class ModuleUI extends Module {
 	@Subscribe
 	public void onRender(EventRender e) {
 		Minecraft mc = Client.getMinecraft();
-		if(!mc.inGameHasFocus) return;
+		if (!mc.inGameHasFocus)
+			return;
 		int i = 0;
 		ScaledResolution res = Client.res();
 		FontRenderer f = mc.fontRendererObj;
-		for(Module m : Module.getActiveModules()) { 
-			mc.fontRendererObj.drawStringWithShadow(m.getName(), res.getScaledWidth() - f.getStringWidth(m.getName()) - 4, i * 8 + 4, m.getActiveColor());
+		for (Module m : Module.getActiveModules()) {
+			mc.fontRendererObj.drawStringWithShadow(m.getName(),
+					res.getScaledWidth() - f.getStringWidth(m.getName()) - 4, i * 8 + 4, m.getActiveColor());
 			i++;
 		}
 		GlStateManager.disableLighting();
 	}
-	
+
 	@Override
 	public void onEnabled() {
 	}
 
 	@Override
 	public void onDisabled() {
-		
+
 	}
 
 	@Override

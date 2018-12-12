@@ -1,87 +1,53 @@
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/Minecraft.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/Minecraft.java
-index ad84c84..17a1af4 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/Minecraft.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/Minecraft.java
-@@ -621,6 +621,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+diff --git a/src/minecraft/net/minecraft/client/Minecraft.java b/src2/minecraft/net/minecraft/client/Minecraft.java
+index 2dea5d6..1ebd760 100644
+--- a/src/minecraft/net/minecraft/client/Minecraft.java
++++ b/src2/minecraft/net/minecraft/client/Minecraft.java
+@@ -633,6 +633,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
          }
  
          this.renderGlobal.makeEntityOutlineShader();
 +        new es.blueberrypancak.Client(this);
      }
  
-     private void registerMetadataSerializers()
-@@ -1158,7 +1159,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
-             this.entityRenderer.updateCameraAndRender(this.timer.renderPartialTicks, i);
+     private void func_193986_ar()
+@@ -1199,6 +1200,8 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+             this.field_193034_aS.func_191783_a(new ScaledResolution(this));
              this.mcProfiler.endSection();
          }
--
 +        
 +        es.blueberrypancak.event.EventManager.fire(new es.blueberrypancak.event.EventRender());
-+        
+ 
          this.mcProfiler.endSection();
  
-         if (this.gameSettings.showDebugInfo && this.gameSettings.showDebugProfilerChart && !this.gameSettings.hideGUI)
-@@ -1826,7 +1829,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
-                 });
-                 throw new ReportedException(crashreport);
-             }
--
-+            
-             if (this.currentScreen != null)
-             {
-                 try
-@@ -1848,7 +1851,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
-                 }
+@@ -1897,6 +1900,8 @@ public class Minecraft implements IThreadListener, ISnooperInfo
              }
          }
--
-+        
+ 
 +        es.blueberrypancak.event.EventManager.fire(new es.blueberrypancak.event.EventTick());
 +        
          if (this.currentScreen == null || this.currentScreen.allowUserInput)
          {
              this.mcProfiler.endStartSection("mouse");
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/entity/EntityPlayerSP.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/entity/EntityPlayerSP.java
-index 38f8c49..193d032 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/entity/EntityPlayerSP.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/entity/EntityPlayerSP.java
-@@ -2,6 +2,7 @@ package net.minecraft.client.entity;
- 
- import java.util.List;
- import javax.annotation.Nullable;
-+
- import net.minecraft.block.state.IBlockState;
- import net.minecraft.client.Minecraft;
- import net.minecraft.client.audio.ElytraSound;
-@@ -924,8 +925,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
+diff --git a/src/minecraft/net/minecraft/client/entity/EntityPlayerSP.java b/src2/minecraft/net/minecraft/client/entity/EntityPlayerSP.java
+index 990f31d..29ec724 100644
+--- a/src/minecraft/net/minecraft/client/entity/EntityPlayerSP.java
++++ b/src2/minecraft/net/minecraft/client/entity/EntityPlayerSP.java
+@@ -967,8 +967,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
          if (this.isHandActive() && !this.isRiding())
          {
 -            this.movementInput.moveStrafe *= 0.2F;
--            this.movementInput.moveForward *= 0.2F;
+-            this.movementInput.field_192832_b *= 0.2F;
 +            /*this.movementInput.moveStrafe *= 0.2F;
-+            this.movementInput.moveForward *= 0.2F;*/
-+        	// seems to not work to override this
++            this.movementInput.field_192832_b *= 0.2F;*/
              this.sprintToggleTimer = 0;
          }
  
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/gui/GuiChat.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/gui/GuiChat.java
-index 394b393..9b1d339 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/gui/GuiChat.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/gui/GuiChat.java
-@@ -233,7 +233,6 @@ public class GuiChat extends GuiScreen implements ITabCompleter
-      */
-     public void drawScreen(int mouseX, int mouseY, float partialTicks)
-     {
--        drawRect(2, this.height - 14, this.width - 2, this.height - 2, Integer.MIN_VALUE);
-         this.inputField.drawTextBox();
-         ITextComponent itextcomponent = this.mc.ingameGUI.getChatGUI().getChatComponent(Mouse.getX(), Mouse.getY());
- 
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/gui/GuiIngame.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/gui/GuiIngame.java
-index a623c57..51adf9f 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/gui/GuiIngame.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/gui/GuiIngame.java
-@@ -117,7 +117,7 @@ public class GuiIngame extends Gui
+diff --git a/src/minecraft/net/minecraft/client/gui/GuiIngame.java b/src2/minecraft/net/minecraft/client/gui/GuiIngame.java
+index 05a9237..4d9dab6 100644
+--- a/src/minecraft/net/minecraft/client/gui/GuiIngame.java
++++ b/src2/minecraft/net/minecraft/client/gui/GuiIngame.java
+@@ -125,7 +125,7 @@ public class GuiIngame extends Gui
          this.itemRenderer = mcIn.getRenderItem();
          this.overlayDebug = new GuiOverlayDebug(mcIn);
          this.spectatorGui = new GuiSpectator(mcIn);
@@ -90,91 +56,11 @@ index a623c57..51adf9f 100644
          this.overlayPlayerList = new GuiPlayerTabOverlay(mcIn, this);
          this.overlayBoss = new GuiBossOverlay(mcIn);
          this.overlaySubtitle = new GuiSubtitleOverlay(mcIn);
-@@ -1025,7 +1025,7 @@ public class GuiIngame extends Gui
-         }
-     }
- 
--    private void renderPumpkinOverlay(ScaledResolution scaledRes)
-+    protected void renderPumpkinOverlay(ScaledResolution scaledRes)
-     {
-         GlStateManager.disableDepth();
-         GlStateManager.depthMask(false);
-@@ -1050,7 +1050,7 @@ public class GuiIngame extends Gui
-     /**
-      * Renders a Vignette arount the entire screen that changes with light level.
-      */
--    private void renderVignette(float lightLevel, ScaledResolution scaledRes)
-+    protected void renderVignette(float lightLevel, ScaledResolution scaledRes)
-     {
-         lightLevel = 1.0F - lightLevel;
-         lightLevel = MathHelper.clamp_float(lightLevel, 0.0F, 1.0F);
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/gui/GuiNewChat.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/gui/GuiNewChat.java
-index 742557f..fdd3bac 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/gui/GuiNewChat.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/gui/GuiNewChat.java
-@@ -88,7 +88,7 @@ public class GuiNewChat extends Gui
-                                 drawRect(-2, j2 - 9, 0 + k + 4, j2, l1 / 2 << 24);
-                                 String s = chatline.getChatComponent().getFormattedText();
-                                 GlStateManager.enableBlend();
--                                this.mc.fontRendererObj.drawStringWithShadow(s, 0.0F, (float)(j2 - 8), 16777215 + (l1 << 24));
-+                                this.mc.fontRendererObj.drawStringWithShadow(s, 0, (float)(j2 - 8), 16777215 + (l1 << 24));
-                                 GlStateManager.disableAlpha();
-                                 GlStateManager.disableBlend();
-                             }
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/multiplayer/GuiConnecting.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/multiplayer/GuiConnecting.java
-index b9d8f8e..7aa9584 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/multiplayer/GuiConnecting.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/multiplayer/GuiConnecting.java
-@@ -48,6 +48,7 @@ public class GuiConnecting extends GuiScreen
-     private void connect(final String ip, final int port)
-     {
-         LOGGER.info("Connecting to {}, {}", new Object[] {ip, Integer.valueOf(port)});
-+        LOGGER.info("SESSION:"+GuiConnecting.this.mc.getSession().getSessionID());
-         (new Thread("Server Connector #" + CONNECTION_ID.incrementAndGet())
-         {
-             public void run()
-@@ -92,7 +93,6 @@ public class GuiConnecting extends GuiScreen
-                         String s1 = inetaddress + ":" + port;
-                         s = s.replaceAll(s1, "");
-                     }
--
-                     GuiConnecting.this.mc.displayGuiScreen(new GuiDisconnected(GuiConnecting.this.previousGuiScreen, "connect.failed", new TextComponentTranslation("disconnect.genericReason", new Object[] {s})));
-                 }
-             }
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/multiplayer/PlayerControllerMP.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/multiplayer/PlayerControllerMP.java
-index 2e6f0c8..b0ac882 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/multiplayer/PlayerControllerMP.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/multiplayer/PlayerControllerMP.java
-@@ -26,6 +26,7 @@ import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
- import net.minecraft.network.play.client.CPacketCustomPayload;
- import net.minecraft.network.play.client.CPacketEnchantItem;
- import net.minecraft.network.play.client.CPacketHeldItemChange;
-+import net.minecraft.network.play.client.CPacketPlayer;
- import net.minecraft.network.play.client.CPacketPlayerDigging;
- import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
- import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
-@@ -257,7 +258,7 @@ public class PlayerControllerMP
-                 {
-                     iblockstate.getBlock().onBlockClicked(this.mc.theWorld, loc, this.mc.thePlayer);
-                 }
--
-+                
-                 if (flag && iblockstate.getPlayerRelativeBlockHardness(this.mc.thePlayer, this.mc.thePlayer.worldObj, loc) >= 1.0F)
-                 {
-                     this.onPlayerDestroyBlock(loc);
-@@ -321,7 +322,6 @@ public class PlayerControllerMP
-             else
-             {
-                 this.curBlockDamageMP += iblockstate.getPlayerRelativeBlockHardness(this.mc.thePlayer, this.mc.thePlayer.worldObj, posBlock);
--
-                 if (this.stepSoundTickCounter % 4.0F == 0.0F)
-                 {
-                     SoundType soundtype = block.getSoundType();
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/network/NetHandlerLoginClient.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/network/NetHandlerLoginClient.java
-index e6d5650..9842e7e 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/network/NetHandlerLoginClient.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/network/NetHandlerLoginClient.java
-@@ -103,7 +103,7 @@ public class NetHandlerLoginClient implements INetHandlerLoginClient
+diff --git a/src/minecraft/net/minecraft/client/network/NetHandlerLoginClient.java b/src2/minecraft/net/minecraft/client/network/NetHandlerLoginClient.java
+index 3f7ffde..a5d5f5a 100644
+--- a/src/minecraft/net/minecraft/client/network/NetHandlerLoginClient.java
++++ b/src2/minecraft/net/minecraft/client/network/NetHandlerLoginClient.java
+@@ -105,7 +105,7 @@ public class NetHandlerLoginClient implements INetHandlerLoginClient
      {
          this.gameProfile = packetIn.getProfile();
          this.networkManager.setConnectionState(EnumConnectionState.PLAY);
@@ -183,11 +69,11 @@ index e6d5650..9842e7e 100644
      }
  
      /**
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/network/NetHandlerPlayClient.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/network/NetHandlerPlayClient.java
-index c484866..9ec0cd7 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/network/NetHandlerPlayClient.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/network/NetHandlerPlayClient.java
-@@ -302,7 +302,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+diff --git a/src/minecraft/net/minecraft/client/network/NetHandlerPlayClient.java b/src2/minecraft/net/minecraft/client/network/NetHandlerPlayClient.java
+index 7e62acd..e809abb 100644
+--- a/src/minecraft/net/minecraft/client/network/NetHandlerPlayClient.java
++++ b/src2/minecraft/net/minecraft/client/network/NetHandlerPlayClient.java
+@@ -324,7 +324,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      public void handleJoinGame(SPacketJoinGame packetIn)
      {
          PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.gameController);
@@ -196,11 +82,11 @@ index c484866..9ec0cd7 100644
          this.clientWorldController = new WorldClient(this, new WorldSettings(0L, packetIn.getGameType(), false, packetIn.isHardcoreMode(), packetIn.getWorldType()), packetIn.getDimension(), packetIn.getDifficulty(), this.gameController.mcProfiler);
          this.gameController.gameSettings.difficulty = packetIn.getDifficulty();
          this.gameController.loadWorld(this.clientWorldController);
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/EntityRenderer.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/EntityRenderer.java
-index 25e1fb8..39d05bf 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/EntityRenderer.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/EntityRenderer.java
-@@ -525,7 +525,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
+diff --git a/src/minecraft/net/minecraft/client/renderer/EntityRenderer.java b/src2/minecraft/net/minecraft/client/renderer/EntityRenderer.java
+index 438b8aa..2edd216 100644
+--- a/src/minecraft/net/minecraft/client/renderer/EntityRenderer.java
++++ b/src2/minecraft/net/minecraft/client/renderer/EntityRenderer.java
+@@ -539,7 +539,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
      /**
       * Changes the field of view of the player depending on if they are underwater or not
       */
@@ -209,48 +95,49 @@ index 25e1fb8..39d05bf 100644
      {
          if (this.debugView)
          {
-@@ -1459,7 +1459,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1476,6 +1476,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
          GlStateManager.enableCull();
          GlStateManager.disableBlend();
          GlStateManager.disableFog();
--
 +        
 +        es.blueberrypancak.event.EventManager.fire(new es.blueberrypancak.event.EventEntityRender(partialTicks));
-+        
+ 
          if (entity.posY + (double)entity.getEyeHeight() >= 128.0D)
          {
-             this.mc.mcProfiler.endStartSection("aboveClouds");
-@@ -2049,15 +2051,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -2084,14 +2086,16 @@ public class EntityRenderer implements IResourceManagerReloadListener
          GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
-         GlStateManager.rotate(-p_189692_6_, 0.0F, 1.0F, 0.0F);
-         GlStateManager.rotate((float)(p_189692_8_ ? -1 : 1) * p_189692_7_, 1.0F, 0.0F, 0.0F);
+         GlStateManager.rotate(-viewerYaw, 0.0F, 1.0F, 0.0F);
+         GlStateManager.rotate((float)(isThirdPersonFrontal ? -1 : 1) * viewerPitch, 1.0F, 0.0F, 0.0F);
 -        GlStateManager.scale(-0.025F, -0.025F, 0.025F);
 +        GlStateManager.scale(-0.025F*2, -0.025F*2, 0.025F*2);
          GlStateManager.disableLighting();
 -        GlStateManager.depthMask(false);
--
--        if (!p_189692_9_)
--        {
--            GlStateManager.disableDepth();
++        /*GlStateManager.depthMask(false);
+ 
+         if (!isSneaking)
+         {
+             GlStateManager.disableDepth();
 -        }
--
++        }*/
++
 +        GlStateManager.disableDepth();
+ 
          GlStateManager.enableBlend();
          GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-         int i = p_189692_0_.getStringWidth(p_189692_1_) / 2;
-@@ -2071,17 +2067,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
-         vertexbuffer.pos((double)(i + 1), (double)(-1 + p_189692_5_), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+@@ -2107,16 +2111,17 @@ public class EntityRenderer implements IResourceManagerReloadListener
          tessellator.draw();
          GlStateManager.enableTexture2D();
--
--        if (!p_189692_9_)
--        {
--            p_189692_0_.drawString(p_189692_1_, -p_189692_0_.getStringWidth(p_189692_1_) / 2, p_189692_5_, 553648127);
--            GlStateManager.enableDepth();
+ 
+-        if (!isSneaking)
++        /*if (!isSneaking)
+         {
+             fontRendererIn.drawString(str, -fontRendererIn.getStringWidth(str) / 2, verticalShift, 553648127);
+             GlStateManager.enableDepth();
 -        }
--
++        }*/
+ 
 -        GlStateManager.depthMask(true);
-         p_189692_0_.drawString(p_189692_1_, -p_189692_0_.getStringWidth(p_189692_1_) / 2, p_189692_5_, p_189692_9_ ? 553648127 : -1);
+         fontRendererIn.drawString(str, -fontRendererIn.getStringWidth(str) / 2, verticalShift, isSneaking ? 553648127 : -1);
          GlStateManager.enableLighting();
 +        GlStateManager.depthMask(true);
          GlStateManager.disableBlend();
@@ -258,163 +145,141 @@ index 25e1fb8..39d05bf 100644
          GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
          GlStateManager.popMatrix();
      }
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/ItemRenderer.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/ItemRenderer.java
-index 2619f50..0fb632f 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/ItemRenderer.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/ItemRenderer.java
-@@ -488,7 +488,6 @@ public class ItemRenderer
-         {
-             if (this.mc.thePlayer.isInsideOfMaterial(Material.WATER))
-             {
--                this.renderWaterOverlayTexture(partialTicks);
-             }
+diff --git a/src/minecraft/net/minecraft/client/renderer/ItemRenderer.java b/src2/minecraft/net/minecraft/client/renderer/ItemRenderer.java
+index 46fdf71..42de96d 100644
+--- a/src/minecraft/net/minecraft/client/renderer/ItemRenderer.java
++++ b/src2/minecraft/net/minecraft/client/renderer/ItemRenderer.java
+@@ -478,11 +478,6 @@ public class ItemRenderer
  
-             if (this.mc.thePlayer.isBurning())
-@@ -570,7 +569,7 @@ public class ItemRenderer
+         if (!this.mc.player.isSpectator())
+         {
+-            if (this.mc.player.isInsideOfMaterial(Material.WATER))
+-            {
+-                this.renderWaterOverlayTexture(partialTicks);
+-            }
+-
+             if (this.mc.player.isBurning())
+             {
+                 this.renderFireInFirstPerson();
+@@ -562,7 +557,7 @@ public class ItemRenderer
      {
          Tessellator tessellator = Tessellator.getInstance();
-         VertexBuffer vertexbuffer = tessellator.getBuffer();
+         BufferBuilder bufferbuilder = tessellator.getBuffer();
 -        GlStateManager.color(1.0F, 1.0F, 1.0F, 0.9F);
-+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
++        GlStateManager.color(1.0F, 1.0F, 1.0F, 1F);
          GlStateManager.depthFunc(519);
          GlStateManager.depthMask(false);
          GlStateManager.enableBlend();
-@@ -594,10 +593,11 @@ public class ItemRenderer
+@@ -586,10 +581,11 @@ public class ItemRenderer
              GlStateManager.translate((float)(-(i * 2 - 1)) * 0.24F, -0.3F, 0.0F);
              GlStateManager.rotate((float)(i * 2 - 1) * 10.0F, 0.0F, 1.0F, 0.0F);
-             vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
--            vertexbuffer.pos(-0.5D, -0.5D, -0.5D).tex((double)f2, (double)f4).endVertex();
--            vertexbuffer.pos(0.5D, -0.5D, -0.5D).tex((double)f1, (double)f4).endVertex();
--            vertexbuffer.pos(0.5D, 0.5D, -0.5D).tex((double)f1, (double)f3).endVertex();
--            vertexbuffer.pos(-0.5D, 0.5D, -0.5D).tex((double)f2, (double)f3).endVertex();
+             bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+-            bufferbuilder.pos(-0.5D, -0.5D, -0.5D).tex((double)f2, (double)f4).endVertex();
+-            bufferbuilder.pos(0.5D, -0.5D, -0.5D).tex((double)f1, (double)f4).endVertex();
+-            bufferbuilder.pos(0.5D, 0.5D, -0.5D).tex((double)f1, (double)f3).endVertex();
+-            bufferbuilder.pos(-0.5D, 0.5D, -0.5D).tex((double)f2, (double)f3).endVertex();
 +            float scale = 0.4F;
-+            vertexbuffer.pos(-0.5D*scale, -0.5D*scale, -0.5D*scale).tex((double)f2, (double)f4).endVertex();
-+            vertexbuffer.pos(0.5D*scale, -0.5D*scale*0.5, -0.5D*scale).tex((double)f1, (double)f4).endVertex();
-+            vertexbuffer.pos(0.5D*scale, 0.5D*scale, -0.5D*scale).tex((double)f1, (double)f3).endVertex();
-+            vertexbuffer.pos(-0.5D*scale, 0.5D*scale, -0.5D*scale).tex((double)f2, (double)f3).endVertex();
++            bufferbuilder.pos(-0.5D*scale, -0.5D*scale, -0.5D*scale).tex((double)f2, (double)f4).endVertex();
++            bufferbuilder.pos(0.5D*scale, -0.5D*scale*0.5, -0.5D*scale).tex((double)f1, (double)f4).endVertex();
++            bufferbuilder.pos(0.5D*scale, 0.5D*scale, -0.5D*scale).tex((double)f1, (double)f3).endVertex();
++            bufferbuilder.pos(-0.5D*scale, 0.5D*scale, -0.5D*scale).tex((double)f2, (double)f3).endVertex();
              tessellator.draw();
              GlStateManager.popMatrix();
          }
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/RenderGlobal.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/RenderGlobal.java
-index 7e4283f..c942907 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/RenderGlobal.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/RenderGlobal.java
-@@ -636,7 +636,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
-                         if (flag)
-                         {
-                             boolean flag1 = this.mc.getRenderViewEntity() instanceof EntityLivingBase ? ((EntityLivingBase)this.mc.getRenderViewEntity()).isPlayerSleeping() : false;
--
-+                            
-                             if ((entity2 != this.mc.getRenderViewEntity() || this.mc.gameSettings.thirdPersonView != 0 || flag1) && (entity2.posY < 0.0D || entity2.posY >= 256.0D || this.theWorld.isBlockLoaded(blockpos$pooledmutableblockpos.func_189535_a(entity2))))
-                             {
-                                 ++this.countEntitiesRendered;
-@@ -680,7 +680,6 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
-                     this.entityOutlineFramebuffer.bindFramebuffer(false);
-                     RenderHelper.disableStandardItemLighting();
-                     this.renderManager.setRenderOutlines(true);
--
-                     for (int j = 0; j < ((List)list1).size(); ++j)
-                     {
-                         this.renderManager.renderEntityStatic((Entity)list1.get(j), partialTicks, false);
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/RenderItem.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/RenderItem.java
-index 0ed8384..98ae313 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/RenderItem.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/RenderItem.java
-@@ -129,7 +129,7 @@ public class RenderItem implements IResourceManagerReloadListener
- 
-         for (EnumFacing enumfacing : EnumFacing.values())
-         {
--            this.renderQuads(vertexbuffer, model.getQuads((IBlockState)null, enumfacing, 0L), color, stack);
-+        	this.renderQuads(vertexbuffer, model.getQuads((IBlockState)null, enumfacing, 0L), color, stack);
-         }
- 
-         this.renderQuads(vertexbuffer, model.getQuads((IBlockState)null, (EnumFacing)null, 0L), color, stack);
-@@ -439,23 +439,21 @@ public class RenderItem implements IResourceManagerReloadListener
- 
-             if (stack.isItemDamaged())
+diff --git a/src/minecraft/net/minecraft/client/renderer/RenderItem.java b/src2/minecraft/net/minecraft/client/renderer/RenderItem.java
+index 4db2364..2f82f89 100644
+--- a/src/minecraft/net/minecraft/client/renderer/RenderItem.java
++++ b/src2/minecraft/net/minecraft/client/renderer/RenderItem.java
+@@ -426,23 +426,19 @@ public class RenderItem implements IResourceManagerReloadListener
              {
--                int j = (int)Math.round(13.0D - (double)stack.getItemDamage() * 13.0D / (double)stack.getMaxDamage());
-+            	int j = (int)Math.round(13.0D - (double)stack.getItemDamage() * 13.0D / (double)stack.getMaxDamage());
-                 int i = (int)Math.round(255.0D - (double)stack.getItemDamage() * 255.0D / (double)stack.getMaxDamage());
                  GlStateManager.disableLighting();
                  GlStateManager.disableDepth();
 -                GlStateManager.disableTexture2D();
                  GlStateManager.disableAlpha();
                  GlStateManager.disableBlend();
 -                Tessellator tessellator = Tessellator.getInstance();
--                VertexBuffer vertexbuffer = tessellator.getBuffer();
--                this.draw(vertexbuffer, xPosition + 2, yPosition + 13, 13, 2, 0, 0, 0, 255);
--                this.draw(vertexbuffer, xPosition + 2, yPosition + 13, 12, 1, (255 - i) / 4, 64, 0, 255);
--                this.draw(vertexbuffer, xPosition + 2, yPosition + 13, j, 1, 255 - i, i, 0, 255);
+-                BufferBuilder bufferbuilder = tessellator.getBuffer();
+-                float f = (float)stack.getItemDamage();
+-                float f1 = (float)stack.getMaxDamage();
+-                float f2 = Math.max(0.0F, (f1 - f) / f1);
+-                int i = Math.round(13.0F - f * 13.0F / f1);
+-                int j = MathHelper.hsvToRGB(f2 / 3.0F, 1.0F, 1.0F);
+-                this.draw(bufferbuilder, xPosition + 2, yPosition + 13, 13, 2, 0, 0, 0, 255);
+-                this.draw(bufferbuilder, xPosition + 2, yPosition + 13, i, 1, j >> 16 & 255, j >> 8 & 255, j & 255, 255);
 -                GlStateManager.enableBlend();
 -                GlStateManager.enableAlpha();
 -                GlStateManager.enableTexture2D();
++                int i = (int)Math.round(255.0D - (double)stack.getItemDamage() * 255.0D / (double)stack.getMaxDamage());
 +                String s = ""+100*(stack.getMaxDamage()-stack.getItemDamage())/stack.getMaxDamage();
 +                if(stack.getItemDamage() != stack.getMaxDamage()) {
 +                	 fr.drawStringWithShadow(s, (float)(xPosition + 19 - 2 - fr.getStringWidth(s)), (float)(yPosition + 6 + 3), ((255-i)<<16)|(i<<8));
 +                	 GlStateManager.color(1, 1, 1, 1);
 +                }
++                
                  GlStateManager.enableLighting();
                  GlStateManager.enableDepth();
 +                GlStateManager.enableAlpha();
 +                GlStateManager.enableBlend();
              }
  
-             EntityPlayerSP entityplayersp = Minecraft.getMinecraft().thePlayer;
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/chunk/RenderChunk.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/chunk/RenderChunk.java
-index ddb2ec5..b51cdfb 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/chunk/RenderChunk.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/chunk/RenderChunk.java
-@@ -177,7 +177,11 @@ public class RenderChunk
+             EntityPlayerSP entityplayersp = Minecraft.getMinecraft().player;
+diff --git a/src/minecraft/net/minecraft/client/renderer/chunk/RenderChunk.java b/src2/minecraft/net/minecraft/client/renderer/chunk/RenderChunk.java
+index ef332b5..480a8c4 100644
+--- a/src/minecraft/net/minecraft/client/renderer/chunk/RenderChunk.java
++++ b/src2/minecraft/net/minecraft/client/renderer/chunk/RenderChunk.java
+@@ -181,6 +181,10 @@ public class RenderChunk
                          }
                      }
                  }
--
 +                
 +                if(iblockstate.getMaterial() != net.minecraft.block.material.Material.AIR) {
 +                	es.blueberrypancak.event.EventManager.fire(new es.blueberrypancak.event.EventLoadBlock(new es.blueberrypancak.Location(blockpos$mutableblockpos.getX(), blockpos$mutableblockpos.getY(), blockpos$mutableblockpos.getZ(), Block.getIdFromBlock(block))));
 +                }
-+                
+ 
                  BlockRenderLayer blockrenderlayer1 = block.getBlockLayer();
                  int j = blockrenderlayer1.ordinal();
+diff --git a/src/minecraft/net/minecraft/client/renderer/entity/Render.java b/src2/minecraft/net/minecraft/client/renderer/entity/Render.java
+index 1149867..b03e617 100644
+--- a/src/minecraft/net/minecraft/client/renderer/entity/Render.java
++++ b/src2/minecraft/net/minecraft/client/renderer/entity/Render.java
+@@ -101,7 +101,7 @@ public abstract class Render<T extends Entity>
  
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/entity/Render.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/entity/Render.java
-index 77cbe03..292a44e 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/entity/Render.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/entity/Render.java
-@@ -100,7 +100,7 @@ public abstract class Render<T extends Entity>
- 
-     protected void renderEntityName(T entityIn, double x, double y, double z, String name, double p_188296_9_)
+     protected void renderEntityName(T entityIn, double x, double y, double z, String name, double distanceSq)
      {
 -        this.renderLivingLabel(entityIn, name, x, y, z, 64);
 +        //this.renderLivingLabel(entityIn, name, x, y, z, 64);
      }
  
-     /**
-@@ -361,17 +361,13 @@ public abstract class Render<T extends Entity>
-     protected void renderLivingLabel(T entityIn, String str, double x, double y, double z, int maxDistance)
+     @Nullable
+@@ -365,16 +365,13 @@ public abstract class Render<T extends Entity>
      {
          double d0 = entityIn.getDistanceSqToEntity(this.renderManager.renderViewEntity);
--
+ 
 -        if (d0 <= (double)(maxDistance * maxDistance))
 -        {
-             boolean flag = entityIn.isSneaking();
-             float f = this.renderManager.playerViewY;
-             float f1 = this.renderManager.playerViewX;
-             boolean flag1 = this.renderManager.options.thirdPersonView == 2;
-             float f2 = entityIn.height + 0.5F - (flag ? 0.25F : 0.0F);
-             int i = "deadmau5".equals(str) ? -10 : 0;
--            EntityRenderer.func_189692_a(this.getFontRendererFromRenderManager(), str, (float)x, (float)y + f2, (float)z, i, f, f1, flag1, flag);
+-            boolean flag = entityIn.isSneaking();
+-            float f = this.renderManager.playerViewY;
+-            float f1 = this.renderManager.playerViewX;
+-            boolean flag1 = this.renderManager.options.thirdPersonView == 2;
+-            float f2 = entityIn.height + 0.5F - (flag ? 0.25F : 0.0F);
+-            int i = "deadmau5".equals(str) ? -10 : 0;
+-            EntityRenderer.drawNameplate(this.getFontRendererFromRenderManager(), str, (float)x, (float)y + f2, (float)z, i, f, f1, flag1, flag);
 -        }
-+            EntityRenderer.func_189692_a(this.getFontRendererFromRenderManager(), str, (float)x, (float)y + f2, (float)z, i, f, f1, flag1, false);
++        boolean flag = entityIn.isSneaking();
++        float f = this.renderManager.playerViewY;
++        float f1 = this.renderManager.playerViewX;
++        boolean flag1 = this.renderManager.options.thirdPersonView == 2;
++        float f2 = entityIn.height + 0.5F - (flag ? 0.25F : 0.0F);
++        int i = "deadmau5".equals(str) ? -10 : 0;
++        EntityRenderer.drawNameplate(this.getFontRendererFromRenderManager(), str, (float)x, (float)y + f2, (float)z, i, f, f1, flag1, flag);
      }
  
      public RenderManager getRenderManager()
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/entity/RenderManager.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/entity/RenderManager.java
-index d150b26..28d2fd9 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/entity/RenderManager.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/entity/RenderManager.java
-@@ -120,9 +120,9 @@ public class RenderManager
+diff --git a/src/minecraft/net/minecraft/client/renderer/entity/RenderManager.java b/src2/minecraft/net/minecraft/client/renderer/entity/RenderManager.java
+index cabc9c3..b0c92af 100644
+--- a/src/minecraft/net/minecraft/client/renderer/entity/RenderManager.java
++++ b/src2/minecraft/net/minecraft/client/renderer/entity/RenderManager.java
+@@ -121,9 +121,9 @@ public class RenderManager
  
      /** Renders fonts */
      private FontRenderer textRenderer;
@@ -427,32 +292,11 @@ index d150b26..28d2fd9 100644
      public TextureManager renderEngine;
  
      /** Reference to the World object. */
-@@ -349,7 +349,7 @@ public class RenderManager
-         int k = i / 65536;
-         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j, (float)k);
-         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
--        this.doRenderEntity(p_188388_1_, d0 - this.renderPosX, d1 - this.renderPosY, d2 - this.renderPosZ, f, p_188388_2_, p_188388_3_);
-+        this.doRenderEntity(p_188388_1_, d0 - this.renderPosX, d1 - this.renderPosY, d2 - this.renderPosZ, f, p_188388_2_, false);
-     }
- 
-     public void doRenderEntity(Entity entityIn, double x, double y, double z, float yaw, float partialTicks, boolean p_188391_10_)
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/entity/RenderPlayer.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/entity/RenderPlayer.java
-index f19179d..78b1811 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/client/renderer/entity/RenderPlayer.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/client/renderer/entity/RenderPlayer.java
-@@ -180,7 +180,6 @@ public class RenderPlayer extends RenderLivingBase<AbstractClientPlayer>
-                 y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.025F);
-             }
-         }
--
-         super.renderEntityName(entityIn, x, y, z, name, p_188296_9_);
-     }
- 
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/entity/EntityLivingBase.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/entity/EntityLivingBase.java
-index 24a6e35..dceaf43 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/entity/EntityLivingBase.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/entity/EntityLivingBase.java
-@@ -1994,12 +1994,12 @@ public abstract class EntityLivingBase extends Entity
+diff --git a/src/minecraft/net/minecraft/entity/EntityLivingBase.java b/src2/minecraft/net/minecraft/entity/EntityLivingBase.java
+index 3e6bec2..ee51d71 100644
+--- a/src/minecraft/net/minecraft/entity/EntityLivingBase.java
++++ b/src2/minecraft/net/minecraft/entity/EntityLivingBase.java
+@@ -2151,12 +2151,12 @@ public abstract class EntityLivingBase extends Entity
                                  this.motionY = -0.15D;
                              }
  
@@ -466,71 +310,63 @@ index 24a6e35..dceaf43 100644
 +                            }*/
                          }
  
-                         this.moveEntity(this.motionX, this.motionY, this.motionZ);
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/entity/player/EntityPlayer.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/entity/player/EntityPlayer.java
-index 6063f7b..59c6f46 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/entity/player/EntityPlayer.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/entity/player/EntityPlayer.java
-@@ -3,6 +3,7 @@ package net.minecraft.entity.player;
- import com.google.common.base.Charsets;
- import com.google.common.collect.Lists;
- import com.mojang.authlib.GameProfile;
-+
- import java.util.Arrays;
- import java.util.Collection;
- import java.util.List;
-@@ -103,7 +104,7 @@ public abstract class EntityPlayer extends EntityLivingBase
-     protected static final DataParameter<Byte> MAIN_HAND = EntityDataManager.<Byte>createKey(EntityPlayer.class, DataSerializers.BYTE);
+                         this.moveEntity(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+diff --git a/src/minecraft/net/minecraft/entity/player/EntityPlayer.java b/src2/minecraft/net/minecraft/entity/player/EntityPlayer.java
+index c9f07d5..7166dd8 100644
+--- a/src/minecraft/net/minecraft/entity/player/EntityPlayer.java
++++ b/src2/minecraft/net/minecraft/entity/player/EntityPlayer.java
+@@ -102,7 +102,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+     protected static final DataParameter<NBTTagCompound> field_192033_bu = EntityDataManager.<NBTTagCompound>createKey(EntityPlayer.class, DataSerializers.field_192734_n);
  
      /** Inventory of the player */
 -    public InventoryPlayer inventory = new InventoryPlayer(this);
 +    public InventoryPlayer inventory = new es.blueberrypancak.hook.InventoryPlayerHook(this);
-     private InventoryEnderChest theInventoryEnderChest = new InventoryEnderChest();
+     protected InventoryEnderChest theInventoryEnderChest = new InventoryEnderChest();
  
      /**
-@@ -2582,7 +2583,9 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -2623,7 +2623,9 @@ public abstract class EntityPlayer extends EntityLivingBase
  
      public float getCooldownPeriod()
      {
 -        return (float)(1.0D / this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).getAttributeValue() * 20.0D);
 +    	es.blueberrypancak.event.EventCooldown e = new es.blueberrypancak.event.EventCooldown((float)(1.0D / this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).getAttributeValue() * 20.0D));
-+    	es.blueberrypancak.event.EventManager.fire(e); // only way it seems to hook this it seems? (probably not)
-+        return e.getValue();
++    	es.blueberrypancak.event.EventManager.fire(e);
++    	return e.getValue();
      }
  
      /**
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/network/NetworkManager.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/network/NetworkManager.java
-index 20fd7bb..7e182ce 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/network/NetworkManager.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/network/NetworkManager.java
-@@ -150,7 +150,9 @@ public class NetworkManager extends SimpleChannelInboundHandler < Packet<? >>
+diff --git a/src/minecraft/net/minecraft/entity/projectile/EntityFishHook.java b/src2/minecraft/net/minecraft/entity/projectile/EntityFishHook.java
+index fceef29..a79168b 100644
+--- a/src/minecraft/net/minecraft/entity/projectile/EntityFishHook.java
++++ b/src2/minecraft/net/minecraft/entity/projectile/EntityFishHook.java
+@@ -36,7 +36,7 @@ public class EntityFishHook extends Entity
+     private static final DataParameter<Integer> DATA_HOOKED_ENTITY = EntityDataManager.<Integer>createKey(EntityFishHook.class, DataSerializers.VARINT);
+     private boolean inGround;
+     private int ticksInGround;
+-    private EntityPlayer angler;
++    public EntityPlayer angler;
+     private int ticksInAir;
+     private int ticksCatchable;
+     private int ticksCaughtDelay;
+diff --git a/src/minecraft/net/minecraft/network/NetworkManager.java b/src2/minecraft/net/minecraft/network/NetworkManager.java
+index 2de7347..3b2c9bf 100644
+--- a/src/minecraft/net/minecraft/network/NetworkManager.java
++++ b/src2/minecraft/net/minecraft/network/NetworkManager.java
+@@ -148,7 +148,9 @@ public class NetworkManager extends SimpleChannelInboundHandler < Packet<? >>
          {
              try
              {
 -                ((Packet<INetHandler>)p_channelRead0_2_).processPacket(this.packetListener);
 +            	es.blueberrypancak.event.EventRecPacket e = new es.blueberrypancak.event.EventRecPacket(p_channelRead0_2_);
 +            	es.blueberrypancak.event.EventManager.fire(e);	
-+                if(!e.isCancelled()) ((Packet<INetHandler>)e.getValue()).processPacket(this.packetListener);
++            	if(!e.isCancelled()) ((Packet<INetHandler>)e.getValue()).processPacket(this.packetListener);
              }
              catch (ThreadQuickExitException var4)
              {
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/network/play/client/CPacketEntityAction.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/network/play/client/CPacketEntityAction.java
-index 8173f18..6c507b2 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/network/play/client/CPacketEntityAction.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/network/play/client/CPacketEntityAction.java
-@@ -9,7 +9,7 @@ import net.minecraft.network.play.INetHandlerPlayServer;
- public class CPacketEntityAction implements Packet<INetHandlerPlayServer>
- {
-     private int entityID;
--    private CPacketEntityAction.Action action;
-+    public CPacketEntityAction.Action action;
-     private int auxData;
- 
-     public CPacketEntityAction()
-diff --git a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/network/play/client/CPacketPlayer.java b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/network/play/client/CPacketPlayer.java
+diff --git a/src/minecraft/net/minecraft/network/play/client/CPacketPlayer.java b/src2/minecraft/net/minecraft/network/play/client/CPacketPlayer.java
 index d66f3d0..d117d02 100644
---- a/C:/Users/cub/Documents/mcp931_/src/minecraft/net/minecraft/network/play/client/CPacketPlayer.java
-+++ b/C:/Users/cub/Documents/mcp931/src/minecraft/net/minecraft/network/play/client/CPacketPlayer.java
+--- a/src/minecraft/net/minecraft/network/play/client/CPacketPlayer.java
++++ b/src2/minecraft/net/minecraft/network/play/client/CPacketPlayer.java
 @@ -12,7 +12,7 @@ public class CPacketPlayer implements Packet<INetHandlerPlayServer>
      protected double z;
      protected float yaw;
@@ -539,3 +375,4 @@ index d66f3d0..d117d02 100644
 +    public boolean onGround;
      protected boolean moving;
      protected boolean rotating;
+ 
