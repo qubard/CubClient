@@ -84,5 +84,5 @@ Everything in the client works in multiplayer.
 
 # Screenshots
 
-![image](https://upload.blueberrypancake.xyz/2016-07-01_23.10.08.png)
-![image](https://upload.blueberrypancake.xyz/2016-07-01_04.37.56.png)
+![image](screenshots
+![image](screenshots/2016-07-01_04.37.56.png)
