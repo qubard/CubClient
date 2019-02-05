@@ -2,7 +2,7 @@
 
 A repo for the codebase of my updated 1.10+ Minecraft client using **event handling**.
 
-Currently supports 1.12.2. **This project is no longer being worked on.**
+Currently supports 1.12.2.
 
 To update from version to version see `patch.patch` which is a git diff of the changes made to the base Minecraft client (which are very few so that updating is as simple as copying over the `es/` directory) into `src`. 
 
